@@ -1,0 +1,57 @@
+{
+  "name": "Hermes",
+  "version": "0.1.0",
+  "description": "Say in Data",
+  "scripts": {
+    "start": "node ./node_modules/.bin/tapas-build",
+    "build": "node ./node_modules/.bin/tapas-build --production",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TapasTech/Hermes.git"
+  },
+  "author": "TapasFE",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TapasTech/Hermes/issues"
+  },
+  "homepage": "https://github.com/TapasTech/Hermes#readme",
+  "tapas": {
+    "index": "./src/index.html",
+    "entry": "./src/index.js",
+    "output": "./build",
+    "port": "8080",
+    "aliasRoot": "#"
+  },
+  "config": {
+    "name": "",
+    "ghooks": {
+      "commit-msg": "node ./node_modules/.bin/validate-commit-msg"
+    },
+    "validate-commit-msg": {
+      "types": [
+        "feat",
+        "fix",
+        "docs",
+        "style",
+        "refactor",
+        "perf",
+        "test",
+        "chore",
+        "revert"
+      ],
+      "warnOnFail": false,
+      "maxSubjectLength": 100
+    }
+  },
+  "devDependencies": {
+    "ghooks": "^1.0.3",
+    "tapas-build": "^0.4.5",
+    "validate-commit-msg": "^2.1.0"
+  },
+  "dependencies": {
+    "react": "^0.14.7",
+    "react-dom": "^0.14.7"
+  }
+}
