@@ -1,0 +1,115 @@
+:local(.qcard) {
+  display: flex;
+
+  .tag {
+    width: 50px;
+    height: 50px;
+    padding-top: 20px;
+    margin-right: 15px;
+    box-sizing: border-box;
+    font-size: 14px;
+    text-align: center;
+    background-color: #787878;
+    color: #fff;
+    border: 1px solid #a6a6a6;
+    border-radius: 3px;
+  }
+
+  .main {
+    flex: 1;
+    font-size: 14px;
+
+    .tip {
+      color: #a6a6a6;
+    }
+
+    .title {
+      margin-bottom: 5px;
+      font-size: 16px;
+      font-weight: bold;
+      line-height: 30px;
+    }
+
+    .author {
+      color: #a6a6a6;
+
+      .link {
+        color: #546DA5;
+      }
+    }
+
+    .content {
+      display: flex;
+
+      .answer {
+        flex: 1;
+        line-height: 1.8;
+      }
+
+      .text {
+        display: inline-block;
+        padding-right: 15px;
+      }
+
+      .show {
+        display: inline-block;
+        color: #546DA5;
+      }
+
+      .hide {
+        float: right;
+        margin-right: 20px;
+        color: #546DA5;
+      }
+
+      .pic {
+        width: 200px;
+        height: 120px;
+        background-position: center top;
+        background-size: contain;
+      }
+    }
+
+    .like {
+      display: flex;
+
+      .text {
+        display: inline-block;
+        height: 30px;
+        width: 30px;
+        padding: 0 5px;
+        line-height: 30px;
+        color: rgb(84, 109, 165);
+        background-color: rgba(241, 248, 251, 1);
+        border: 1px solid rgb(84, 109, 165);
+        border-top-left-radius: 3px;
+        border-bottom-left-radius: 3px;
+      }
+
+      .poke-area {
+        display: inline-block;
+        height: 30px;
+        width: 30px;
+        padding: 0 5px;
+        line-height: 30px;
+        color: rgb(84, 109, 165);
+        background-color: rgba(241, 248, 251, 1);
+        border: 1px solid rgb(84, 109, 165);
+        border-left: 0;
+        border-top-right-radius: 3px;
+        border-bottom-right-radius: 3px;
+        overflow: hidden;
+        cursor: pointer;
+        text-align: center;
+
+        .poke {
+          transition: all .1s linear;
+        }
+
+        &:hover .poke {
+          transform: translateY(-30px);
+        }
+      }
+    }
+  }
+}
