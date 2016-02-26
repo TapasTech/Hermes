@@ -21,7 +21,6 @@
     "index": "./src/index.html",
     "entry": "./src/index.js",
     "output": "./build",
-    "cssModules": true,
     "port": "8008",
     "aliasRoot": "#"
   },
@@ -52,6 +51,7 @@
     "validate-commit-msg": "^2.1.0"
   },
   "dependencies": {
+    "normalize.css": "^3.0.3",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
     "react-router": "^2.0.0"

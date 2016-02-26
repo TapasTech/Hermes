@@ -1,4 +1,5 @@
 import React from 'react';
+import { Header } from '#/components';
 
 export default class Base extends React.Component {
   constructor(props) {
@@ -12,6 +13,7 @@ export default class Base extends React.Component {
   render() {
     return (
       <div>
+        <Header />
         {this.props.children || 'Welcome to Hermes'}
       </div>
     )
