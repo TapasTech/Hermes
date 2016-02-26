@@ -1,0 +1,23 @@
+sudo: false
+language: node_js
+cache:
+  directories:
+    - node_modules
+notifications:
+  email: false
+node_js:
+- "4"
+env:
+  global:
+  - GH_REF: github.com/TapasTech/Hermes.git
+  - secure: BIlsmb0PPKa3yi9S7Pbp8modd/aHCqgn23twqzJeREYmIrJ9CZ+X/IATWLDYmluRjrp9fJM20dIzsdySvl61Q6pJzwWbuSBQ4Itjfs1PXJJL2nEoEaDUEGTRNQmAVs8dn0vd3496NMppxryK7PKzn9CGyfIPkZy3UtRnD6u8zJNyLckHuUCVu8K91eZvvSMJUD0jVxhrQuttqgIDrlX42bgXKDNnjmOo0kO+8kk85kftf5LJSFzwV4/Zr/HwtWCk12eLJ7UPdtQ+fJS1aHk4kSZNNcyQrrKSAjzeq3esIX0z13PWoBIz7v1s7ZXVexuAgqDa9An4Tx1LSk4imYwreGERYBc4ITKuN7vsHaTPxza3x+tr6boFaz8dYyhJC8HZ/eAM9Jv9FEfUcKaQvbTnUPPlX2uAHafXMufroXPAPKsKY/Ymgl3S/yVUVWbBb822cPcQ2rG9qRfnVIZNETlMRuYqeQh5vkVejxd5Ohpk7xhUA/DHeoEgWnqGnxfgr2j7wcb5fJIPFD2Tjpkez3ZsxvsH99kejoJwNg5AjMRYEsMBp9dTZ/BPonhmOGBWr/MLVbYgKd2TAoPGl9qacA3/CAnzVgCdRg1PRAj6XDaUHh9iJ/t3+7GDxJ14XrCC6RZNTxJYG6IdQzt5XEu/RIzfnhAZjN8E+umPtn4OgcDv3xs=
+
+before_install:
+  - npm i -g npm@^2.0.0
+before_script:
+  - npm prune
+script: bash ./bin/deploy.sh
+
+branches:
+  only:
+    - master
