@@ -21,7 +21,8 @@
     "index": "./src/index.html",
     "entry": "./src/index.js",
     "output": "./build",
-    "port": "8080",
+    "cssModules": true,
+    "port": "8008",
     "aliasRoot": "#"
   },
   "config": {
@@ -52,6 +53,7 @@
   },
   "dependencies": {
     "react": "^0.14.7",
-    "react-dom": "^0.14.7"
+    "react-dom": "^0.14.7",
+    "react-router": "^2.0.0"
   }
 }
