@@ -1,4 +1,4 @@
-:local(.qcard) {
+:local(.topicCard) {
   display: flex;
   border-top: 1px solid #e0e0e0;
   padding: 25px 0;
@@ -30,6 +30,7 @@
       font-size: 16px;
       font-weight: bold;
       line-height: 30px;
+      color: #404040;
     }
 
     .author {
@@ -38,41 +39,6 @@
 
       .link {
         color: #546DA5;
-      }
-    }
-
-    .content {
-      display: flex;
-      margin-bottom: 5px;
-
-      .answer {
-        flex: 1;
-        line-height: 1.8;
-        padding-right: 15px;
-      }
-
-      .short {
-        display: inline-block;
-        cursor: pointer;
-      }
-
-      .show {
-        display: inline-block;
-        color: #546DA5;
-      }
-
-      .hide {
-        float: right;
-        margin-right: 20px;
-        cursor: pointer;
-        color: #546DA5;
-      }
-
-      .pic {
-        width: 200px;
-        height: 120px;
-        background-position: center top;
-        background-size: contain;
       }
     }
 
@@ -143,6 +109,10 @@
 
     .share {
       position: relative;
+
+      .bar {
+        position: absolute;
+      }
     }
   }
 }

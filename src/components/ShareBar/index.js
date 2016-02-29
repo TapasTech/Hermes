@@ -11,7 +11,8 @@ export default class ShareBar extends React.Component {
 
   static propTypes = {
     url: React.PropTypes.string,
-    title: React.PropTypes.string
+    title: React.PropTypes.string,
+    className: React.PropTypes.string
   };
 
   constructor(props) {
@@ -24,10 +25,12 @@ export default class ShareBar extends React.Component {
   };
 
   render() {
-    const { url, title } = this.props;
+    const { url, title, className } = this.props;
+    let clx = styles.shareTip;
+    className && (clx = `${clx} ${className}`);
 
     return (
-      <div className={styles.shareTip}>
+      <div className={clx}>
         <a
           className="weibo"
           target="_blank"

@@ -1,0 +1,41 @@
+:local(.poke) {
+  display: flex;
+
+  .text {
+    display: inline-block;
+    height: 30px;
+    width: 30px;
+    padding: 0 5px;
+    line-height: 30px;
+    color: rgb(84, 109, 165);
+    background-color: rgba(241, 248, 251, 1);
+    border: 1px solid rgb(84, 109, 165);
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+  }
+
+  .poke-area {
+    display: inline-block;
+    height: 30px;
+    width: 30px;
+    padding: 0 5px;
+    line-height: 30px;
+    color: rgb(84, 109, 165);
+    background-color: rgba(241, 248, 251, 1);
+    border: 1px solid rgb(84, 109, 165);
+    border-left: 0;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    overflow: hidden;
+    cursor: pointer;
+    text-align: center;
+
+    .poke {
+      transition: all .1s linear;
+    }
+
+    &:hover .poke {
+      transform: translateY(-30px);
+    }
+  }
+}

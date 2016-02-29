@@ -6,6 +6,7 @@ import styles from './style.less';
 
 const data = [
   {
+    id: '1',
     tag: '热门',
     topic: '社会',
     question: '春节回家，如何避免高速拥堵？',
@@ -79,6 +80,7 @@ const data = [
     ]
   },
   {
+    id: '2',
     tag: '热门',
     topic: '社会',
     question: '春节回家，如何避免高速拥堵？',
@@ -90,6 +92,7 @@ const data = [
     picUrl: 'http://i11.tietuku.com/f01cdb2e505f49e4.png'
   },
   {
+    id: '3',
     tag: '热门',
     topic: '社会',
     question: '春节回家，如何避免高速拥堵？',
@@ -227,7 +230,7 @@ export default class TopicList extends React.Component {
 
   render() {
     return (
-      <div className={styles.qlist}>
+      <div className={styles.topicList}>
         { this.renderQuestionList() }
         <div className={styles.sidebar}>
           <div className="hot">
@@ -236,7 +239,7 @@ export default class TopicList extends React.Component {
               <a className="more" href="/topic/hot">更多</a>
             </div>
             {
-              hotTopics.map((item, index) => this.renderHotTopic(item, index) )
+              hotTopics.map((item, index) => this.renderHotTopic(item, index))
             }
           </div>
           <div className="newest">
