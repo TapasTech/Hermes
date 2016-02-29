@@ -1,0 +1,33 @@
+:local(.avatar) {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  @normal: 40px;
+  @large: 80px;
+
+  .pic {
+    height: @normal;
+    width: @normal;
+    line-height: @normal;
+    font-size: 18px;
+    color: #fff;
+    border-radius: 50%;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+
+    &.large {
+      width: @large;
+      height: @large;
+      line-height: @large;
+    }
+  }
+
+  .name {
+    width: 60px;
+    margin-left: 10px;
+    text-align: left;
+    font-size: 16px;
+  }
+}

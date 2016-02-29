@@ -1,0 +1,211 @@
+:local(.qcard) {
+  display: flex;
+  border-top: 1px solid #e0e0e0;
+  padding: 25px 0;
+
+  .tag {
+    width: 50px;
+    height: 50px;
+    padding-top: 20px;
+    margin-right: 15px;
+    box-sizing: border-box;
+    font-size: 14px;
+    text-align: center;
+    background-color: #787878;
+    color: #fff;
+    border: 1px solid #a6a6a6;
+    border-radius: 3px;
+  }
+
+  :local(.main) {
+    flex: 1;
+    font-size: 14px;
+
+    .tip {
+      color: #a6a6a6;
+    }
+
+    .title {
+      margin-bottom: 5px;
+      font-size: 16px;
+      font-weight: bold;
+      line-height: 30px;
+    }
+
+    .author {
+      color: #a6a6a6;
+      margin-bottom: 5px;
+
+      .link {
+        color: #546DA5;
+      }
+    }
+
+    .content {
+      display: flex;
+      margin-bottom: 5px;
+
+      .answer {
+        flex: 1;
+        line-height: 1.8;
+        padding-right: 15px;
+      }
+
+      .short {
+        display: inline-block;
+        cursor: pointer;
+      }
+
+      .show {
+        display: inline-block;
+        color: #546DA5;
+      }
+
+      .hide {
+        float: right;
+        margin-right: 20px;
+        cursor: pointer;
+        color: #546DA5;
+      }
+
+      .pic {
+        width: 200px;
+        height: 120px;
+        background-position: center top;
+        background-size: contain;
+      }
+    }
+
+    .other {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    .like {
+      display: flex;
+
+      .text {
+        display: inline-block;
+        height: 30px;
+        width: 30px;
+        padding: 0 5px;
+        line-height: 30px;
+        color: rgb(84, 109, 165);
+        background-color: rgba(241, 248, 251, 1);
+        border: 1px solid rgb(84, 109, 165);
+        border-top-left-radius: 3px;
+        border-bottom-left-radius: 3px;
+      }
+
+      .poke-area {
+        display: inline-block;
+        height: 30px;
+        width: 30px;
+        padding: 0 5px;
+        line-height: 30px;
+        color: rgb(84, 109, 165);
+        background-color: rgba(241, 248, 251, 1);
+        border: 1px solid rgb(84, 109, 165);
+        border-left: 0;
+        border-top-right-radius: 3px;
+        border-bottom-right-radius: 3px;
+        overflow: hidden;
+        cursor: pointer;
+        text-align: center;
+
+        .poke {
+          transition: all .1s linear;
+        }
+
+        &:hover .poke {
+          transform: translateY(-30px);
+        }
+      }
+    }
+
+    .comment,
+    .share {
+      margin-left: 15px;
+      color: #999999;
+      cursor: pointer;
+    }
+
+    .comment .count {
+      display: inline-block;
+      margin-left: 5px;
+      padding: 0 5px;
+      line-height: 26px;
+      text-align: center;
+      background-color: rgba(242, 242, 242, 1);
+      border-radius: 3px;
+    }
+
+    .share {
+      position: relative;
+    }
+
+    :local(.shareTip) {
+      position: absolute;
+      width: 150px;
+      background-color: #fff;
+      border: 1px solid #eee;
+      border-radius: 3px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      .weibo {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 36px;
+        color: #999;
+        cursor: pointer;
+      }
+
+      .icon {
+        width: 30px;
+        height: 20px;
+        margin-right: 10px;
+        display: inline-block;
+        background-position: center;
+        background-size: auto 100%;
+        background-repeat: no-repeat;
+
+        &.icon-weibo {
+          background-image: url('../../assets/weibo.svg');
+        }
+
+        &.icon-weixin {
+          background-image: url('../../assets/weixin.svg');
+        }
+      }
+
+      .weixin {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border-top: 1px solid #eee;
+      }
+
+      .tip {
+        height: 36px;
+        margin-bottom: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .qrcode {
+        width: 100%;
+        display: inline-block;
+        text-align: center;
+        padding-bottom: 15px;
+      }
+    }
+  }
+}

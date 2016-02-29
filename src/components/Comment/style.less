@@ -1,0 +1,87 @@
+:local(.detail) {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;;
+
+  .avatar {
+    width: auto;
+    padding-top: 10px;
+  }
+
+  :local(.main) {
+    padding: 10px;
+    flex: 1;
+
+    :local(.content) {
+      line-height: 1.5;
+    }
+
+    :local(.title) {
+      font-weight: bold;
+      font-size: 14px;
+      display: flex;
+      margin-bottom: 5px;
+    }
+
+    .from {
+      margin-right: 10px;
+    }
+
+    .tip {
+      font-weight: normal;
+      margin-right: 10px;
+    }
+  }
+
+  :local(.others) {
+    display: flex;
+    margin-top: 5px;
+    color: #999;
+
+    .info-area {
+      flex: 1;
+      display: flex;
+    }
+
+    .option-area {
+      display: none;
+    }
+
+    .options {
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    .count {
+      width: 50px;
+    }
+  }
+
+  .reply-area {
+    margin-top: 10px;
+    padding-right: 20px;
+
+    .reply-input {
+      width: 100%;
+      padding: 5px 8px;
+      line-height: 1.5;
+      border: 1px solid #ddd;
+      border-radius: 3px;
+    }
+
+    .btn {
+      width: 40px;
+      margin-top: 10px;
+      padding: 5px 10px;
+      background-color: #000;
+      color: #fff;
+      text-align: center;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+  }
+}
+
+:local(.detail):hover .option-area {
+  display: flex;
+}
