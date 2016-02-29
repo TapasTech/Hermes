@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class QuestionDetail extends React.Component {
+export default class TopicDetail extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -8,7 +8,7 @@ export default class QuestionDetail extends React.Component {
   render() {
     return (
       <div>
-        QuestionDetail Page
+        TopicDetail Page
       </div>
     );
   }

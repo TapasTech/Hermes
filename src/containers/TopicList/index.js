@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { QuestionCard } from '#/components';
+import { TopicCard } from '#/components';
 
 import styles from './style.less';
 
@@ -172,7 +172,7 @@ const newestTopics = [
   }
 ]
 
-export default class QuestionList extends React.Component {
+export default class TopicList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -214,7 +214,7 @@ export default class QuestionList extends React.Component {
       <div className={styles.main}>
         <div className={styles.title}>最新动态</div>
         {
-          onePageQ.map((item, index) => <QuestionCard key={index} content={item} />)
+          onePageQ.map((item, index) => <TopicCard key={index} content={item} />)
         }
         {
           ((data.length > 10) && (endIndex < data.length))

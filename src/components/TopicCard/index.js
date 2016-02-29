@@ -1,12 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router';
-import QRCode from 'qrcode-react';
 
-import { CommentList } from '#/components';
+import { CommentList, ShareBar } from '#/components';
 
 import styles from './style.less';
 
-export default class QuestionCard  extends React.Component {
+export default class TopicCard  extends React.Component {
 
   static propTypes = {
     content: React.PropTypes.object
@@ -23,15 +22,13 @@ export default class QuestionCard  extends React.Component {
 
   handleShowShort() {
     this.setState({
-      shortAnswer: true,
-      showShare: false
+      shortAnswer: true
     });
   }
 
   handleShowFull() {
     this.setState({
-      shortAnswer: false,
-      showShare: false
+      shortAnswer: false
     });
   }
 
@@ -53,37 +50,6 @@ export default class QuestionCard  extends React.Component {
     });
   }
 
-  renderShare() {
-    const objectToParams = (object) => {
-      const string = Object.keys(object).map(key => `${key}=${encodeURIComponent(object[key])}`).join('&')
-      return `?${string}`
-    };
-
-    const url = '1';
-    const title = '2';
-
-    return(
-      <div className={styles.shareTip}>
-        <a
-          className="weibo"
-          target="_blank"
-          href={`http://v.t.sina.com.cn/share/share.php${objectToParams({url: url, title: title})}`}>
-          <span className="icon icon-weibo"></span>
-          分享到微博
-        </a>
-        <div className="weixin">
-          <div className="tip">
-            <span className="icon icon-weixin"></span>
-            微信扫一扫
-          </div>
-          <div className="qrcode">
-            <QRCode value={url} size={100} />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   render() {
     const { tag, topic, question, author, answerString, answerHTML, authorId, like, picUrl, comments } = this.props.content;
     const _answerHTML = {__html: answerHTML};
@@ -101,7 +67,9 @@ export default class QuestionCard  extends React.Component {
             <div className="answer">
               {
                 this.state.shortAnswer
-                  ? <div className="short" onClick={::this.handleShowFull}>{answerString.substr(0, 140)}<span className="show">...显示全部</span></div>
+                  ? <div className="short" onClick={::this.handleShowFull}>
+                    {answerString.substr(0, 140)}<span className="show">...显示全部</span>
+                  </div>
                   :  <div className="long">
                     <div className="text" dangerouslySetInnerHTML={_answerHTML}></div>
                     <div className="hide" onClick={::this.handleShowShort}>收起回答</div>
@@ -128,7 +96,7 @@ export default class QuestionCard  extends React.Component {
             </div>
             <div className="share">
               <span onClick={::this.handleShowShare}>分享</span>
-              { this.state.showShare && this.renderShare() }
+              { this.state.showShare && <ShareBar /> }
             </div>
           </div>
           {

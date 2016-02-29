@@ -1,0 +1,62 @@
+:local(.shareTip) {
+  position: absolute;
+  width: 150px;
+  background-color: #fff;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .weibo {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 36px;
+    color: #999;
+    cursor: pointer;
+  }
+
+  .icon {
+    width: 30px;
+    height: 20px;
+    margin-right: 10px;
+    display: inline-block;
+    background-position: center;
+    background-size: auto 100%;
+    background-repeat: no-repeat;
+
+    &.icon-weibo {
+      background-image: url('../../assets/weibo.svg');
+    }
+
+    &.icon-weixin {
+      background-image: url('../../assets/weixin.svg');
+    }
+  }
+
+  .weixin {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-top: 1px solid #eee;
+  }
+
+  .tip {
+    height: 36px;
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .qrcode {
+    width: 100%;
+    display: inline-block;
+    text-align: center;
+    padding-bottom: 15px;
+  }
+}
