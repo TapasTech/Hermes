@@ -76,6 +76,12 @@
       }
     }
 
+    .other {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
     .like {
       display: flex;
 
@@ -115,6 +121,90 @@
         &:hover .poke {
           transform: translateY(-30px);
         }
+      }
+    }
+
+    .comment,
+    .share {
+      margin-left: 15px;
+      color: #999999;
+      cursor: pointer;
+    }
+
+    .comment .count {
+      display: inline-block;
+      margin-left: 5px;
+      padding: 0 5px;
+      line-height: 26px;
+      text-align: center;
+      background-color: rgba(242, 242, 242, 1);
+      border-radius: 3px;
+    }
+
+    .share {
+      position: relative;
+    }
+
+    :local(.shareTip) {
+      position: absolute;
+      width: 150px;
+      background-color: #fff;
+      border: 1px solid #eee;
+      border-radius: 3px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      .weibo {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 36px;
+        color: #999;
+        cursor: pointer;
+      }
+
+      .icon {
+        width: 30px;
+        height: 20px;
+        margin-right: 10px;
+        display: inline-block;
+        background-position: center;
+        background-size: auto 100%;
+        background-repeat: no-repeat;
+
+        &.icon-weibo {
+          background-image: url('../../assets/weibo.svg');
+        }
+
+        &.icon-weixin {
+          background-image: url('../../assets/weixin.svg');
+        }
+      }
+
+      .weixin {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border-top: 1px solid #eee;
+      }
+
+      .tip {
+        height: 36px;
+        margin-bottom: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .qrcode {
+        width: 100%;
+        display: inline-block;
+        text-align: center;
+        padding-bottom: 15px;
       }
     }
   }

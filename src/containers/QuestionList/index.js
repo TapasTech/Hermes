@@ -14,7 +14,69 @@ const data = [
     author: 'Amano',
     authorId: 12345,
     like: 1322,
-    picUrl: 'http://i11.tietuku.com/f01cdb2e505f49e4.png'
+    picUrl: 'http://i11.tietuku.com/f01cdb2e505f49e4.png',
+    comments: [
+      {
+        author: {
+          name: '张三',
+          avatar: 'http://i11.tietuku.com/60857f76cd893c0d.png'
+        },
+        content: '答主研究的领域是人口方面么？题目是问社会影响，答主偏向预测数量增长，建议可以谈一谈影响。',
+        date: '2天前',
+        like: 23
+      },
+      {
+        author: {
+          name: '李四',
+          avatar: 'http://i13.tietuku.com/02eca4d180332df3.png'
+        },
+        to: '张三',
+        content: '答主研究的领域是人口方面么？题目是问社会影响，答主偏向预测数量增长，建议可以谈一谈影响。',
+        date: '2天前',
+        like: 0
+      },
+      {
+        author: {
+          name: '李四',
+          avatar: 'http://i13.tietuku.com/02eca4d180332df3.png'
+        },
+        content: '答主研究的领域是人口方面么？题目是问社会影响，答主偏向预测数量增长，建议可以谈一谈影响。',
+        date: '2天前',
+        like: 0
+      },
+      {
+        author: {
+          name: '张三',
+          avatar: 'http://i11.tietuku.com/60857f76cd893c0d.png'
+        },
+        to: '李四',
+        content: '答主研究的领域是人口方面么？题目是问社会影响，答主偏向预测数量增长，建议可以谈一谈影响。'
+      },
+      {
+        author: {
+          name: '李四',
+          avatar: 'http://i13.tietuku.com/02eca4d180332df3.png'
+        },
+        to: '张三',
+        content: '答主研究的领域是人口方面么？题目是问社会影响，答主偏向预测数量增长，建议可以谈一谈影响。'
+      },
+      {
+        author: {
+          name: '张三',
+          avatar: 'http://i11.tietuku.com/60857f76cd893c0d.png'
+        },
+        to: '李四',
+        content: '答主研究的领域是人口方面么？题目是问社会影响，答主偏向预测数量增长，建议可以谈一谈影响。'
+      },
+      {
+        author: {
+          name: '李四',
+          avatar: 'http://i13.tietuku.com/02eca4d180332df3.png'
+        },
+        to: '张三',
+        content: '答主研究的领域是人口方面么？题目是问社会影响，答主偏向预测数量增长，建议可以谈一谈影响。'
+      }
+    ]
   },
   {
     tag: '热门',
@@ -113,6 +175,15 @@ const newestTopics = [
 export default class QuestionList extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      currentPage: 1
+    };
+  }
+
+  handleShowMore() {
+    this.setState({
+      currentPage: this.state.currentPage + 1
+    });
   }
 
   renderHotTopic(topic, key) {
@@ -133,16 +204,31 @@ export default class QuestionList extends React.Component {
     )
   }
 
+  renderQuestionList() {
+    const { currentPage } = this.state;
+    const qList = [].concat(data);
+    const endIndex = currentPage * 10;
+    let onePageQ = qList.slice(0, endIndex);
+
+    return (
+      <div className={styles.main}>
+        <div className={styles.title}>最新动态</div>
+        {
+          onePageQ.map((item, index) => <QuestionCard key={index} content={item} />)
+        }
+        {
+          ((data.length > 10) && (endIndex < data.length))
+          ? <div className="more" onClick={::this.handleShowMore}>点击加载更多</div>
+          : <div className="end">已到结尾</div>
+        }
+      </div>
+    );
+  }
+
   render() {
     return (
       <div className={styles.qlist}>
-        <div className={styles.main}>
-          <div className={styles.title}>最新动态</div>
-          {
-            data.map((item, index) => <QuestionCard key={index} content={item} />)
-          }
-          <div className="more">点击加载更多</div>
-        </div>
+        { this.renderQuestionList() }
         <div className={styles.sidebar}>
           <div className="hot">
             <div className="title">
