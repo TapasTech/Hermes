@@ -23,45 +23,42 @@
       line-height: 1.8;
     }
   }
+}
 
-  :local(.submit) {
+:local(.submit) {
+
+  :local(.author) {
     display: flex;
-    padding: 10px 15px;
-    background-color: rgba(242, 242, 242, 1);
+    align-items: center;
+    flex: 1;
+  }
 
-    :local(.author) {
-      display: flex;
-      align-items: center;
-      flex: 1;
-    }
+  :local(.subTitle) {
+    margin: 0 10px;
+  }
 
-    :local(.subTitle) {
-      margin: 0 10px;
-    }
+  :local(.tip) {
+    width: auto;
+    font-size: 14px;
+    color: #a6a6a6;
+  }
 
-    :local(.tip) {
-      width: auto;
-      font-size: 14px;
-      color: #a6a6a6;
-    }
+  .submit-options {
+    display: flex;
+    align-items: center;
 
-    .submit-options {
-      display: flex;
-      align-items: center;
+    .anonymous {
+      cursor: pointer;
 
-      .anonymous {
-        cursor: pointer;
-
-        .tip {
-          display: inline-block;
-          margin: 0 10px;
-          color: #666;
-        }
+      .tip {
+        display: inline-block;
+        margin: 0 10px;
+        color: #666;
       }
+    }
 
-      .postIt {
-        width: 70px;
-      }
+    .postIt {
+      width: 70px;
     }
   }
 }
@@ -102,5 +99,28 @@
         background-color: rgba(84, 109, 165, 1);
       }
     }
+  }
+}
+
+.ask {
+  :local(.submit) {
+    display: flex;
+    padding: 10px 15px;
+    background-color: rgba(242, 242, 242, 1);
+  }
+}
+
+.reply {
+  :local(.submit) {
+    padding: 15px;
+    background-color: #fff;
+  }
+
+ :local(.author) {
+    margin-bottom: 10px;
+  }
+
+ .postIt {
+    margin-right: 20px;
   }
 }
