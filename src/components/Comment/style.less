@@ -1,7 +1,15 @@
 :local(.detail) {
   display: flex;
   justify-content: flex-start;
-  align-items: flex-start;;
+  align-items: flex-start;
+
+  .others {
+    display: none;
+  }
+
+  &:hover .others {
+    display: flex;
+  }
 
   .avatar {
     width: auto;
@@ -32,8 +40,22 @@
       margin-right: 10px;
     }
   }
+}
 
-  :local(.others) {
+:local(.detail) {
+  .option-btns {
+    display: none;
+  }
+
+  &:hover .option-btns {
+    display: flex;
+  }
+}
+
+:local(.optionArea) {
+  font-size: 14px;
+
+  :local(.options) {
     display: flex;
     margin-top: 5px;
     color: #999;
@@ -43,17 +65,13 @@
       display: flex;
     }
 
-    .option-area {
-      display: none;
-    }
-
     .options {
       margin-left: 10px;
       cursor: pointer;
     }
 
     .count {
-      width: 50px;
+      width: auto;
     }
   }
 
@@ -80,8 +98,4 @@
       cursor: pointer;
     }
   }
-}
-
-:local(.detail):hover .option-area {
-  display: flex;
 }

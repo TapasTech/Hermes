@@ -5,13 +5,118 @@
 
   :local(.main) {
     margin-right: 20px;
-    padding: 20px 20px 0;
-    background-color: #fff;
-    box-shadow: 0px 0px 2px rgba(153, 153, 153, 0.349019607843137);
     flex: 1;
+
+    :local(.topic) {
+      margin-bottom: 10px;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0px 0px 2px rgba(153, 153, 153, 0.349019607843137);
+    }
+
+    :local(.answer) {
+      margin-bottom: 10px;
+      background-color: #fff;
+      box-shadow: 0px 0px 2px rgba(153, 153, 153, 0.349019607843137);
+
+      :local(.header) {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+      }
+
+      :local(.author) {
+        display: flex;
+        align-items: center;
+        flex: 1;
+      }
+
+      :local(.answerContent) {
+        padding: 15px;
+      }
+    }
+
+    :local(.links) {
+      margin: 5px 0;
+    }
+
+    :local(.link) {
+      display: block;
+      color: #546DA5;
+      line-height: 1.8;
+      font-size: 14px;
+    }
+  }
+
+  :local(.header) {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+
+  :local(.title) {
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 30px;
+    color: #404040;
+    flex: 1;
+  }
+
+  :local(.subTitle) {
+    margin: 0 10px;
+  }
+
+  :local(.tip) {
+    width: auto;
+    font-size: 14px;
+    color: #a6a6a6;
+  }
+
+  :local(.content) {
+    font-size: 14px;
+    line-height: 1.8;
+    padding-right: 15px;
+    margin-bottom: 10px;
   }
 
   :local(.sidebar) {
     width: 250px;
+  }
+}
+
+:local(.cardOption) {
+  font-size: 14px;
+
+  .other {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .comment,
+  .share {
+    color: #999999;
+    cursor: pointer;
+  }
+
+  .share {
+    margin-left: 15px;
+  }
+
+  .comment .count {
+    display: inline-block;
+    margin-left: 5px;
+    padding: 0 5px;
+    line-height: 26px;
+    text-align: center;
+    background-color: rgba(242, 242, 242, 1);
+    border-radius: 3px;
+  }
+
+  .share {
+    position: relative;
+
+    .bar {
+      position: absolute;
+    }
   }
 }

@@ -14,22 +14,9 @@ export default class TopicCard  extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      shortAnswer: true,
       showShare: false,
       showComment: false
     };
-  }
-
-  handleShowShort() {
-    this.setState({
-      shortAnswer: true
-    });
-  }
-
-  handleShowFull() {
-    this.setState({
-      shortAnswer: false
-    });
   }
 
   handleShowShare() {
@@ -54,8 +41,33 @@ export default class TopicCard  extends React.Component {
     console.log('点赞');
   }
 
+  renderOptionArea() {
+    const { like, comments } = this.props.content;
+    return (
+      <div className={styles.cardOption}>
+        <div className="other">
+          <PokeButton count={like} onClick={::this.handlePoke} />
+          <div className="comment" onClick={::this.handleShowComment}>
+            <span>评论</span>
+            <span className="count">{ comments ? comments.length : 0 }</span>
+          </div>
+          <div className="share">
+            <span onClick={::this.handleShowShare}>分享</span>
+            { this.state.showShare && <ShareBar className="bar" /> }
+          </div>
+        </div>
+        {
+          this.state.showComment
+            && comments
+            && comments.length
+            && <CommentList comments={comments} onClose={::this.handleHideComment} />
+        }
+      </div>
+    );
+  }
+
   render() {
-    const { id, tag, topic, question, author, answerString, answerHTML, authorId, like, picUrl, comments } = this.props.content;
+    const { id, tag, topic, question, author, answerString, answerHTML, authorId, picUrl } = this.props.content;
     return (
       <div className={styles.topicCard}>
         <div className="tag">{tag}</div>
@@ -67,23 +79,7 @@ export default class TopicCard  extends React.Component {
             <span>的答案：</span>
           </div>
           <Answer pic={picUrl} answerShort={answerString} answerFull={answerHTML} />
-          <div className="other">
-            <PokeButton count={like} onClick={::this.handlePoke} />
-            <div className="comment" onClick={::this.handleShowComment}>
-              <span>评论</span>
-              <span className="count">{ comments ? comments.length : 0 }</span>
-            </div>
-            <div className="share">
-              <span onClick={::this.handleShowShare}>分享</span>
-              { this.state.showShare && <ShareBar className="bar" /> }
-            </div>
-          </div>
-          {
-            this.state.showComment
-              && comments
-              && comments.length
-              && <CommentList comments={comments} onClose={::this.handleHideComment} />
-          }
+          { this.renderOptionArea() }
         </div>
       </div>
     );

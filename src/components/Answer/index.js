@@ -36,8 +36,8 @@ export default class Answer extends React.Component {
         <div className={styles.content}>
           {
             this.state.full
-              ?  <div className="long">
-                <div className="text" dangerouslySetInnerHTML={_answerHTML}></div>
+              ?  <div>
+                <div className="long" dangerouslySetInnerHTML={_answerHTML}></div>
                 <div className="hide" onClick={::this.handleHideFull}>收起回答</div>
               </div>
               : <div className="short" onClick={::this.handleShowFull}>

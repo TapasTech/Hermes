@@ -41,78 +41,38 @@
         color: #546DA5;
       }
     }
+  }
+}
 
-    .other {
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-    }
+:local(.cardOption) {
+  .other {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
 
-    .like {
-      display: flex;
+  .comment,
+  .share {
+    margin-left: 15px;
+    color: #999999;
+    cursor: pointer;
+  }
 
-      .text {
-        display: inline-block;
-        height: 30px;
-        width: 30px;
-        padding: 0 5px;
-        line-height: 30px;
-        color: rgb(84, 109, 165);
-        background-color: rgba(241, 248, 251, 1);
-        border: 1px solid rgb(84, 109, 165);
-        border-top-left-radius: 3px;
-        border-bottom-left-radius: 3px;
-      }
+  .comment .count {
+    display: inline-block;
+    margin-left: 5px;
+    padding: 0 5px;
+    line-height: 26px;
+    text-align: center;
+    background-color: rgba(242, 242, 242, 1);
+    border-radius: 3px;
+  }
 
-      .poke-area {
-        display: inline-block;
-        height: 30px;
-        width: 30px;
-        padding: 0 5px;
-        line-height: 30px;
-        color: rgb(84, 109, 165);
-        background-color: rgba(241, 248, 251, 1);
-        border: 1px solid rgb(84, 109, 165);
-        border-left: 0;
-        border-top-right-radius: 3px;
-        border-bottom-right-radius: 3px;
-        overflow: hidden;
-        cursor: pointer;
-        text-align: center;
+  .share {
+    position: relative;
 
-        .poke {
-          transition: all .1s linear;
-        }
-
-        &:hover .poke {
-          transform: translateY(-30px);
-        }
-      }
-    }
-
-    .comment,
-    .share {
-      margin-left: 15px;
-      color: #999999;
-      cursor: pointer;
-    }
-
-    .comment .count {
-      display: inline-block;
-      margin-left: 5px;
-      padding: 0 5px;
-      line-height: 26px;
-      text-align: center;
-      background-color: rgba(242, 242, 242, 1);
-      border-radius: 3px;
-    }
-
-    .share {
-      position: relative;
-
-      .bar {
-        position: absolute;
-      }
+    .bar {
+      position: absolute;
     }
   }
 }
