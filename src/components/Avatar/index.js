@@ -6,7 +6,8 @@ export default class Avatar extends React.Component {
 
   static propTypes = {
     url: React.PropTypes.string,
-    large: React.PropTypes.bool
+    large: React.PropTypes.bool,
+    className: React.PropTypes.string
   };
 
   constructor(props) {
@@ -14,13 +15,13 @@ export default class Avatar extends React.Component {
   }
 
   render() {
-    const { url, large } = this.props;
-    let className = 'name';
-    large && (className = className.concat(' ', 'large'));
+    const { url, large, className } = this.props;
+
+    let clx = styles.avatar;
+    className && (clx = `${clx} ${className}`);
+    large && (clx = `${clx} large`);
     return (
-      <div className={styles.avatar}>
-        <div className='pic' style={{backgroundImage: `url(${url})`}}></div>
-      </div>
+      <div className={clx} style={{backgroundImage: `url(${url})`}}></div>
     );
   }
 }

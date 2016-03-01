@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './style.less';
 
-import { Avatar } from '#/components';
+import { Avatar, OptionArea } from '#/components';
 
 export default class CommentList extends React.Component {
 
@@ -22,6 +22,32 @@ export default class CommentList extends React.Component {
     });
   }
 
+  renderOptionArea() {
+    const { content } = this.props;
+    return (
+      <div className={styles.optionArea}>
+        <div className={styles.options}>
+          <div className="info-area">
+            <div>{content.time || '1天前'}</div>
+            <div className="option-btns">
+              <div className="reply options" onClick={::this.handleShowReply}>回复</div>
+              <div className="like options">赞</div>
+              <div className="report options">举报</div>
+            </div>
+          </div>
+          <div className="count">{content.like || 0} 赞</div>
+        </div>
+        {
+          this.state.showReply
+            && <div className="reply-area">
+              <textarea className="reply-input" />
+              <div className="btn">回复</div>
+            </div>
+        }
+      </div>
+    );
+  }
+
   render() {
     const { content } = this.props;
     return (
@@ -35,24 +61,7 @@ export default class CommentList extends React.Component {
             { content.to && <div className="to"><span className="tip">回复</span>{content.to}</div>}
           </div>
           <div className={styles.content}>{content.content}</div>
-          <div className={styles.others}>
-            <div className="info-area">
-              <div>{content.time || '1天前'}</div>
-              <div className="option-area">
-                <div className="reply options" onClick={::this.handleShowReply}>回复</div>
-                <div className="like options">赞</div>
-                <div className="report options">举报</div>
-              </div>
-            </div>
-            <div className="count">{content.like || 0} 赞</div>
-          </div>
-          {
-            this.state.showReply
-              && <div className="reply-area">
-                <textarea className="reply-input" />
-                <div className="btn">回复</div>
-              </div>
-          }
+          { this.renderOptionArea() }
         </div>
       </div>
     );
