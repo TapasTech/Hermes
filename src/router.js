@@ -13,6 +13,8 @@ export default class Root extends React.Component {
           <Route path="detail/:id" component={Pages.TopicDetail} />
           <Route path="discovery" component={Pages.Discovery} />
           <Route path="search" component={Pages.SearchResult} />
+          <Route path="ask/:id" component={Pages.Ask} />
+          <Route path="reply/:id" component={Pages.Reply} />
         </Route>
       </Router>
     );
