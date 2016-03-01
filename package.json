@@ -55,6 +55,7 @@
     "qrcode-react": "^0.1.10",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
-    "react-router": "^2.0.0"
+    "react-router": "^2.0.0",
+    "tapas-editor": "^1.0.3"
   }
 }
