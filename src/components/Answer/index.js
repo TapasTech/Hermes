@@ -13,7 +13,7 @@ export default class Answer extends React.Component {
     super(props);
     this.state = {
       full: false
-    }
+    };
   }
 
   handleHideFull() {

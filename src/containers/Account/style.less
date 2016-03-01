@@ -1,0 +1,57 @@
+:local(.account) {
+  display: flex;
+  justify-content: center;
+  padding-top: 120px;
+}
+
+:local(.content) {
+  width: 500px;
+  height: 350px;
+  padding: 30px;
+  background-color: #fff;
+}
+
+:local(.switch) {
+  text-align: center;
+
+  .tab {
+    display: inline-block;
+    font-size: 18px;
+    text-align: center;
+    cursor: pointer;
+
+    &.active {
+      border-bottom: 2px solid #999;
+    }
+
+    & + .tab {
+      margin-left: 50px;
+    }
+  }
+}
+
+:local(.form) {
+  padding: 40px;
+
+  .field {
+    display: block;
+    width: 100%;
+    padding: 0 10px;
+    line-height: 30px;
+    box-sizing: border-box;
+    border: 1px solid #d9d9d9;
+    border-radius: 3px;
+
+    & + .field {
+      margin-top: 20px;
+    }
+  }
+}
+
+:local(.submit) {
+  padding: 0 40px 40px;
+
+  .btn {
+    width: 100%;
+  }
+}
