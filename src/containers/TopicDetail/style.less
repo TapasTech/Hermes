@@ -14,6 +14,21 @@
       box-shadow: 0px 0px 2px rgba(153, 153, 153, 0.349019607843137);
     }
 
+    :local(.answers) {
+      .more,
+      .end {
+        background-color: #fff;
+        text-align: center;
+        font-size: 14px;
+        color: #a6a6a6;
+        line-height: 30px;
+      }
+
+      .more {
+        cursor: pointer;
+      }
+    }
+
     :local(.answer) {
       margin-bottom: 10px;
       background-color: #fff;
@@ -80,6 +95,65 @@
 
   :local(.sidebar) {
     width: 250px;
+  }
+
+  .watch {
+    margin-bottom: 10px;
+
+    .watcher {
+      margin: 10px 0;
+      color: #a6a6a6;
+
+      .count {
+        color: rgba(84, 109, 165, 1);
+      }
+    }
+
+    .watcher-list {
+      display: flex;
+      flex-wrap: wrap;
+
+      .avatar {
+        margin-right: 5px;
+        margin-bottom: 5px;
+      }
+    }
+  }
+
+  .watch,
+  .related {
+    background-color: #fff;
+    padding: 15px 10px 10px;
+    box-shadow: 0px 0px 2px rgba(153, 153, 153, 0.349019607843137);
+
+    .title {
+      margin-bottom: 5px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .more {
+      color: #a6a6a6;
+      font-size: 14px;
+    }
+  }
+
+  :local(.relatedTopics) {
+    padding: 10px 0;
+    background-color: #fff;
+    border-top: 1px solid #eee;
+
+    .link {
+      line-height: 20px;
+      font-size: 14px;
+      color: #546DA5;
+      cursor: pointer;
+    }
+
+    .tip {
+      display: inline-block;
+      color: #a6a6a6;
+    }
   }
 }
 

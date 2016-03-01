@@ -128,6 +128,54 @@ const data = {
       like: 1322,
       picUrl: 'http://i11.tietuku.com/f01cdb2e505f49e4.png'
     }
+  ],
+  related: [
+    { id: 1, url: 'https://www.sample.com/121', name: '为什么 2015 年初，上海有卫计委官员呼吁大家生二胎？', reply: 230 },
+    { id: 2, url: 'https://www.sample.com/122', name: '中国人口激增是由于毛泽东时期鼓励生育造成的么？', reply: 20 },
+    { id: 3, url: 'https://www.sample.com/123', name: '生育鼓励（补贴）长期来看是没有用的吗，为什么?', reply: 201 },
+    { id: 4, url: 'https://www.sample.com/124', name: '天生残疾的孩子，政府和社会以及父母应该努力尽可能阻碍其出生?', reply: 30 }
+  ],
+  watcher: [
+    {
+      name: '张三',
+      avatar: 'http://i11.tietuku.com/60857f76cd893c0d.png'
+    },
+    {
+      name: '李四',
+      avatar: 'http://i13.tietuku.com/02eca4d180332df3.png'
+    },
+    {
+      name: '张三',
+      avatar: 'http://i11.tietuku.com/60857f76cd893c0d.png'
+    },
+    {
+      name: '张三',
+      avatar: 'http://i11.tietuku.com/60857f76cd893c0d.png'
+    },
+    {
+      name: '张三',
+      avatar: 'http://i11.tietuku.com/60857f76cd893c0d.png'
+    },
+    {
+      name: '张三',
+      avatar: 'http://i11.tietuku.com/60857f76cd893c0d.png'
+    },
+    {
+      name: '李四',
+      avatar: 'http://i13.tietuku.com/02eca4d180332df3.png'
+    },
+    {
+      name: '张三',
+      avatar: 'http://i11.tietuku.com/60857f76cd893c0d.png'
+    },
+    {
+      name: '张三',
+      avatar: 'http://i11.tietuku.com/60857f76cd893c0d.png'
+    },
+    {
+      name: '张三',
+      avatar: 'http://i11.tietuku.com/60857f76cd893c0d.png'
+    }
   ]
 };
 
@@ -136,7 +184,8 @@ export default class TopicDetail extends React.Component {
     super(props);
     this.state = {
       showShare: false,
-      showComment: false
+      showComment: false,
+      currentPage: 1
     }
   }
 
@@ -159,6 +208,12 @@ export default class TopicDetail extends React.Component {
   handleHideComment() {
     this.setState({
       showComment: false
+    });
+  }
+
+  handleShowMore() {
+    this.setState({
+      currentPage: this.state.currentPage + 1
     });
   }
 
@@ -207,10 +262,14 @@ export default class TopicDetail extends React.Component {
 
   renderAnswers() {
     const { answers } = data;
+    const { currentPage } = this.state;
+    const list = [].concat(answers);
+    const endIndex = currentPage * 10;
+    let onePage = list.slice(0, endIndex);
     return (
       <div className={styles.answers}>
         {
-          answers.map((item, index) => {
+          onePage.map((item, index) => {
             return (
               <div key={index} className={styles.answer}>
                 <div className={styles.header}>
@@ -232,18 +291,61 @@ export default class TopicDetail extends React.Component {
             );
           })
         }
+        {
+          ((answers.length > 10) && (endIndex < answers.length))
+          ? <div className="more" onClick={::this.handleShowMore}>点击加载更多</div>
+          : <div className="end">已到结尾</div>
+        }
       </div>
     );
   }
 
+  renderRelated(item, key) {
+    return (
+      <div className={styles.relatedTopics} key={key}>
+        <a className="link" href={item.url}>
+          <span>{item.name}</span>
+          &nbsp;
+          <span className="tip">{item.reply}个回答</span>
+        </a>
+      </div>
+    )
+  }
+
   render() {
+    const { related, watcher } = data;
     return (
       <div className={styles.topicDetail}>
         <div className={styles.main}>
           { this.renderTopic() }
           { this.renderAnswers() }
         </div>
-        <div className={styles.sidebar}></div>
+        <div className={styles.sidebar}>
+          <div className="watch">
+            <div className="operate">
+              <div className="btn primary">关注问题</div>
+              <div className="btn ghost">回答</div>
+            </div>
+            <div className="watcher">
+              <span className="count">4087</span>
+              <span>人关注该问题</span>
+            </div>
+            <div className="watcher-list">
+              {
+                watcher.map((item, index) => <Avatar key={index} className="avatar" url={item.avatar} />)
+              }
+            </div>
+          </div>
+          <div className="related">
+            <div className="title">
+              <span>相关问题</span>
+              <a className="more" href="/topic/hot">更多</a>
+            </div>
+            {
+              related.map((item, index) => this.renderRelated(item, index))
+            }
+          </div>
+        </div>
       </div>
     );
   }

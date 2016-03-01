@@ -75,7 +75,7 @@ export default class TopicCard  extends React.Component {
           <div className="tip">热门回答，来自 {topic} 话题</div>
           <Link className="title" to={`/detail/${id}`}>{question}</Link>
           <div className="author">
-            <Link className="link" to={`/user/${authorId}`}>{author}</Link>
+            <Link className="link" to={`/user/${author.authorId}`}>{author.name}</Link>
             <span>的答案：</span>
           </div>
           <Answer pic={picUrl} answerShort={answerString} answerFull={answerHTML} />

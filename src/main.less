@@ -3,6 +3,7 @@ body {
   color: #404040;
   background-color: #eee;
   overflow-x: hidden;
+  font-size: 14px;
 }
 
 a {
@@ -17,4 +18,31 @@ a {
 textarea {
   outline: none;
   resize: none;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0 10px;
+  line-height: 30px;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  font-size: 14px;
+  box-sizing: border-box;
+
+  @color: rgba(84, 109, 165, 1);
+
+  &.primary {
+    background-color: @color;
+    border-color: @color;
+    color: #fff;
+  }
+
+  &.ghost {
+    border-color: @color;
+    color: @color;
+  }
+
+  & + .btn {
+    margin-left: 10px;
+  }
 }
