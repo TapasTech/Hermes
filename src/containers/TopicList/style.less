@@ -14,6 +14,32 @@
       margin-bottom: 10px;
     }
 
+    :local(.topic) {
+      display: flex;
+      border-top: 1px solid #e0e0e0;
+      padding: 25px 0;
+
+      .tag {
+        width: 50px;
+        height: 50px;
+        padding-top: 20px;
+        margin-right: 15px;
+        box-sizing: border-box;
+        font-size: 14px;
+        text-align: center;
+        background-color: #787878;
+        color: #fff;
+        border: 1px solid #a6a6a6;
+        border-radius: 3px;
+      }
+
+      :local(.content) {
+        flex: 1;
+      }
+    }
+
+
+
     .more,
     .end {
       padding: 5px 0;

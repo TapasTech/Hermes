@@ -41,7 +41,7 @@ export default class CommentList extends React.Component {
           this.state.showReply
             && <div className="reply-area">
               <textarea className="reply-input" />
-              <div className="btn">回复</div>
+              <div className="btn primary">回复</div>
             </div>
         }
       </div>
