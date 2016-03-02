@@ -12,7 +12,7 @@ export default class Header extends React.Component {
     };
   }
 
-  handleSearch(e) {
+  handleSearchInput(e) {
     this.setState({
       content: e.target.value
     });
@@ -30,8 +30,9 @@ export default class Header extends React.Component {
               type="text"
               className="input"
               value={this.state.content}
-              onChange={::this.handleSearch}
+              onChange={::this.handleSearchInput}
               placeholder="搜索问题"/>
+            <Link className="link search-btn" to={`/search?q=${this.state.content}`}>搜索</Link>
           </div>
           <div className="nav">
             <Link className="link" to="/">首页</Link>
