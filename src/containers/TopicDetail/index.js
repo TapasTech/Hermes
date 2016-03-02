@@ -142,12 +142,12 @@ export default class TopicDetail extends React.Component {
   render() {
     const { related, watcher } = topicDetail;
     return (
-      <div className={styles.topicDetail}>
-        <div className={styles.main}>
+      <div className="container">
+        <div className="main">
           { this.renderTopic() }
           { this.renderAnswers() }
         </div>
-        <div className={styles.sidebar}>
+        <div className="sidebar">
           <div className="watch">
             <div className="operate">
               <div className="btn primary">关注问题</div>

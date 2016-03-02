@@ -56,9 +56,11 @@ export default class TopicList extends React.Component {
 
   render() {
     return (
-      <div className={styles.topicList}>
-        { this.renderQuestionList() }
-        <div className={styles.sidebar}>
+      <div className="container">
+        <div className="main">
+          { this.renderQuestionList() }
+        </div>
+        <div className="sidebar">
           <HotTopics />
           <NewestReports />
         </div>
