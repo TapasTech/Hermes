@@ -37,7 +37,7 @@ export default class Header extends React.Component {
             <Link className="link" to="/">首页</Link>
             <Link className="link" to="/discovery">发现</Link>
             <span className="divider"></span>
-            <Link className="link" to="/new">提问</Link>
+            <Link className="link" to="/ask/_new">提问</Link>
           </div>
         </div>
         <div className="side">
