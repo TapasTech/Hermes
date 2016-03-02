@@ -1,0 +1,92 @@
+:local(.info) {
+  background-color: #fff;
+  padding: 15px;
+
+  :local(.base) {
+    display: flex;
+    align-items: center;
+
+    .name {
+      margin-left: 15px;
+      font-size: 20px;
+    }
+  }
+
+  :local(.data) {
+    margin-top: 20px;
+    display: flex;
+
+    .item {
+      width: 33.33%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .num {
+        font-size: 20px;
+        margin-bottom: 10px;
+      }
+
+      .tip {
+        color: #999;
+      }
+    }
+  }
+
+  .btn {
+    width: 80px;
+    margin-top: 10px;
+  }
+}
+
+:local(.intro) {
+  padding: 15px;
+  background-color: #fff;
+  border-top: 1px solid #d9d9d9;
+  color: #999;
+  line-height: 30px;
+}
+
+:local(.pipe) {
+  padding: 15px;
+  background-color: #fff;
+
+  :local(.tabs) {
+    display: flex;
+
+    .tab {
+      font-size: 16px;
+      text-align: center;
+      cursor: pointer;
+      padding: 5px;
+
+      &.active {
+        border-bottom: 2px solid #999;
+      }
+
+      & + .tab {
+        margin-left: 20px;
+      }
+    }
+  }
+
+  :local(.stream) {
+
+    :local(.card) {
+      border-top: 1px solid #d9d9d9;
+      padding: 15px 0;
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        color: #999;
+      }
+
+      .title {
+        margin: 10px 0;
+        font-size: 16px;
+        font-style: bold;
+      }
+    }
+  }
+}

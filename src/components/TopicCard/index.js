@@ -5,7 +5,7 @@ import { Answer, CommentList, ShareBar, PokeButton } from '#/components';
 
 import styles from './style.less';
 
-export default class TopicCard  extends React.Component {
+export default class TopicCard extends React.Component {
 
   static propTypes = {
     content: React.PropTypes.object
@@ -67,20 +67,16 @@ export default class TopicCard  extends React.Component {
   }
 
   render() {
-    const { id, tag, topic, question, author, answerString, answerHTML, authorId, picUrl } = this.props.content;
+    const { id, question, author, answerString, answerHTML, authorId, picUrl } = this.props.content;
     return (
       <div className={styles.topicCard}>
-        <div className="tag">{tag}</div>
-        <div className={styles.main}>
-          <div className="tip">热门回答，来自 {topic} 话题</div>
-          <Link className="title" to={`/detail/${id}`}>{question}</Link>
-          <div className="author">
-            <Link className="link" to={`/user/${author.authorId}`}>{author.name}</Link>
-            <span>的答案：</span>
-          </div>
-          <Answer pic={picUrl} answerShort={answerString} answerFull={answerHTML} />
-          { this.renderOptionArea() }
+        <Link className="title" to={`/detail/${id}`}>{question}</Link>
+        <div className="author">
+          <Link className="link" to={`/user/${author.authorId}`}>{author.name}</Link>
+          <span>的答案：</span>
         </div>
+        <Answer pic={picUrl} answerShort={answerString} answerFull={answerHTML} />
+        { this.renderOptionArea() }
       </div>
     );
   }
