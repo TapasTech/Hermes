@@ -4,10 +4,6 @@ import QRCode from 'qrcode-react';
 import styles from './style.less';
 
 export default class ShareBar extends React.Component {
-  static defaultProps = {
-    url: 'http://tapastech.github.io/Hermes/',
-    title: 'Hello, Hermes!'
-  }
 
   static propTypes = {
     url: React.PropTypes.string,

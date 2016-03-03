@@ -33,20 +33,8 @@ function template(strings, ...keys) {
   });
 }
 
-function get(query) {
-  return request('GET', query);
-}
-
-function post(mutation) {
-  return request('POST', mutation);
-}
-
-function put(mutation) {
-  return request('PUT', mutation);
-}
-
-function del(mutation) {
-  return request('DELETE', mutation);
+function post(query) {
+  return request('POST', query);
 }
 
 function request(method, query) {
@@ -80,11 +68,7 @@ function handleBadResponse(err) {
 
 module.exports = {
   config,
-  // CRUD
   query,
   mutation,
-  get,
-  post,
-  put,
-  del
+  post
 };

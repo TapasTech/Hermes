@@ -8,7 +8,11 @@ import styles from './style.less';
 export default class TopicCard extends React.Component {
 
   static propTypes = {
-    content: React.PropTypes.object
+    content: React.PropTypes.string,
+    comments: React.PropTypes.object,
+    question: React.PropTypes.object,
+    user: React.PropTypes.object,
+    upVotesCount: React.PropTypes.number
   };
 
   constructor(props) {
@@ -42,40 +46,39 @@ export default class TopicCard extends React.Component {
   }
 
   renderOptionArea() {
-    const { like, comments } = this.props.content;
+    const { upVotesCount, comments, question } = this.props;
     return (
       <div className={styles.cardOption}>
         <div className="other">
-          <PokeButton count={like} onClick={::this.handlePoke} />
+          <PokeButton count={upVotesCount} onClick={::this.handlePoke} />
           <div className="comment" onClick={::this.handleShowComment}>
             <span>评论</span>
-            <span className="count">{ comments ? comments.length : 0 }</span>
+            <span className="count">{ comments.data ? comments.data.length : 0 }</span>
           </div>
           <div className="share">
             <span onClick={::this.handleShowShare}>分享</span>
-            { this.state.showShare && <ShareBar className="bar" /> }
+            { this.state.showShare && <ShareBar className="bar" url={`/detail/${question.id}`} title={question.title} /> }
           </div>
         </div>
         {
           this.state.showComment
-            && comments
-            && comments.length
-            && <CommentList comments={comments} onClose={::this.handleHideComment} />
+            && comments.data
+            && <CommentList comments={comments.data} onClose={::this.handleHideComment} />
         }
       </div>
     );
   }
 
   render() {
-    const { id, question, author, answerString, answerHTML, authorId, picUrl } = this.props.content;
+    const { content, question, user, comments } = this.props;
     return (
       <div className={styles.topicCard}>
-        <Link className="title" to={`/detail/${id}`}>{question}</Link>
+        <Link className="title" to={`/detail/${question.id}`}>{question.title}</Link>
         <div className="author">
-          <Link className="link" to={`/user/${author.authorId}`}>{author.name}</Link>
+          <Link className="link" to={`/user/${user.id}`}>{user.displayName}</Link>
           <span>的答案：</span>
         </div>
-        <Answer pic={picUrl} answerShort={answerString} answerFull={answerHTML} />
+        <Answer answerShort={content} answerFull={content} />
         { this.renderOptionArea() }
       </div>
     );

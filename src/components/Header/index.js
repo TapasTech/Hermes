@@ -1,6 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 
+import Store from '#/store';
+import AppDispatcher from '#/dispatcher';
 import styles from './style.less';
 
 export default class Header extends React.Component {
@@ -8,7 +10,8 @@ export default class Header extends React.Component {
     super(props);
     this.state = {
       content: undefined,
-      logined: true
+      user: Store.user.index().data,
+      logined: false
     };
   }
 
@@ -18,7 +21,30 @@ export default class Header extends React.Component {
     });
   }
 
+  handleLogout() {
+    localStorage.setItem('__AUTH', '');
+    browserHistory.push('/account');
+    AppDispatcher.dispatch({
+      type: 'USER_LOGOUT'
+    });
+  }
+
+  _onChange() {
+    this.setState({
+      user: Store.user.index().data
+    });
+  }
+
+  componentDidMount() {
+    Store.on('change', ::this._onChange);
+  }
+
+  componentWillUnmount() {
+    Store.removeListener('change', ::this._onChange);
+  }
+
   render() {
+    const { content, user, logined } = this.state;
     return (
       <div className={styles.header}>
         <div className="main">
@@ -29,10 +55,10 @@ export default class Header extends React.Component {
             <input
               type="text"
               className="input"
-              value={this.state.content}
+              value={content}
               onChange={::this.handleSearchInput}
               placeholder="搜索问题"/>
-            <Link className="link search-btn" to={`/search?q=${this.state.content}`}>搜索</Link>
+            <Link className="link search-btn" to={`/search?q=${content}`}>搜索</Link>
           </div>
           <div className="nav">
             <Link className="link" to="/">首页</Link>
@@ -43,15 +69,15 @@ export default class Header extends React.Component {
         </div>
         <div className="side">
           {
-            this.state.logined
+            user
               ? <div>
-                <Link className="user" to="/me">我是测试用户</Link>
+                <Link className="user" to={`/person/${user.id}`}>{user.displayName}</Link>
                 <div className="menu">
                   <div className="item">设置</div>
-                  <div className="item">退出登录</div>
+                  <div className="item" onClick={::this.handleLogout}>退出登录</div>
                 </div>
               </div>
-              : <Link className="user" to="/me">登录/注册</Link>
+              : <Link className="user" to="/account">登录/注册</Link>
           }
         </div>
       </div>

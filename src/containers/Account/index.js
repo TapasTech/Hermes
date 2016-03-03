@@ -1,13 +1,10 @@
 import React from 'react';
 import { browserHistory } from 'react-router';
 
-import styles from './style.less';
-
-import fetch from 'isomorphic-fetch';
-
 import { GraphqlRest } from '#/utils';
-
 import AppDispatcher from '#/dispatcher';
+
+import styles from './style.less';
 
 export default class Account extends React.Component {
   static propTypes = {
@@ -61,18 +58,21 @@ export default class Account extends React.Component {
       `
         user {
           id
+          displayName
         }
         authToken
       `
     );
 
     GraphqlRest.post(mutation).then(res => {
-      localStorage.setItem('__AUTH', res.data.authToken);
+      const { authToken, user } = res.data;
+      const { id, displayName } = user;
+      localStorage.setItem('__AUTH', authToken);
       AppDispatcher.dispatch({
         type: 'USER_LOGIN',
-        text: { id: res.data.user.id }
+        text: { id, displayName }
       })
-      // browserHistory.push('/');
+      browserHistory.push('/');
     });
   }
 
@@ -80,13 +80,17 @@ export default class Account extends React.Component {
     const { email, password } = this.state.formData;
     const mutation = GraphqlRest.mutation(
       `createUser(displayName: "${email}", email: "${email}", password: "${password}")`,
-      `id`
+      `
+        id
+        displayName
+      `
     );
     GraphqlRest.post(mutation).then(res => {
       if (res && (typeof cb === 'function')) {
+        const { id, displayName } = res.data;
         AppDispatcher.dispatch({
           type: 'USER_REGISTER',
-          text: { id: res.data.id }
+          text: { id, displayName }
         });
         cb();
       }

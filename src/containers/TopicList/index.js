@@ -1,6 +1,9 @@
 import React from 'react';
 
 import { TopicCard, HotTopics, NewestReports } from '#/components';
+import { GraphqlRest } from '#/utils';
+import Store from '#/store';
+import AppDispatcher from '#/dispatcher';
 
 import styles from './style.less';
 
@@ -10,8 +13,67 @@ export default class TopicList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentPage: 1
+      currentPage: 1,
+      hotAnswers: Store.hotAnswers.index().data
     };
+  }
+
+  hotAnswersRequset() {
+    const query = GraphqlRest.query(
+      `hotAnswers(page: 1, count: 10)`,
+      `data {
+        id
+        user {
+          id
+          displayName
+        }
+        question {
+          id
+          title
+        }
+        content
+        upVotesCount
+        comments(page: 1, count: 10) {
+          data {
+            id
+            user {
+              id
+              displayName
+            }
+            replyTo {
+              id
+              displayName
+            }
+            content
+            createdAt
+            updatedAt
+          }
+        }
+      }`
+    );
+
+    GraphqlRest.post(query).then(res => {
+      const { data } = res.data;
+      AppDispatcher.dispatch({
+        type: 'HOTANSWER_INDEX',
+        text: { data }
+      });
+    });
+  }
+
+  _onChange() {
+    this.setState({
+      hotAnswers: Store.hotAnswers.index().data
+    });
+  }
+
+  componentDidMount() {
+    Store.on('change', ::this._onChange);
+    this.hotAnswersRequset();
+  }
+
+  componentWillUnmount() {
+    Store.removeListener('change', ::this._onChange);
   }
 
   handleShowMore() {
@@ -20,30 +82,27 @@ export default class TopicList extends React.Component {
     });
   }
 
-  renderTopicCard(content, index) {
-    const { tag, topic } = content;
+  renderTopicCard(item, index) {
+    console.log(item)
     return (
       <div className={styles.topic} key={index}>
-        <div className="tag">{tag}</div>
+        <div className="tag">{/*tag*/}</div>
         <div className={styles.content}>
-          <div className="tip">热门回答，来自 {topic} 话题</div>
-          <TopicCard content={content} />
+          <div className="tip">热门回答，来自 {/*topic*/} 话题</div>
+          { item ? <TopicCard {...item} /> : <div>loading...</div> }
         </div>
       </div>
     );
   }
 
   renderQuestionList() {
-    const { currentPage } = this.state;
-    const list = [].concat(topicList);
-    const endIndex = currentPage * 10;
-    let onePage = list.slice(0, endIndex);
+    const list = [].concat(this.state.hotAnswers.data);
 
     return (
       <div className={styles.main}>
         <div className={styles.title}>最新动态</div>
         {
-          onePage.map((item, index) => this.renderTopicCard(item, index))
+          list.map((item, index) => this.renderTopicCard(item, index))
         }
         {
           ((topicList.length > 10) && (endIndex < topicList.length))
@@ -58,7 +117,7 @@ export default class TopicList extends React.Component {
     return (
       <div className="container">
         <div className="main">
-          { this.renderQuestionList() }
+          { this.state.hotAnswers ? this.renderQuestionList() : <div>loading...</div> }
         </div>
         <div className="sidebar">
           <HotTopics />
