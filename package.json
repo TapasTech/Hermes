@@ -54,6 +54,8 @@
     "validate-commit-msg": "^2.1.0"
   },
   "dependencies": {
+    "event": "^1.0.0",
+    "flux": "^2.1.1",
     "graphql": "^0.4.18",
     "isomorphic-fetch": "^2.2.1",
     "normalize.css": "^3.0.3",

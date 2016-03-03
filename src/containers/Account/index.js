@@ -7,6 +7,8 @@ import fetch from 'isomorphic-fetch';
 
 import { GraphqlRest } from '#/utils';
 
+import AppDispatcher from '#/dispatcher';
+
 export default class Account extends React.Component {
   static propTypes = {
     name: React.PropTypes.string,
@@ -33,7 +35,6 @@ export default class Account extends React.Component {
       login: result
     });
   }
-
   // handle form value changes
   handleFormChange(name, e) {
     let newFormData = Object.assign({}, this.state.formData);
@@ -57,11 +58,21 @@ export default class Account extends React.Component {
     const { email, password } = this.state.formData;
     const mutation = GraphqlRest.mutation(
       `createAuthToken(email: "${email}", password: "${password}")`,
-      `authToken`
+      `
+        user {
+          id
+        }
+        authToken
+      `
     );
+
     GraphqlRest.post(mutation).then(res => {
       localStorage.setItem('__AUTH', res.data.authToken);
-      browserHistory.push('/');
+      AppDispatcher.dispatch({
+        type: 'USER_LOGIN',
+        text: { id: res.data.user.id }
+      })
+      // browserHistory.push('/');
     });
   }
 
@@ -73,6 +84,10 @@ export default class Account extends React.Component {
     );
     GraphqlRest.post(mutation).then(res => {
       if (res && (typeof cb === 'function')) {
+        AppDispatcher.dispatch({
+          type: 'USER_REGISTER',
+          text: { id: res.data.id }
+        });
         cb();
       }
     });

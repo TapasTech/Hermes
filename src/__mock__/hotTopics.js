@@ -1,7 +1,7 @@
 const data = [
   {
     name: '社会',
-    picUrl: 'http://i4.tietuku.com/7b3c6fc017b69a60.jpg',
+    picUrl: 'http://ooo.0o0.ooo/2016/03/03/56d7d984bbc47.jpg',
     link: {
       name: '4月-5月出境旅行去哪里比较好？',
       href: 'https://ctrip.com'
@@ -9,7 +9,7 @@ const data = [
   },
   {
     name: '社会',
-    picUrl: 'http://i4.tietuku.com/7b3c6fc017b69a60.jpg',
+    picUrl: 'http://ooo.0o0.ooo/2016/03/03/56d7d984bbc47.jpg',
     link: {
       name: '4月-5月出境旅行去哪里比较好？',
       href: 'https://ctrip.com'
@@ -17,7 +17,7 @@ const data = [
   },
   {
     name: '社会',
-    picUrl: 'http://i4.tietuku.com/7b3c6fc017b69a60.jpg',
+    picUrl: 'http://ooo.0o0.ooo/2016/03/03/56d7d984bbc47.jpg',
     link: {
       name: '4月-5月出境旅行去哪里比较好？',
       href: 'https://ctrip.com'
