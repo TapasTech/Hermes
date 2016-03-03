@@ -1,10 +1,19 @@
 import React from 'react';
+import { browserHistory } from 'react-router';
 
 import styles from './style.less';
+
+import fetch from 'isomorphic-fetch';
+
+import { GraphqlRest } from '#/utils';
 
 export default class Account extends React.Component {
   static propTypes = {
     name: React.PropTypes.string,
+  };
+
+  static contextTypes = {
+    router: React.PropTypes.object
   };
 
   constructor(props) {
@@ -36,12 +45,37 @@ export default class Account extends React.Component {
 
   handleLogin() {
     const { email, password } = this.state.formData;
-    console.log(email, password, 'login');
+    this.loginRequset(email, password)
   }
 
   handleSignup() {
     const { email, password } = this.state.formData;
-    console.log(email, password, 'signup');
+    this.signupRequset(::this.loginRequset);
+  }
+
+  loginRequset() {
+    const { email, password } = this.state.formData;
+    const mutation = GraphqlRest.mutation(
+      `createAuthToken(email: "${email}", password: "${password}")`,
+      `authToken`
+    );
+    GraphqlRest.post(mutation).then(res => {
+      localStorage.setItem('__AUTH', res.data.authToken);
+      browserHistory.push('/');
+    });
+  }
+
+  signupRequset(cb) {
+    const { email, password } = this.state.formData;
+    const mutation = GraphqlRest.mutation(
+      `createUser(displayName: "${email}", email: "${email}", password: "${password}")`,
+      `id`
+    );
+    GraphqlRest.post(mutation).then(res => {
+      if (res && (typeof cb === 'function')) {
+        cb();
+      }
+    });
   }
 
   render() {

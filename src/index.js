@@ -3,8 +3,10 @@ import ReactDOM from 'react-dom';
 
 import Root from './router';
 
-import './main.less';
+import config from './config';
+
 import 'normalize.css';
+import './main.less';
 
 ReactDOM.render(
   <Root />,
