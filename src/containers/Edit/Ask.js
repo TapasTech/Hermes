@@ -44,18 +44,10 @@ export default class Ask extends React.Component {
   }
 
   componentDidMount() {
-    const queries = [];
-    const callbacks = [];
-    [
+    GraphqlRest.handleQueries(
       this.prepareTopics(),
-      this.prepareData(),
-    ].forEach(item => {
-      item && item.query && queries.push(item.query);
-      item && item.callback && callbacks.push(item.callback);
-    });
-    GraphqlRest.post('query {' + queries.join('\n') + '}')
-    .then(data => {
-      callbacks.forEach(callback => callback(data));
+      this.prepareData()
+    ).then(() => {
       this.setState({
         ready: true,
       });

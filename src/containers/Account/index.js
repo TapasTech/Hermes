@@ -2,6 +2,7 @@ import React from 'react';
 import { browserHistory } from 'react-router';
 
 import { GraphqlRest } from '#/utils';
+import auth from '#/services/auth';
 import AppDispatcher from '#/dispatcher';
 
 import styles from './style.less';
@@ -53,48 +54,15 @@ export default class Account extends React.Component {
 
   loginRequset() {
     const { email, password } = this.state.formData;
-    const mutation = GraphqlRest.mutation(
-      `createAuthToken(email: "${email}", password: "${password}")`,
-      `
-        user {
-          id
-          displayName
-        }
-        authToken
-      `
-    );
-
-    GraphqlRest.post(mutation).then(res => {
-      const { authToken, user } = res.data;
-      AppDispatcher.dispatch({
-        type: 'USER_LOGIN',
-        data: {
-          authToken,
-          user,
-        }
-      })
+    auth.logIn(email, password).then(() => {
       browserHistory.push('/');
     });
   }
 
   signupRequset(cb) {
     const { email, password } = this.state.formData;
-    const mutation = GraphqlRest.mutation(
-      `createUser(displayName: "${email}", email: "${email}", password: "${password}")`,
-      `
-        id
-        displayName
-      `
-    );
-    GraphqlRest.post(mutation).then(res => {
-      if (res && (typeof cb === 'function')) {
-        const { id, displayName } = res.data;
-        AppDispatcher.dispatch({
-          type: 'USER_REGISTER',
-          text: { id, displayName }
-        });
-        cb();
-      }
+    auth.signUp(email, password).then(() => {
+      browserHistory.push('/');
     });
   }
 

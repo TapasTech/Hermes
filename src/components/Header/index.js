@@ -3,7 +3,8 @@ import { Link, browserHistory } from 'react-router';
 
 import Store from '#/store';
 import AppDispatcher from '#/dispatcher';
-import {GraphqlRest, hasToken} from '#/utils';
+import {GraphqlRest} from '#/utils';
+import {getUserInfo} from '#/services/auth';
 import styles from './style.less';
 
 export default class Header extends React.Component {
@@ -16,28 +17,7 @@ export default class Header extends React.Component {
   }
 
   componentWillMount() {
-    if (hasToken()) {
-      const query = `query {
-        me {
-          id
-          displayName
-        }
-      }`;
-      GraphqlRest.post(query).then(data => {
-        if (data.me) {
-          AppDispatcher.dispatch({
-            type: 'USER_INFO',
-            data: data.me,
-          });
-        } else {
-          // Token is invalid
-          AppDispatcher.dispatch({
-            type: 'USER_LOGOUT',
-            data: {},
-          });
-        }
-      });
-    }
+    getUserInfo();
   }
 
   handleSearchInput(e) {

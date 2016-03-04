@@ -49,15 +49,17 @@ export default class HotTopics extends React.Component {
     const { id, name, questions } = topic;
     const question = questions.data[0];
 
-    const color = {
-      red: Math.floor(Math.random() * 255),
-      green: Math.floor(Math.random() * 255),
-      blue: Math.floor(Math.random() * 255),
-      opacity: Math.random()
-    };
-    const { red, green, blue, opacity } = color;
+    let hash = 0;
+    for (let i in name) {
+      hash = hash * 6147 + name.charCodeAt(0);
+      hash &= 0xffffff;
+    }
+    let color = hash.toString(16);
+    while (color.length < 6) color = '0' + color;
+    color = '#' + color;
+
     const imgStyle = {
-      backgroundColor: `rgba(${red}, ${green}, ${blue}, ${opacity})`
+      backgroundColor: color,
     };
 
     return (

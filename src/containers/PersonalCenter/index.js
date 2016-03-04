@@ -1,9 +1,8 @@
 import React from 'react';
 
+import Store from '#/store';
 import { Avatar, TopicCard } from '#/components';
 import styles from './style.less';
-
-import { user, topicList } from '#/__mock__';
 
 export default class PersonalCenter extends React.Component {
   static propTypes = {
@@ -13,8 +12,15 @@ export default class PersonalCenter extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      tab: 1
+      tab: 1,
+      user: {},
     };
+  }
+
+  componentDidMount() {
+    Store.on('EVT_USER', () => {
+      this.setState({user: Store.user.index().data});
+    });
   }
 
   handleTabSwitch(tabIndex) {
@@ -35,6 +41,8 @@ export default class PersonalCenter extends React.Component {
   }
 
   renderInfo() {
+    const {user} = this.state;
+    console.log(user);
     return (
       <div className={styles.info}>
         <div className={styles.base}>

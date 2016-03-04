@@ -6,7 +6,7 @@ let myFetch = fetch;
 let myHeaders;
 let myAuth;
 
-function config(options) {
+export function config(options) {
   const {root, fetch, headers, auth} = options;
   if (typeof root === 'string')
     myRoot = root;
@@ -25,11 +25,11 @@ function config(options) {
   }
 }
 
-function query(name, res) {
+export function query(name, res) {
   return template`query { data: ${0} { ${1} } }`(name, res);
 }
 
-function mutation(name, res) {
+export function mutation(name, res) {
   return template`mutation { data: ${0} { ${1} } }`(name, res);
 }
 
@@ -44,7 +44,7 @@ function template(strings, ...keys) {
   });
 }
 
-function post(query) {
+export function post(query) {
   return request('POST', query);
 }
 
@@ -77,9 +77,24 @@ function handleBadResponse(err) {
   console.log(err[0].message);
 }
 
-module.exports = {
-  config,
-  query,
-  mutation,
-  post
-};
+function handleGraphQL(type, queries) {
+  const queryData = queries.reduce((res, item) => {
+    if (item) {
+      item.query && res.queries.push(item.query);
+      item.callback && res.callbacks.push(item.callback);
+    }
+    return res;
+  }, {queries: [], callbacks: []});
+  const query = `${type} { ${queryData.queries.join(' ')} }`;
+  return post(query).then(data => {
+    queryData.callbacks.forEach(callback => callback(data));
+  });
+}
+
+export function handleQueries(...queries) {
+  return handleGraphQL('query', queries);
+}
+
+export function handleMutations(...queries) {
+  return handleGraphQL('mutation', queries);
+}
