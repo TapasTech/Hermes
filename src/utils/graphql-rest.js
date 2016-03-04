@@ -1,17 +1,28 @@
 import fetch from 'isomorphic-fetch';
 
+const AUTH_KEY = 'Http-Authorization';
 let myRoot = '/api';
 let myFetch = fetch;
 let myHeaders;
+let myAuth;
 
 function config(options) {
-  const {root, fetch, headers} = options;
+  const {root, fetch, headers, auth} = options;
   if (typeof root === 'string')
     myRoot = root;
   if (typeof fetch === 'function')
     myFetch = fetch;
-  if (typeof headers === 'object')
+  if (headers)
     myHeaders = headers;
+  if (auth != null)
+    myAuth = auth;
+  if (myHeaders && (headers || auth != null)) {
+    if (myAuth) {
+      myHeaders[AUTH_KEY] = myAuth;
+    } else {
+      delete myHeaders[AUTH_KEY];
+    }
+  }
 }
 
 function query(name, res) {

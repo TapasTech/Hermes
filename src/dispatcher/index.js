@@ -1,34 +1,36 @@
 import { Dispatcher } from 'flux';
 import Store from '#/store';
+import {GraphqlRest, setToken} from '#/utils';
 
 let AppDispatcher = new Dispatcher();
 
 AppDispatcher.register(function(action) {
-  const { type, text } = action;
+  const { type, text, data } = action;
   if (process.env.NODE_ENV === 'development') {
     console.log(`event: ${type}`);
   }
 
   switch(type) {
+    case 'USER_INFO':
+      Store.user.update({data});
+      Store.emit('EVT_USER');
+      break;
     case 'USER_LOGIN':
-      if (text) {
-        const data = Object.assign(Store.user.index().data, text);
-        Store.user.update(data);
-        Store.emit('change');
-      }
+      setToken(data.authToken);
+      Store.user.update({data: data.user});
+      Store.emit('EVT_USER');
       break;
     case 'USER_CREATE':
       if (text) {
         const data = Object.assign(Store.user.index().data, text);
         Store.user.update(data);
-        Store.emit('change');
+        Store.emit('EVT_USER');
       }
       break;
     case 'USER_LOGOUT':
-      if (text) {
-        Store.user.update({data: {}});
-        Store.emit('change');
-      }
+      setToken();
+      Store.user.update({data});
+      Store.emit('EVT_USER');
       break;
     case 'USER_UPDATE':
       break;

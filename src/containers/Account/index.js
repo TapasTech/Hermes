@@ -66,11 +66,12 @@ export default class Account extends React.Component {
 
     GraphqlRest.post(mutation).then(res => {
       const { authToken, user } = res.data;
-      const { id, displayName } = user;
-      localStorage.setItem('__AUTH', authToken);
       AppDispatcher.dispatch({
         type: 'USER_LOGIN',
-        text: { id, displayName }
+        data: {
+          authToken,
+          user,
+        }
       })
       browserHistory.push('/');
     });

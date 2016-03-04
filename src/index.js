@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import Root from './router';
 
-import config from './config';
+import './config';
 
 import 'normalize.css';
 import './main.less';

@@ -3,6 +3,7 @@ import { Link, browserHistory } from 'react-router';
 
 import Store from '#/store';
 import AppDispatcher from '#/dispatcher';
+import {GraphqlRest, hasToken} from '#/utils';
 import styles from './style.less';
 
 export default class Header extends React.Component {
@@ -11,8 +12,32 @@ export default class Header extends React.Component {
     this.state = {
       content: undefined,
       user: Store.user.index().data,
-      logined: false
     };
+  }
+
+  componentWillMount() {
+    if (hasToken()) {
+      const query = `query {
+        me {
+          id
+          displayName
+        }
+      }`;
+      GraphqlRest.post(query).then(data => {
+        if (data.me) {
+          AppDispatcher.dispatch({
+            type: 'USER_INFO',
+            data: data.me,
+          });
+        } else {
+          // Token is invalid
+          AppDispatcher.dispatch({
+            type: 'USER_LOGOUT',
+            data: {},
+          });
+        }
+      });
+    }
   }
 
   handleSearchInput(e) {
@@ -22,29 +47,29 @@ export default class Header extends React.Component {
   }
 
   handleLogout() {
-    localStorage.setItem('__AUTH', '');
     browserHistory.push('/account');
     AppDispatcher.dispatch({
-      type: 'USER_LOGOUT'
+      type: 'USER_LOGOUT',
+      data: {},
     });
   }
 
-  _onChange() {
+  _onChange = () => {
     this.setState({
       user: Store.user.index().data
     });
   }
 
   componentDidMount() {
-    Store.on('change', ::this._onChange);
+    Store.on('EVT_USER', this._onChange);
   }
 
   componentWillUnmount() {
-    Store.removeListener('change', ::this._onChange);
+    Store.removeListener('EVT_USER', this._onChange);
   }
 
   render() {
-    const { content, user, logined } = this.state;
+    const { content, user } = this.state;
     return (
       <div className={styles.header}>
         <div className="main">
@@ -69,7 +94,7 @@ export default class Header extends React.Component {
         </div>
         <div className="side">
           {
-            user
+            user.id
               ? <div>
                 <Link className="user" to={`/person/${user.id}`}>{user.displayName}</Link>
                 <div className="menu">
