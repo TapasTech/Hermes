@@ -33,6 +33,7 @@ export default class Ask extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      ready: false,
       content: '',
       anonymous: false,
       original: {},
@@ -52,8 +53,12 @@ export default class Ask extends React.Component {
       item && item.query && queries.push(item.query);
       item && item.callback && callbacks.push(item.callback);
     });
-    GraphqlRest.post('query {' + queries.join('\n') + '}').then(data => {
+    GraphqlRest.post('query {' + queries.join('\n') + '}')
+    .then(data => {
       callbacks.forEach(callback => callback(data));
+      this.setState({
+        ready: true,
+      });
     });
   }
 
@@ -85,10 +90,19 @@ export default class Ask extends React.Component {
   }
 
   prepareData() {
-    const id = this.props.params.id;
-    if (!id || id === '_new') return;
+    const qid = this.props.params.id;
+    if (!qid || qid === '_new') {
+      this.setState({
+        title: '',
+        content: '',
+        dataSets: [],
+        dataReports: [],
+        original: {},
+      });
+      return;
+    }
     const query = `
-    question(id: ${encodeField(id)}) {
+    question(id: ${encodeField(qid)}) {
       title
       content
       topics {
@@ -108,19 +122,24 @@ export default class Ask extends React.Component {
           url
         }
       }
+      user {
+        id
+      }
     }
     `;
     const callback = data => {
-      const topics = this.state.topics.reduce((res, topic) => {
+      // TODO check authorization with `user.id`
+      const topicMap = this.state.topics.reduce((res, topic) => {
         res[topic.id] = topic;
         return res;
       }, {});
       const {question} = data;
       question.topics.forEach(_topic => {
-        const topic = topics[_topic.id];
+        const topic = topicMap[_topic.id];
         if (topic) topic.selected = true;
       });
       this.setState({
+        qid,
         title: question.title,
         content: question.content,
         dataSets: question.dataSets.data,
@@ -205,7 +224,7 @@ export default class Ask extends React.Component {
     const newSet = new Set(newList);
     const remove = [];
     oldSet.forEach(item => newSet.delete(item) || remove.push(item));
-    add = [... newSet];
+    const add = [... newSet];
     return {
       add,
       remove,
@@ -213,33 +232,39 @@ export default class Ask extends React.Component {
   }
 
   handlePost = () => {
-    const isNew = this.props.params.id === '_new';
-    const { title, content, anonymous, topics, dataSets, dataReports } = this.state;
-    const topicsMutations = topics
-    .filter(topic => topic.selected)
-    .map((topic, i) => `topic_${i}: addTopic(id: ${encodeField(topic.id)}) {id}`)
-    .join(' ');
-    const dataSetsMutations = dataSets
-    .map((dataSet, i) => `dataset_${i}: addDataSet(id: ${encodeField(dataSet.id)}) {id}`)
-    .join(' ');
-    const dataReportsMutations = dataReports
-    .map((dataReport, i) => `datareport_${i}: addDataReport(id: ${encodeField(dataReport.id)}) {id}`)
-    .join(' ');
-    const data = `
-    mutation createQuestion {
-      question: createQuestion(title: ${encodeField(title)}, content: ${encodeField(content)}) {
-        id
-        title
-        content
-        mutation {
-          ${topicsMutations}
-          ${dataSetsMutations}
-          ${dataReportsMutations}
-        }
+    const { qid, title, content, anonymous, topics, dataSets, dataReports } = this.state;
+    const topicsDiff = this.diffList(
+      this.state.original.topics,
+      topics.filter(topic => topic.selected).map(topic => topic.id)
+    );
+    const dataSetsDiff = this.diffList(
+      this.state.original.dataSets,
+      dataSets.map(dataSet => dataSet.id)
+    );
+    const dataReportsDiff = this.diffList(
+      this.state.original.dataReports,
+      dataReports.map(dataReport => dataReport.id)
+    );
+    const mutations = [
+      ... topicsDiff.add.map((id, i) => `topic_add_${i}: addTopic(id: ${encodeField(id)}) {id}`),
+      ... topicsDiff.remove.map((id, i) => `topic_remove_${i}: removeTopic(id: ${encodeField(id)}) {id}`),
+      ... dataSetsDiff.add.map((id, i) => `dataset_add_${i}: addDataSet(id: ${encodeField(id)}) {id}`),
+      ... dataSetsDiff.remove.map((id, i) => `dataset_remove_${i}: removeDataSet(id: ${encodeField(id)}) {id}`),
+      ... dataReportsDiff.add.map((id, i) => `datareport_add_${i}: addDataReport(id: ${encodeField(id)}) {id}`),
+      ... dataReportsDiff.remove.map((id, i) => `datareport_remove_${i}: removeDataReport(id: ${encodeField(id)}) {id}`),
+    ];
+    qid && mutations.push(`update(title: ${encodeField(title)}, content: ${encodeField(content)}) {id}`);
+    const mutation = mutations.length ? `mutation { ${mutations.join(' ')} }` : 'id';
+    const query = qid ? `query updateQuestion {
+      question(id: ${encodeField(qid)}) {
+        ${mutation}
       }
-    }
-    `;
-    GraphqlRest.post(data).then(data => {
+    }` : `mutation createQuestion {
+      question: createQuestion(title: ${encodeField(title)}, content: ${encodeField(content)}) {
+        ${mutation}
+      }
+    }`;
+    GraphqlRest.post(query).then(data => {
       console.log(data);
     });
   };
