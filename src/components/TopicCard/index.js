@@ -12,7 +12,9 @@ export default class TopicCard extends React.Component {
     comments: React.PropTypes.object,
     question: React.PropTypes.object,
     user: React.PropTypes.object,
-    upVotesCount: React.PropTypes.number
+    upVotesCount: React.PropTypes.number,
+    onPokeClick: React.PropTypes.func,
+    onCommentClick: React.PropTypes.func
   };
 
   constructor(props) {
@@ -41,16 +43,12 @@ export default class TopicCard extends React.Component {
     });
   }
 
-  handlePoke() {
-    console.log('点赞');
-  }
-
   renderOptionArea() {
-    const { upVotesCount, comments, question } = this.props;
+    const { upVotesCount, comments, question, onPokeClick } = this.props;
     return (
       <div className={styles.cardOption}>
         <div className="other">
-          <PokeButton count={upVotesCount} onClick={::this.handlePoke} />
+          <PokeButton count={upVotesCount} onClick={onPokeClick} />
           <div className="comment" onClick={::this.handleShowComment}>
             <span>评论</span>
             <span className="count">{ comments.data ? comments.data.length : 0 }</span>
@@ -63,7 +61,10 @@ export default class TopicCard extends React.Component {
         {
           this.state.showComment
             && comments.data
-            && <CommentList comments={comments.data} onClose={::this.handleHideComment} />
+            && <CommentList
+              comments={comments.data}
+              onComment={this.props.onCommentClick}
+              onClose={::this.handleHideComment} />
         }
       </div>
     );
@@ -75,7 +76,7 @@ export default class TopicCard extends React.Component {
       <div className={styles.topicCard}>
         <Link className="title" to={`/detail/${question.id}`}>{question.title}</Link>
         <div className="author">
-          <Link className="link" to={`/user/${user.id}`}>{user.displayName}</Link>
+          <Link className="link" to={`/person/${user.id}`}>{user.displayName}</Link>
           <span>的答案：</span>
         </div>
         <Answer answerShort={content} answerFull={content} />

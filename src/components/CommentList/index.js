@@ -7,13 +7,15 @@ import styles from './style.less';
 export default class CommentList extends React.Component {
   static propTypes = {
     comments: React.PropTypes.array,
-    onClose: React.PropTypes.func
+    onClose: React.PropTypes.func,
+    onComment: React.PropTypes.func
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      currentPage: 1
+      currentPage: 1,
+      reply: undefined
     }
   }
 
@@ -21,6 +23,16 @@ export default class CommentList extends React.Component {
     this.setState({
       currentPage: this.state.currentPage + 1
     });
+  }
+
+  handleRely(e) {
+    this.setState({
+      reply: e.target.value
+    });
+  }
+
+  handleComment() {
+    this.props.onComment(this.state.reply)
   }
 
   render() {
@@ -40,8 +52,8 @@ export default class CommentList extends React.Component {
           : <div className="option" onClick={::this.props.onClose}>收起评论</div>
         }
         <div className="reply-area">
-          <textarea className="reply-input" />
-          <div className="btn primary">回复</div>
+          <textarea className="reply-input" value={this.state.reply} onChange={::this.handleRely} />
+          <div className="btn primary" onClick={::this.handleComment}>回复</div>
         </div>
       </div>
     );

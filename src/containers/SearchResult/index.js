@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { TopicCard, NewestReports } from '#/components';
+import { TopicCard, NewestDataSets } from '#/components';
 
 import styles from './style.less';
 
@@ -59,7 +59,7 @@ export default class TopicList extends React.Component {
           { this.renderQuestionList() }
         </div>
         <div className="sidebar">
-          <NewestReports />
+          <NewestDataSets />
         </div>
       </div>
     );

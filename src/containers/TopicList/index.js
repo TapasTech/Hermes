@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { TopicCard, HotTopics, NewestReports } from '#/components';
+import { TopicCard, HotTopics, NewestDataSets } from '#/components';
 import { GraphqlRest } from '#/utils';
 import Store from '#/store';
 import AppDispatcher from '#/dispatcher';
@@ -65,6 +65,60 @@ export default class TopicList extends React.Component {
     });
   }
 
+  handlePoke(id) {
+    const query =`
+      query {
+        answer(id: ${id}) {
+          mutation {
+            res: voteUp {
+              id
+              upVotesCount
+            }
+          }
+        }
+      }
+    `;
+
+    GraphqlRest.post(query).then(data => {
+      AppDispatcher.dispatch({
+        type: 'HOTANSWER_POKE',
+        text: data.answer.mutation.res
+      });
+    })
+  }
+
+  handleReply(answerId) {
+    return (content, replyToId = '') => {
+      const mutation = `
+        query {
+          answer(id: "${answerId}") {
+            mutation {
+              res: createComment(content: "${content}", reply_to_id: "${replyToId}") {
+                id
+                replyTo {
+                  id
+                }
+                content
+                upVotesCount
+                answer {
+                  id
+                }
+              }
+            }
+          }
+        }
+      `;
+
+      GraphqlRest.post(mutation).then(res => console.log(res))
+    }
+  }
+
+  handleShowMore() {
+    this.setState({
+      currentPage: this.state.currentPage + 1
+    });
+  }
+
   _onChange() {
     this.setState({
       hotAnswers: Store.hotAnswers.index().data
@@ -80,12 +134,6 @@ export default class TopicList extends React.Component {
     Store.removeListener('change', ::this._onChange);
   }
 
-  handleShowMore() {
-    this.setState({
-      currentPage: this.state.currentPage + 1
-    });
-  }
-
   renderTopicCard(item, index) {
     const { question } = item;
     return (
@@ -93,7 +141,12 @@ export default class TopicList extends React.Component {
         <div className="tag">{question.topics[0].name}</div>
         <div className={styles.content}>
           <div className="tip">热门回答，来自 {question && question.topics[0].name} 话题</div>
-          { item ? <TopicCard {...item} /> : <div>loading...</div> }
+          { item
+            ? <TopicCard
+              onPokeClick={this.handlePoke.bind(this, item.id)}
+              onCommentClick={this.handleReply(item.id)}
+              {...item} />
+            : <div>loading...</div> }
         </div>
       </div>
     );
@@ -129,7 +182,7 @@ export default class TopicList extends React.Component {
         </div>
         <div className="sidebar">
           <HotTopics />
-          <NewestReports />
+          <NewestDataSets />
         </div>
       </div>
     );

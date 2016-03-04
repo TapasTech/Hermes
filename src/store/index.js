@@ -7,6 +7,9 @@ let _store = {
   hotAnswers: {
     data: []
   },
+  dataSets: {
+    data: []
+  }
 };
 
 const user = {
@@ -39,7 +42,21 @@ const hotAnswers = {
   }
 }
 
+const dataSets = {
+  index() {
+    return _store.hotAnswers;
+  },
+
+  update(text) {
+    _store.hotAnswers = {
+      ..._store.hotAnswers,
+      ...text
+    };
+  }
+}
+
 export default Object.assign({}, EventEmitter.prototype, {
   user,
-  hotAnswers
+  hotAnswers,
+  dataSets
 });
