@@ -1,8 +1,12 @@
 import { EventEmitter } from 'events';
 
 let _store = {
-  user: {},
-  hotAnswers: {},
+  user: {
+    data: {}
+  },
+  hotAnswers: {
+    data: []
+  },
 };
 
 const user = {
@@ -13,7 +17,7 @@ const user = {
   update(text) {
     _store.user = {
       ..._store.user,
-      data: text
+      ...text
     }
   },
 
@@ -30,9 +34,8 @@ const hotAnswers = {
   update(text) {
     _store.hotAnswers = {
       ..._store.hotAnswers,
-      data: text
+      ...text
     };
-    console.log(_store);
   }
 }
 

@@ -30,6 +30,10 @@ export default class TopicList extends React.Component {
         question {
           id
           title
+          topics {
+            id
+            name
+          }
         }
         content
         upVotesCount
@@ -56,7 +60,7 @@ export default class TopicList extends React.Component {
       const { data } = res.data;
       AppDispatcher.dispatch({
         type: 'HOTANSWER_INDEX',
-        text: { data }
+        text: data
       });
     });
   }
@@ -83,12 +87,12 @@ export default class TopicList extends React.Component {
   }
 
   renderTopicCard(item, index) {
-    console.log(item)
+    const { question } = item;
     return (
       <div className={styles.topic} key={index}>
-        <div className="tag">{/*tag*/}</div>
+        <div className="tag">{question.topics[0].name}</div>
         <div className={styles.content}>
-          <div className="tip">热门回答，来自 {/*topic*/} 话题</div>
+          <div className="tip">热门回答，来自 {question && question.topics[0].name} 话题</div>
           { item ? <TopicCard {...item} /> : <div>loading...</div> }
         </div>
       </div>
@@ -96,13 +100,17 @@ export default class TopicList extends React.Component {
   }
 
   renderQuestionList() {
-    const list = [].concat(this.state.hotAnswers.data);
+    const list = [].concat(this.state.hotAnswers);
 
     return (
       <div className={styles.main}>
         <div className={styles.title}>最新动态</div>
         {
-          list.map((item, index) => this.renderTopicCard(item, index))
+          list.map((item, index) => {
+            return item
+              ? this.renderTopicCard(item, index)
+              : <div key={index}>loading...</div>
+          })
         }
         {
           ((topicList.length > 10) && (endIndex < topicList.length))

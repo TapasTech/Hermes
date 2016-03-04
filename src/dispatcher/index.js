@@ -12,19 +12,21 @@ AppDispatcher.register(function(action) {
   switch(type) {
     case 'USER_LOGIN':
       if (text) {
-        Store.user.update(text);
+        const data = Object.assign(Store.user.index().data, text);
+        Store.user.update(data);
         Store.emit('change');
       }
       break;
     case 'USER_CREATE':
       if (text) {
-        Store.user.update(text);
+        const data = Object.assign(Store.user.index().data, text);
+        Store.user.update(data);
         Store.emit('change');
       }
       break;
     case 'USER_LOGOUT':
       if (text) {
-        Store.user.destroy();
+        Store.user.update({data: {}});
         Store.emit('change');
       }
       break;
@@ -33,9 +35,24 @@ AppDispatcher.register(function(action) {
 
     case 'HOTANSWER_INDEX':
       if (text) {
+        Store.hotAnswers.update({data: text});
+        Store.emit('change');
+      }
+      break;
+
+    case 'HOTANSWER_POKE':
+      if (text) {
+        Store.hotAnswers.update({data: text});
+        Store.emit('change');
+      }
+      break;
+
+    case 'HOTANSWER_COMMENT':
+      if (text) {
         Store.hotAnswers.update(text);
         Store.emit('change');
       }
+      break;
 
     default:
       // no op
