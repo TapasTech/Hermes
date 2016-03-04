@@ -18,8 +18,6 @@ id
 email
 displayName
 gender
-followersCount
-followeesCount
 `;
 
 function prepareLogIn(email, password) {

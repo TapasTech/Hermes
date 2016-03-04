@@ -85,10 +85,11 @@ function handleGraphQL(type, queries) {
     }
     return res;
   }, {queries: [], callbacks: []});
+  if (!queryData.queries.length) return Promise.resolve();
   const query = `${type} { ${queryData.queries.join(' ')} }`;
-  return post(query).then(data => {
-    queryData.callbacks.forEach(callback => callback(data));
-  });
+  return post(query).then(data => (
+    Promise.all(queryData.callbacks.map(callback => callback(data)))
+  ));
 }
 
 export function handleQueries(...queries) {

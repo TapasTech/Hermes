@@ -12,7 +12,7 @@ export default class Header extends React.Component {
     super(props);
     this.state = {
       content: undefined,
-      user: Store.user.index().data,
+      user: {},
     };
   }
 
@@ -82,7 +82,7 @@ export default class Header extends React.Component {
               <Link className="link" to="/">首页</Link>
               <Link className="link" to="/discovery">发现</Link>
               <span className="divider"></span>
-              <Link className="link" to="/ask/_new">提问</Link>
+              <Link className="link" to="/question/_new">提问</Link>
             </div>
           </div>
         </div>

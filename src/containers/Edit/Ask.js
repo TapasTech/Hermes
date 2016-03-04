@@ -3,6 +3,7 @@ import TapasEditor from 'tapas-editor';
 
 import { Avatar } from '#/components';
 import {GraphqlRest, encodeField} from '#/utils';
+import Store from '#/store';
 
 import config from './config';
 import styles from './style.less';
@@ -33,6 +34,7 @@ export default class Ask extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      user: Store.user.index().data,
       ready: false,
       content: '',
       anonymous: false,
@@ -50,6 +52,11 @@ export default class Ask extends React.Component {
     ).then(() => {
       this.setState({
         ready: true,
+      });
+    });
+    Store.on('EVT_USER', () => {
+      this.setState({
+        user: Store.user.index().data,
       });
     });
   }
@@ -274,7 +281,7 @@ export default class Ask extends React.Component {
       TUploadImage: this.handleUpload,
     };
 
-    const { title, content, anonymous, topics, dataSets, dataReports } = this.state;
+    const { user, title, content, anonymous, topics, dataSets, dataReports } = this.state;
 
     return (
       <div className="container ask">
@@ -310,9 +317,9 @@ export default class Ask extends React.Component {
             </div>
             <div className={styles.submit}>
               <div className={styles.author}>
-                <Avatar url={author.avatar} />
-                <div className={styles.subTitle}>{author.name}</div>
-                <div className={styles.tip}>{author.intro}</div>
+                <Avatar url={user.avatar || 'http://ww2.sinaimg.cn/mw690/a56031a1jw1esek4jvzmtj206606674f.jpg'} />
+                <div className={styles.subTitle}>{user.displayName}</div>
+                <div className={styles.tip}>爱装逼</div>
               </div>
               <div className="submit-options">
                 <label className="anonymous">
