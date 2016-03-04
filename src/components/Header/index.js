@@ -71,30 +71,13 @@ export default class Header extends React.Component {
   render() {
     const { content, user } = this.state;
     return (
-      <div className={styles.header}>
-        <div className="main">
+      <nav className={styles.header}>
+        <div className="wrap">
           <div className="logo">
             <Link className="link" to="/">Hermes</Link>
           </div>
-          <div className="search">
-            <input
-              type="text"
-              className="input"
-              value={content}
-              onChange={::this.handleSearchInput}
-              placeholder="搜索问题"/>
-            <Link className="link search-btn" to={`/search?q=${content}`}>搜索</Link>
-          </div>
-          <div className="nav">
-            <Link className="link" to="/">首页</Link>
-            <Link className="link" to="/discovery">发现</Link>
-            <span className="divider"></span>
-            <Link className="link" to="/ask/_new">提问</Link>
-          </div>
-        </div>
-        <div className="side">
-          {
-            user.id
+          <div className="side">
+            {user.id
               ? <div>
                 <Link className="user" to={`/person/${user.id}`}>{user.displayName}</Link>
                 <div className="menu">
@@ -103,9 +86,27 @@ export default class Header extends React.Component {
                 </div>
               </div>
               : <Link className="user" to="/account">登录/注册</Link>
-          }
+            }
+          </div>
+          <div className="main">
+            <div className="search">
+              <input
+                type="text"
+                className="input"
+                value={content}
+                onChange={::this.handleSearchInput}
+                placeholder="搜索问题"/>
+              <Link className="link search-btn" to={`/search?q=${content}`}>搜索</Link>
+            </div>
+            <div className="nav">
+              <Link className="link" to="/">首页</Link>
+              <Link className="link" to="/discovery">发现</Link>
+              <span className="divider"></span>
+              <Link className="link" to="/ask/_new">提问</Link>
+            </div>
+          </div>
         </div>
-      </div>
+      </nav>
     );
   }
 }
