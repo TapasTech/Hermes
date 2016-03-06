@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { TopicCard, HotTopics, NewestDataSets } from '#/components';
+import { AnswerCard, HotTopics, NewestDataSets } from '#/components';
 import { GraphqlRest } from '#/utils';
 import Store from '#/store';
 import AppDispatcher from '#/dispatcher';
@@ -185,17 +185,18 @@ export default class AnswerList extends React.Component {
       const query = this.answerMutationRoot(mutation);
 
       return GraphqlRest.post(query(answerId)).then(res => {
-        const { comment } = res.answer.mutation;
+        console.log(1);
+        // const { comment } = res.answer.mutation;
 
-        const { answerList } = this.state;
-        const newAnwerList = [].concat(answerList);
-        const tmp = newAnwerList.find(item => item.id === answerId);
-        // 未做分页
-        tmp.comments.data.push(comment);
-        tmp.comments.meta.total_count += 1;
-        this.setState({
-          answerList: newAnwerList
-        });
+        // const { answerList } = this.state;
+        // const newAnwerList = [].concat(answerList);
+        // const tmp = newAnwerList.find(item => item.id === answerId);
+        // // 未做分页
+        // tmp.comments.data.push(comment);
+        // tmp.comments.meta.total_count += 1;
+        // this.setState({
+        //   answerList: newAnwerList
+        // });
       });
     }
   }
@@ -209,7 +210,7 @@ export default class AnswerList extends React.Component {
     this.prepareHotAnswers(1);
   }
 
-  renderTopicCard(item, index) {
+  renderAnswerCard(item, index) {
     const { question } = item;
     return (
       <div className={styles.topic} key={index}>
@@ -217,7 +218,7 @@ export default class AnswerList extends React.Component {
         <div className={styles.content}>
           <div className="tip">热门回答，来自 {question && question.topics[0].name} 话题</div>
           { item
-            ? <TopicCard
+            ? <AnswerCard
               onPokeClick={this.handlePoke.bind(this, item.id)}
               onCommentClick={this.handleComment(item.id)}
               onMoreComments={this.prepareMoreComments(item.id)}
@@ -239,7 +240,7 @@ export default class AnswerList extends React.Component {
         {
           list.map((item, index) => {
             return item
-              ? this.renderTopicCard(item, index)
+              ? this.renderAnswerCard(item, index)
               : <div key={index}>loading...</div>
           })
         }

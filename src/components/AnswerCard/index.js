@@ -5,7 +5,7 @@ import { Answer, CommentList, ShareBar, PokeButton } from '#/components';
 
 import styles from './style.less';
 
-export default class TopicCard extends React.Component {
+export default class AnswerCard extends React.Component {
 
   static propTypes = {
     content: React.PropTypes.string,

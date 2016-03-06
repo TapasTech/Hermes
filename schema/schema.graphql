@@ -232,6 +232,8 @@ type Question {
   upVotesCount: Int
   downVotesCount: Int
   totalVotesCount: Int
+  followers(page: Int, count: Int): PaginatedUser
+  followersCount: Int
   followed: Boolean
   mutation: QuestionMutation
 }
