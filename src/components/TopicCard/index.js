@@ -14,7 +14,8 @@ export default class TopicCard extends React.Component {
     user: React.PropTypes.object,
     upVotesCount: React.PropTypes.number,
     onPokeClick: React.PropTypes.func,
-    onCommentClick: React.PropTypes.func
+    onCommentClick: React.PropTypes.func,
+    onMoreComments: React.PropTypes.func
   };
 
   constructor(props) {
@@ -51,7 +52,7 @@ export default class TopicCard extends React.Component {
           <PokeButton count={upVotesCount} onClick={onPokeClick} />
           <div className="comment" onClick={::this.handleShowComment}>
             <span>评论</span>
-            <span className="count">{ comments.data ? comments.data.length : 0 }</span>
+            <span className="count">{ comments.meta.total_count  }</span>
           </div>
           <div className="share">
             <span onClick={::this.handleShowShare}>分享</span>
@@ -62,8 +63,9 @@ export default class TopicCard extends React.Component {
           this.state.showComment
             && comments.data
             && <CommentList
-              comments={comments.data}
+              comments={comments}
               onComment={this.props.onCommentClick}
+              onCommentsMore={this.props.onMoreComments}
               onClose={::this.handleHideComment} />
         }
       </div>

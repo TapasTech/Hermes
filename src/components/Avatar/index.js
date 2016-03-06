@@ -5,6 +5,7 @@ import styles from './style.less';
 export default class Avatar extends React.Component {
 
   static propTypes = {
+    name: React.PropTypes.string,
     url: React.PropTypes.string,
     large: React.PropTypes.bool,
     className: React.PropTypes.string
@@ -15,13 +16,19 @@ export default class Avatar extends React.Component {
   }
 
   render() {
-    const { url, large, className } = this.props;
+    const { name, url, large, className } = this.props;
 
     let clx = styles.avatar;
     className && (clx = `${clx} ${className}`);
     large && (clx = `${clx} large`);
-    return (
-      <div className={clx} style={{backgroundImage: `url(${url})`}}></div>
-    );
+    if (url) {
+      return (
+        <div className={clx} style={{backgroundImage: `url(${url})`}}></div>
+      );
+    } else {
+      return (
+        <div className={clx}>{name.substr(0, 4)}</div>
+      );
+    }
   }
 }

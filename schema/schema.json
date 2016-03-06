@@ -1791,6 +1791,18 @@
 							"deprecationReason": null
 						},
 						{
+							"name": "followed",
+							"description": null,
+							"args": [],
+							"type": {
+								"kind": "SCALAR",
+								"name": "Boolean",
+								"ofType": null
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
 							"name": "mutation",
 							"description": "Mutations of Question",
 							"args": [],
@@ -3254,6 +3266,16 @@
 					"possibleTypes": null
 				},
 				{
+					"kind": "SCALAR",
+					"name": "Boolean",
+					"description": null,
+					"fields": null,
+					"inputFields": null,
+					"interfaces": null,
+					"enumValues": null,
+					"possibleTypes": null
+				},
+				{
 					"kind": "OBJECT",
 					"name": "QuestionMutation",
 					"description": "Mutations of Question",
@@ -3711,13 +3733,9 @@
 									"name": "password",
 									"description": null,
 									"type": {
-										"kind": "NON_NULL",
-										"name": "Non-Null",
-										"ofType": {
-											"kind": "SCALAR",
-											"name": "String",
-											"ofType": null
-										}
+										"kind": "SCALAR",
+										"name": "String",
+										"ofType": null
 									},
 									"defaultValue": null
 								},
@@ -4487,16 +4505,6 @@
 					],
 					"inputFields": null,
 					"interfaces": [],
-					"enumValues": null,
-					"possibleTypes": null
-				},
-				{
-					"kind": "SCALAR",
-					"name": "Boolean",
-					"description": null,
-					"fields": null,
-					"inputFields": null,
-					"interfaces": null,
 					"enumValues": null,
 					"possibleTypes": null
 				},

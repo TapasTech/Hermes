@@ -1,13 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import styles from './style.less';
-
-import { hotTopics } from '#/__mock__';
-
-import Store from '#/store';
-import AppDispatcher from '#/dispatcher';
 import { GraphqlRest } from '#/utils';
+
+import styles from './style.less';
 
 export default class HotTopics extends React.Component {
   constructor(props) {
@@ -37,7 +33,6 @@ export default class HotTopics extends React.Component {
     `;
 
     GraphqlRest.post(query).then(res => {
-      console.log(res)
       const { data } = res.topics;
       this.setState({
         hotTopics: data

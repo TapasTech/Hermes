@@ -6,54 +6,65 @@ import styles from './style.less';
 
 export default class CommentList extends React.Component {
   static propTypes = {
-    comments: React.PropTypes.array,
+    comments: React.PropTypes.object,
     onClose: React.PropTypes.func,
-    onComment: React.PropTypes.func
+    onComment: React.PropTypes.func,
+    onCommentsMore: React.PropTypes.func
   };
 
   constructor(props) {
     super(props);
     this.state = {
       currentPage: 1,
-      reply: undefined
+      comment: undefined
     }
   }
 
   handleShowMore() {
     this.setState({
       currentPage: this.state.currentPage + 1
-    });
+    }, () => this.props.onCommentsMore(this.state.currentPage));
   }
 
-  handleRely(e) {
+  handleInput(e) {
     this.setState({
-      reply: e.target.value
+      comment: e.target.value
     });
   }
 
-  handleComment() {
-    this.props.onComment(this.state.reply)
+  handleInputSubmit() {
+    const { comment } = this.state;
+    if (comment) {
+      this.props.onComment(comment)
+      .then(() => {
+        this.setState({
+          comment: ''
+        });
+      })
+    }
   }
 
   render() {
-    const { comments } = this.props;
-    const { currentPage } = this.state;
-    const commentList = [].concat(comments);
-    const endIndex = currentPage * 5;
-    let onePageComments = commentList.slice(0, endIndex);
+    const { data, meta } = this.props.comments;
+    const { current_page, total_pages, total_count } = meta;
+    const { currentPage, comment } = this.state;
+    const commentList = [].concat(data);
+
+    const clx = comment ? "btn primary" : "btn disabled";
+
     return (
       <div className={styles.commentList}>
         {
-          onePageComments.map((item, index) => <Comment content={item} key={index} />)
+          commentList.map((item, index) => <Comment key={index} content={item} onComment={this.props.onComment} />)
         }
         {
-          ((comments.length > 5) && (endIndex < comments.length))
-          ? <div className="option" onClick={::this.handleShowMore}>显示更多</div>
-          : <div className="option" onClick={::this.props.onClose}>收起评论</div>
+          (current_page < total_pages)
+            ? <div className="option" onClick={::this.handleShowMore}>显示更多</div>
+            : <div className="option" onClick={::this.props.onClose}>收起评论</div>
         }
         <div className="reply-area">
-          <textarea className="reply-input" value={this.state.reply} onChange={::this.handleRely} />
-          <div className="btn primary" onClick={::this.handleComment}>回复</div>
+          <textarea className="reply-input" value={comment} onChange={::this.handleInput} />
+          <div className={clx} onClick={::this.handleInputSubmit}>回复</div>
         </div>
       </div>
     );

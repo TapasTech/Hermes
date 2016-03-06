@@ -3,12 +3,6 @@ import { EventEmitter } from 'events';
 let _store = {
   user: {
     data: {}
-  },
-  hotAnswers: {
-    data: []
-  },
-  dataSets: {
-    data: []
   }
 };
 
@@ -29,34 +23,6 @@ const user = {
   }
 };
 
-const hotAnswers = {
-  index() {
-    return _store.hotAnswers;
-  },
-
-  update(text) {
-    _store.hotAnswers = {
-      ..._store.hotAnswers,
-      ...text
-    };
-  }
-}
-
-const dataSets = {
-  index() {
-    return _store.hotAnswers;
-  },
-
-  update(text) {
-    _store.hotAnswers = {
-      ..._store.hotAnswers,
-      ...text
-    };
-  }
-}
-
 export default Object.assign({}, EventEmitter.prototype, {
-  user,
-  hotAnswers,
-  dataSets
+  user
 });

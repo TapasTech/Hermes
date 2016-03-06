@@ -9,7 +9,7 @@ export default class Root extends React.Component {
     return (
       <Router history={browserHistory}>
         <Route path="/" component={Pages.Base}>
-          <IndexRoute component={Pages.TopicList} />
+          <IndexRoute component={Pages.AnswerList} />
           <Route path="account" component={Pages.Account} />
           <Route path="detail/:id" component={Pages.TopicDetail} />
           <Route path="discovery" component={Pages.Discovery} />

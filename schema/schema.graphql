@@ -232,6 +232,7 @@ type Question {
   upVotesCount: Int
   downVotesCount: Int
   totalVotesCount: Int
+  followed: Boolean
   mutation: QuestionMutation
 }
 
@@ -290,7 +291,7 @@ type User {
 }
 
 type UserMutation {
-  update(oldPassword: String!, displayName: String, password: String!, email: String): User
+  update(oldPassword: String!, displayName: String, password: String, email: String): User
   follow: User
   unfollow: User
 }
