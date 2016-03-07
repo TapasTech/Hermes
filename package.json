@@ -4,7 +4,7 @@
   "description": "Say in Data",
   "scripts": {
     "schema": "node ./bin/schema.js",
-    "start": "NODE_ENV=development node ./node_modules/.bin/tapas-build",
+    "start": "tapas-build",
     "build": "node ./node_modules/.bin/tapas-build --production",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -61,7 +61,9 @@
     "flux": "^2.1.1",
     "graphql": "^0.4.18",
     "isomorphic-fetch": "^2.2.1",
+    "koa": "^1.2.0",
     "normalize.css": "^3.0.3",
+    "qiniu": "^6.1.9",
     "qrcode-react": "^0.1.10",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",

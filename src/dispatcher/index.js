@@ -7,7 +7,7 @@ let AppDispatcher = new Dispatcher();
 
 AppDispatcher.register(function(action) {
   const { type, text, data } = action;
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV !== 'production') {
     console.log(`event: ${type}`);
   }
 
