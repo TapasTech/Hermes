@@ -8,3 +8,4 @@ export HotTopics from './HotTopics';
 export NewestDataSets from './NewestDataSets';
 export PokeButton from './PokeButton';
 export ShareBar from './ShareBar';
+export MessageBox from './MessageBox';

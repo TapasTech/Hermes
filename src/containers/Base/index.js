@@ -1,17 +1,23 @@
 import React from 'react';
-import { Header } from '#/components';
+import { Header, MessageBox } from '#/components';
+import Store from '#/store';
 
 export default class Base extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      query: undefined
+      query: undefined,
+      messages: [],
     }
   }
 
   componentDidMount() {
     this.setState({
       query: this.getQuery()
+    });
+    Store.on('EVT_MSG', (msg) => {
+      this.state.messages.push(msg);
+      this.setState({});
     });
   }
 
@@ -38,9 +44,31 @@ export default class Base extends React.Component {
     }
   }
 
+  destroyMessage(msg) {
+    const i = this.state.messages.indexOf(msg);
+    if (~i) {
+      this.state.messages.splice(i, 1);
+      this.setState({});
+    }
+  }
+
+  renderMessages() {
+    return this.state.messages.map((msg, index) => (
+      <MessageBox
+        key={index}
+        backdrop={msg.backdrop}
+        content={msg.content}
+        type={msg.type}
+        lifetime={msg.lifetime}
+        onDestroy={this.destroyMessage.bind(this, msg)}
+      />
+    ));
+  }
+
   render() {
     return (
       <div>
+        {this.renderMessages()}
         <Header query={this.state.query} />
         {this.props.children || 'Welcome to Hermes'}
       </div>

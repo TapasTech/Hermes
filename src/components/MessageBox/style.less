@@ -1,0 +1,36 @@
+:local(.msgbox) {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  .backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,.1);
+  }
+
+  .msg {
+    width: 200px;
+    margin: 0 auto;
+    padding: 10px;
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0,0,0,.4);
+    z-index: 1000;
+    transition: transform .5s;
+    transform: translateY(30px);
+    &.error {
+      color: red;
+    }
+  }
+
+  &.msg-out {
+    .msg {
+      transform: translateY(-120%);
+    }
+  }
+}

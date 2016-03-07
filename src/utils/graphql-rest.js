@@ -1,4 +1,5 @@
 import fetch from 'isomorphic-fetch';
+import Store from '#/store';
 
 const AUTH_KEY = 'Http-Authorization';
 let myRoot = '/graphql';
@@ -55,26 +56,32 @@ function request(method, query) {
   };
   config.body = JSON.stringify({query});
   return myFetch(myRoot, config)
-  .then(handleResponse)
-  .catch(handleBadResponse);
-}
-
-function handleResponse(res) {
-  if (res.status === 200) {
-    return res.json().then(respone => {
-      if (respone.data) {
-        return respone.data;
+  .then(res => {
+    return res.json()
+    .then(result => {
+      if (res.status > 300 || result.errors) {
+        throw {
+          status: res.status,
+          data: result,
+        };
       }
-      if (respone.errors) {
-        throw respone.errors;
-      }
+      return result.data;
     });
-  }
+  })
+  .catch(err => {
+    if (err.status === 500) {
+      Store.emit('EVT_MSG', {
+        type: 'error',
+        content: '服务器错误！',
+      });
+    }
+    throw err;
+  });
 }
 
 function handleBadResponse(err) {
   console.log('错误👇');
-  console.log(err[0].message);
+  console.log(err);
 }
 
 function handleGraphQL(type, queries) {
