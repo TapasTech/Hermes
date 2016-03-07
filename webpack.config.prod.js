@@ -18,7 +18,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'build'),
     filename: '[name].[chunkhash:8].js',
-    publicPath: 'http://cdn.xyz.com/'
+    publicPath: '/'
   },
   module: {
     loaders: [

@@ -1,11 +1,6 @@
 const koa = require('koa');
-const qiniu = require('./lib/qiniuHelper');
+const qiniu = require('./lib/qiniu');
 const config = require('./config');
-
-const webpack = require('webpack');
-const webpackDevMiddleware = require("koa-webpack-dev-middleware");
-const webpackHotMiddleware = require("koa-webpack-hot-middleware");
-const webpackConfig = require('../webpack.config.dev');
 
 const app = koa();
 
