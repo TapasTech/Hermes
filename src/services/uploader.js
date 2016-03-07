@@ -45,5 +45,5 @@ export function getUrl(data, options) {
     return result + (v ? '/' + k + '/' + v : '');
   }, '');
   if (params) params = '?imageView2/1' + params;
-  return 'http://7xlb46.com2.z0.glb.qiniucdn.com/' + data.path + params;
+  return 'http://7xrmgq.com2.z0.glb.qiniucdn.com/' + data.path + params;
 }

@@ -1,7 +1,7 @@
 import fetch from 'isomorphic-fetch';
 
 const AUTH_KEY = 'Http-Authorization';
-let myRoot = '/api';
+let myRoot = '/graphql';
 let myFetch = fetch;
 let myHeaders;
 let myAuth;

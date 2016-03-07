@@ -24,5 +24,5 @@ function putToken(bucket) {
 }
 
 module.exports = {
-  putToken: () => putToken('invest-images'),
+  putToken: () => putToken('hermes-staging'),
 };
