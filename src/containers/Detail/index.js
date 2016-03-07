@@ -440,12 +440,7 @@ export default class Detail extends React.Component {
           this.state.showComment.has(answerId)
             && data
             && data.length
-            && <CommentList
-              comments={comments}
-              onComment={this.handleComment(answerId)}
-              onCommentPoke={this.handleCommentPoke(answerId)}
-              onCommentsMore={this.handleMoreComments.bind(this, answerId)}
-              onClose={this.handleHideComment.bind(this, answerId)} />
+            && <CommentList answerId={answerId} />
         }
       </div>
     );

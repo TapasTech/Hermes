@@ -5,6 +5,7 @@
   "scripts": {
     "schema": "node ./bin/schema.js",
     "start": "tapas-build",
+    "build:new": "rimraf build && NODE_ENV=production webpack --config webpack.config.prod.js",
     "build": "node ./node_modules/.bin/tapas-build --production",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -50,11 +51,17 @@
     }
   },
   "devDependencies": {
+    "babel-plugin-transform-class-properties": "^6.6.0",
+    "babel-preset-react": "^6.5.0",
+    "babel-preset-react-hmre": "^1.1.1",
     "ghooks": "^1.0.3",
     "graphql-readable": "^1.1.2",
+    "koa-webpack-dev-middleware": "^1.1.0",
+    "koa-webpack-hot-middleware": "^1.0.3",
     "request": "^2.69.0",
     "tapas-build": "^0.4.5",
-    "validate-commit-msg": "^2.1.0"
+    "validate-commit-msg": "^2.1.0",
+    "webpack": "^1.12.14"
   },
   "dependencies": {
     "event": "^1.0.0",
