@@ -3,11 +3,9 @@ import { Link } from 'react-router';
 
 import { HotTopics } from '#/components';
 
-import { GraphqlRest } from '#/utils';
+import { GraphqlRest, timeFormatter } from '#/utils';
 
 import styles from './style.less';
-
-import { domainList, topicList } from '#/__mock__';
 
 export default class Discovery extends React.Component {
   constructor(props) {
@@ -128,9 +126,9 @@ export default class Discovery extends React.Component {
           <div className="tip">阅读</div>
         </div>
         <div className="topic item">
-          <Link className="num" to={`/detail/${item.id}`}>{item.title}</Link>
+          <Link className="num" to={`/question/${item.id}`}>{item.title}</Link>
           {
-            <div className="tip">{item.user.displayName} 提出了该问题 {item.createdAt}</div>
+            <div className="tip">{item.user.displayName} 提出了该问题 {timeFormatter(item.createdAt)}</div>
           }
         </div>
       </div>

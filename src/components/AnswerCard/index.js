@@ -125,7 +125,7 @@ export default class AnswerCard extends React.Component {
           <Link className="link" to={`/user/${answer.user.id}`}>{answer.user.displayName}</Link>
           <span>的答案：</span>
         </div>
-        <Answer answerShort={answer.content} answerFull={answer.content} />
+        <Answer answerContent={answer.content} />
         { this.renderOptionArea() }
       </div>
     );

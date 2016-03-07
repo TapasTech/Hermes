@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 import Store from '#/store';
 import { Avatar, Answer, CommentList, ShareBar, PokeButton } from '#/components';
-import { GraphqlRest } from '#/utils';
+import { GraphqlRest, timeFormatter } from '#/utils';
 
 import styles from './style.less';
 
@@ -391,6 +391,7 @@ export default class Detail extends React.Component {
   renderTopic() {
     const { id, title, content, dataReports, dataSets, createdAt, upVotesCount, readCount, user } = this.state.question;
     const isMine = user && (user.id === this.state.user.id);
+    const _questionHTML = { __html: content };
     return (
       <div className={styles.topic}>
         <div className={styles.header}>
@@ -400,7 +401,7 @@ export default class Detail extends React.Component {
               && <Link className={styles.tip} to={`/question/${id}/edit`}>修改</Link>
           }
         </div>
-        <div className={styles.content}>{content}</div>
+        <div className={styles.content} dangerouslySetInnerHTML={_questionHTML}></div>
         <div className={styles.tip}>相关数据</div>
         <div className={styles.links}>
           {
@@ -416,7 +417,7 @@ export default class Detail extends React.Component {
               })
           }
         </div>
-        <div className={styles.tip}>{createdAt} · {readCount || 0 } 阅读</div>
+        <div className={styles.tip}>{timeFormatter(createdAt)} · {readCount || 0 } 阅读</div>
       </div>
     );
   }
@@ -466,14 +467,12 @@ export default class Detail extends React.Component {
                   <div className={styles.author}>
                     <Avatar name={user.displayName} />
                     <div className={styles.subTitle}>{user.displayName}</div>
-                    <div className={styles.tip}>{user.description || '该用户尚未留下任何关于自己的描述哦'}</div>
+                    <div className={styles.tip}>{user.description || '该用户尚未留下任何描述'}</div>
                   </div>
                   <PokeButton count={upVotesCount} onClick={this.handlePoke.bind(this, item.id)} />
                 </div>
                 <div className={styles.answerContent}>
-                  <Answer
-                    answerShort={content}
-                    answerFull={content} />
+                  <Answer answerContent={content} />
                   { this.renderOptionArea(comments, id) }
                 </div>
               </div>
@@ -507,7 +506,7 @@ export default class Detail extends React.Component {
       <div className="container">
         <div className="main">
           { this.renderTopic() }
-          { (answers && answers.data.length) ? this.renderAnswers() : <div>尚未有人回答这个问题哦</div> }
+          { (answers && answers.data.length) ? this.renderAnswers() : <div>尚未有人回答过这个问题</div> }
         </div>
         <div className="sidebar">
           <div className="watch">

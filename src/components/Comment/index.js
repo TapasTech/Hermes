@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 
 import { Avatar } from '#/components';
-import {GraphqlRest, encodeField} from '#/utils';
+import {GraphqlRest, encodeField, timeFormatter} from '#/utils';
 import styles from './style.less';
 
 export default class Comment extends React.Component {
@@ -93,7 +93,7 @@ export default class Comment extends React.Component {
       <div className={styles.optionArea}>
         <div className={styles.options}>
           <div className="info-area">
-            <div>{createdAt}</div>
+            <div>{timeFormatter(createdAt)}</div>
             <div className="option-btns">
               <div className="reply options" onClick={::this.handleShowInput}>回复</div>
               <div className="like options" onClick={this.handleUpVote}>赞</div>

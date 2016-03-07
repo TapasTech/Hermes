@@ -4,8 +4,7 @@ import styles from './style.less';
 
 export default class Answer extends React.Component {
   static propTypes = {
-    answerShort: React.PropTypes.string,
-    answerFull: React.PropTypes.string,
+    answerContent: React.PropTypes.string,
     pic: React.PropTypes.string
   };
 
@@ -35,8 +34,8 @@ export default class Answer extends React.Component {
   }
 
   render() {
-    const { answerFull, answerShort, pic } = this.props;
-    const _answerHTML = { __html: answerFull };
+    const { answerContent, pic } = this.props;
+    const _answerHTML = { __html: answerContent };
     return (
       <div className={styles.answer}>
         <div className={styles.content}>
@@ -47,7 +46,7 @@ export default class Answer extends React.Component {
                 <div className="hide" onClick={::this.handleHideFull}>收起回答</div>
               </div>
               : <div className="short" onClick={::this.handleShowFull}>
-                { this.getShortAnswer(answerShort) }<span className="show">...显示全部</span>
+                { this.getShortAnswer(answerContent) }<span className="show">...显示全部</span>
               </div>
           }
         </div>

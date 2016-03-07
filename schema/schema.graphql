@@ -5,6 +5,8 @@ type Activity {
   user: User
   verb: String
   payload: Object
+  answer: Answer
+  question: Question
 }
 
 type Answer {
@@ -41,7 +43,6 @@ type Business {
   createdAt: Date
   updatedAt: Date
   deletedAt: Date
-  user: User
   parentBusiness: Business
   childBusinesses: [Business]
 }
@@ -211,8 +212,8 @@ type Query {
   question(id: String!): Question
   answer(id: String!): Answer
   comment(id: String!): Comment
-  data_sets(page: Int, count: Int): PaginatedDataSet
-  data_reports(page: Int, count: Int): PaginatedDataReport
+  dataSets(page: Int, count: Int): PaginatedDataSet
+  dataReports(page: Int, count: Int): PaginatedDataReport
   hotAnswers(page: Int, count: Int): PaginatedAnswer
   searchQuestions(query: String!, page: Int, count: Int): PaginatedQuestion
 }

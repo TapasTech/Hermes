@@ -15,7 +15,7 @@ export default class NewestDataSets extends React.Component {
   componentDidMount() {
     const query = `
       query {
-        data_sets(page: 1, count: 10) {
+        dataSets(page: 1, count: 10) {
           data {
             id
             title
@@ -26,7 +26,7 @@ export default class NewestDataSets extends React.Component {
     `;
 
     GraphqlRest.post(query).then(res => {
-      const { data } = res.data_sets
+      const { data } = res.dataSets
       this.setState({
         dataSets: data
       })
