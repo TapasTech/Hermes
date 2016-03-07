@@ -4,33 +4,13 @@ import TapasEditor from 'tapas-editor';
 import { Avatar } from '#/components';
 import {GraphqlRest, encodeField} from '#/utils';
 import Store from '#/store';
+import Reference from './Reference';
+import {diffList} from './utils';
 
 import config from './config';
 import styles from './style.less';
 
-// mock data
-const author = {
-  name: 'Amano',
-  avatar: 'http://i11.tietuku.com/60857f76cd893c0d.png',
-  authorId: 12345,
-  intro: '金融鄙视链末端的银行狗',
-  question: '全面放开二孩会出现哪些社会现象？',
-  questionDetail: '同事聚会时谈到这个话题，一些四十多岁的同事和领导都表示在这个节骨眼上，不生二胎又心动，生二胎又有很多问题要想。例如避孕套大量减产，幼儿园父母开始老龄化，大部分家庭需要换房子，从三房换成四房等等，还会有哪些意料不及的呢？大家放开想想～<br>更新：全面放开二孩政策已经确立'
-};
-
-/*
-const topicList = [
-  '经济', '时政', '社会',
-  '旅行', '科技', '消费',
-  '健康', '书影音'
-];
-*/
-
-export default class Ask extends React.Component {
-  static propTypes = {
-    name: React.PropTypes.string,
-  };
-
+export default class Question extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -186,61 +166,21 @@ export default class Ask extends React.Component {
     this.setState({});
   }
 
-  createDataSet(title, url) {
-    const data = `
-    mutation createDataSet {
-      dataset: createDataSet(title: ${encodeField(title)}, url: ${encodeField(url)}) {
-        id
-        title
-        url
-      }
-    }
-    `;
-    return GraphqlRest.post(data).then(data => data.dataset);
-  }
-
-  handleAddDataSet = () => {
-    // TODO popup component
-    const title = prompt('Input title:');
-    if (!title) return;
-    const url = prompt('Input URL:');
-    if (!url) return;
-    this.createDataSet(title, url).then(item => {
-      this.setState({
-        dataSets: [
-          ...this.state.dataSets,
-          item,
-        ],
-      });
-    });
-  }
-
-  handleAddDataReport = () => {
-  }
-
-  diffList(oldList, newList) {
-    const oldSet = new Set(oldList);
-    const newSet = new Set(newList);
-    const remove = [];
-    oldSet.forEach(item => newSet.delete(item) || remove.push(item));
-    const add = [... newSet];
-    return {
-      add,
-      remove,
-    };
+  handleRefChange = (ref) => {
+    this.setState(ref);
   }
 
   handlePost = () => {
     const { qid, title, content, anonymous, topics, dataSets, dataReports } = this.state;
-    const topicsDiff = this.diffList(
+    const topicsDiff = diffList(
       this.state.original.topics,
       topics.filter(topic => topic.selected).map(topic => topic.id)
     );
-    const dataSetsDiff = this.diffList(
+    const dataSetsDiff = diffList(
       this.state.original.dataSets,
       dataSets.map(dataSet => dataSet.id)
     );
-    const dataReportsDiff = this.diffList(
+    const dataReportsDiff = diffList(
       this.state.original.dataReports,
       dataReports.map(dataReport => dataReport.id)
     );
@@ -268,14 +208,6 @@ export default class Ask extends React.Component {
     });
   };
 
-  renderDataSet(dataset, key) {
-    return (
-      <div className="item" key={key}>
-        <a href={dataset.url} target="_blank">{dataset.title}</a>
-      </div>
-    );
-  }
-
   render() {
     const events = {
       TUploadImage: this.handleUpload,
@@ -289,7 +221,7 @@ export default class Ask extends React.Component {
           <div className={styles.edit}>
             <input
               type="text"
-              className={styles.inputTitle}
+              className={styles.title}
               value={title}
               onChange={this.handleTitleChange}
               placeholder="请输入标题" />
@@ -301,20 +233,11 @@ export default class Ask extends React.Component {
                 onChange={this.handleContentChange}
               />
             </div>
-            <div className={styles.reference}>
-              <div className="source">
-                <div className="btn ghost" onClick={this.handleAddDataSet}>+ 数据来源</div>
-                <div className="list">
-                  {dataSets.map(this.renderDataSet)}
-                </div>
-              </div>
-              <div className="report">
-                <div className="btn ghost" onClick={this.handleAddDataReport}>+ 数据报告</div>
-                <div className="list">
-                  {dataReports.map(this.renderDataSet)}
-                </div>
-              </div>
-            </div>
+            <Reference
+              dataSets={dataSets}
+              dataReports={dataReports}
+              onChange={this.handleRefChange}
+            />
             <div className={styles.submit}>
               <div className={styles.author}>
                 <Avatar url={user.avatar || 'http://ww2.sinaimg.cn/mw690/a56031a1jw1esek4jvzmtj206606674f.jpg'} />
