@@ -123,7 +123,7 @@ export default class AnswerCard extends React.Component {
           </div>
           <div className="share">
             <span onClick={::this.handleShowShare}>分享</span>
-            { this.state.showShare && <ShareBar className="bar" url={`/detail/${question.id}`} title={answer.question.title} /> }
+            { this.state.showShare && <ShareBar className="bar" url={`/question/${question.id}`} title={answer.question.title} /> }
           </div>
         </div>
         { this.state.showComment && <CommentList answerId={answer.id} /> }
@@ -135,7 +135,7 @@ export default class AnswerCard extends React.Component {
     const { answer } = this.props;
     return (
       <div className={styles.topicCard}>
-        <Link className="title" to={`/detail/${answer.question.id}`}>{answer.question.title}</Link>
+        <Link className="title" to={`/question/${answer.question.id}`}>{answer.question.title}</Link>
         <div className="author">
           <Link className="link" to={`/user/${answer.user.id}`}>{answer.user.displayName}</Link>
           <span>的答案：</span>
