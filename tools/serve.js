@@ -1,6 +1,11 @@
 const koa = require('koa');
-const qiniu = require('./lib/qiniu');
+const qiniu = require('./lib/qiniuHelper');
 const config = require('./config');
+
+const webpack = require('webpack');
+const webpackDevMiddleware = require("koa-webpack-dev-middleware");
+const webpackHotMiddleware = require("koa-webpack-hot-middleware");
+const webpackConfig = require('../webpack.config.dev');
 
 const app = koa();
 
@@ -11,7 +16,6 @@ app.use(function* (next) {
     yield* next
   }
 });
-
 
 if (process.env.NODE_ENV !== 'production') {
   const webpack = require('webpack');
@@ -30,7 +34,6 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(webpackDevMiddleware(compiler, options))
   app.use(webpackHotMiddleware(compiler))
 }
-
 
 app.listen(config.port, () => {
   console.log(`Listening at port ${config.port}...`);
