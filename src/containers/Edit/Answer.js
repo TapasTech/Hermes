@@ -1,4 +1,5 @@
 import React from 'react';
+import {browserHistory} from 'react-router';
 import TapasEditor from 'tapas-editor';
 
 import { Avatar } from '#/components';
@@ -174,7 +175,7 @@ export default class Answer extends React.Component {
       }
     }`;
     GraphqlRest.post(query).then(data => {
-      console.log(data);
+      browserHistory.push(`/question/${qid}`);
     });
   }
 

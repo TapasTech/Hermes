@@ -517,7 +517,7 @@ export default class Detail extends React.Component {
                   ? <div className="btn ghost" onClick={this.handleFollowStatus.bind(this, false)}>取消关注</div>
                   : <div className="btn primary" onClick={this.handleFollowStatus.bind(this, true)}>关注问题</div>
               }
-              <Link className="btn ghost" to={`question/${id}/reply`}>回答</Link>
+              <Link className="btn ghost" to={`/question/${id}/answer`}>回答</Link>
             </div>
             <div className="watcher">
               <span className="count">{followersCount}</span>

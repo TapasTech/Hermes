@@ -6,6 +6,17 @@ import { AnswerCard, Avatar, TopicCard } from '#/components';
 import {GraphqlRest, encodeField} from '#/utils';
 import styles from './style.less';
 
+const fragQuestion = `
+fragment fragQuestion on Question {
+id
+title
+content
+upVotesCount
+answersCount
+createdAt
+}
+`;
+
 export default class PersonalCenter extends React.Component {
   static propTypes = {
     name: React.PropTypes.string,
@@ -16,18 +27,17 @@ export default class PersonalCenter extends React.Component {
     this.state = {
       ... this.tabState(props),
       user: {},
+      currentPage: 1,
+      totalPages: 0,
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState(this.tabState(nextProps));
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    prevState.tab.index !== this.state.tab.index &&
-    GraphqlRest.handleQueries(
-      this.prepareTabData(this.state.tab.index)
-    );
+    this.setState(this.tabState(nextProps), () => {
+      GraphqlRest.handleQueries(
+        this.prepareTabData(this.state.currentPage)
+      );
+    });
   }
 
   tabState(props) {
@@ -45,13 +55,15 @@ export default class PersonalCenter extends React.Component {
         index: tabIndex,
         data: [],
       },
+      currentPage: 1,
+      totalPages: 0,
     };
   }
 
   componentDidMount() {
     GraphqlRest.handleQueries(
       this.prepareUser(),
-      this.prepareTabData(this.state.tab.index)
+      this.prepareTabData()
     );
   }
 
@@ -91,20 +103,54 @@ export default class PersonalCenter extends React.Component {
     }
   }
 
-  prepareActivities = (page = 0) => {
+  prepareActivities = (page = 1) => {
+    const query = `
+    userActivities: user(id: ${encodeField(this.props.params.id)}) {
+      activities(page: ${page}) {
+        data {
+          id
+          verb
+          question {
+            ...fragQuestion
+          }
+          answer {
+            ...fragAnswer
+          }
+        }
+        meta { current_page total_pages total_count }
+      }
+    }
+    `;
+    const callback = data => {
+      const activities = data.userActivities.activities;
+      this.setState({
+        tab: {
+          index: this.state.tab.index,
+          data: [
+            ... this.state.tab.data,
+            ... activities.data,
+          ],
+        },
+        currentPage: activities.meta.current_page,
+        totalPages: activities.meta.total_pages,
+      });
+    };
+    return {
+      query,
+      callback,
+      fragments: [
+        fragQuestion,
+        AnswerCard.fragments,
+      ],
+    };
   }
 
-  prepareAnswers = (page = 0) => {
+  prepareAnswers = (page = 1) => {
     const query = `
     userAnswers: user(id: ${encodeField(this.props.params.id)}) {
       answers(page: ${page}) {
         data {
-          id
-          content
-          question {
-            id
-            title
-          }
+          ...fragAnswer
         }
         meta { current_page total_pages total_count }
       }
@@ -115,29 +161,28 @@ export default class PersonalCenter extends React.Component {
       this.setState({
         tab: {
           index: this.state.tab.index,
-          data: answers.data,
-          meta: answers.meta,
+          data: [
+            ... this.state.tab.data,
+            ... answers.data,
+          ],
         },
+        currentPage: answers.meta.current_page,
+        totalPages: answers.meta.total_pages,
       });
     };
     return {
       query,
       callback,
+      fragments: AnswerCard.fragments,
     };
   }
 
-  prepareQuestions = (page = 0) => {
-    // TODO merge queries
+  prepareQuestions = (page = 1) => {
     const query = `
     userQuestions: user(id: ${encodeField(this.props.params.id)}) {
       questions(page: ${page}) {
         data {
-          id
-          title
-          content
-          upVotesCount
-          answersCount
-          createdAt
+          ...fragQuestion
         }
         meta { current_page total_pages total_count }
       }
@@ -148,24 +193,35 @@ export default class PersonalCenter extends React.Component {
       this.setState({
         tab: {
           index: this.state.tab.index,
-          data: questions.data,
-          meta: questions.meta,
+          data: [
+            ... this.state.tab.data,
+            ... questions.data,
+          ],
         },
+        currentPage: questions.meta.current_page,
+        totalPages: questions.meta.total_pages,
       });
     };
     return {
       query,
       callback,
+      fragments: fragQuestion,
     };
   }
 
-  prepareTabData(index, ...args) {
+  prepareTabData(...args) {
     const prepare = [
       this.prepareActivities,
       this.prepareAnswers,
       this.prepareQuestions,
-    ][index];
+    ][this.state.tab.index];
     return prepare && prepare(...args);
+  }
+
+  loadMore = () => {
+    GraphqlRest.handleQueries(
+      this.prepareTabData(this.state.currentPage + 1)
+    );
   }
 
   renderInfo() {
@@ -206,31 +262,66 @@ export default class PersonalCenter extends React.Component {
   }
 
   renderActivities = tab => {
+    const user = this.state.user;
+    return tab.data.map((item, index) => {
+      let data;
+      switch (item.verb) {
+        case 'QUESTION_CREATE':
+          data = (
+            <div className={styles.card} key={index}>
+              <div className="action">
+                <Link to={`/user/${user.id}`}>{user.displayName}</Link>
+                创建了问题
+              </div>
+              {this.renderQuestion(item.question)}
+            </div>
+          );
+          break;
+        case 'ANSWER_CREATE':
+        case 'ANSWER_VOTE_UP':
+          const action = item.verb === 'ANSWER_CREATE' ? '回答了问题' : '赞同了回答';
+          data = (
+            <div className={styles.card} key={index}>
+              <div className="action">
+                <Link to={`/user/${user.id}`}>{user.displayName}</Link>
+                {action}
+              </div>
+              {this.renderAnswer(item.answer)}
+            </div>
+          );
+          break;
+      }
+      return data;
+    });
   }
 
-  renderAnswers = tab => {
-    return tab.data.map((item, index) => (
-      <AnswerCard key={index}
-        content={item.content}
-        question={item.question}
-        user={this.state.user}
-      />
-    ));
-  }
+  renderAnswer = (item) => <AnswerCard answer={item} />;
 
-  renderQuestions = tab => {
-    return tab.data.map((item, index) => (
-      <div className={styles.card} key={index}>
-        <div className="header">
-          <div>{item.createdAt}</div>
-        </div>
-        <div className="title">{item.title}</div>
-        <div className="info">
-          {item.answersCount}个回答 · {item.upVotesCount}个赞同
-        </div>
+  renderAnswers = tab => tab.data.map((item, index) => (
+    <div className={styles.card} key={index}>
+      {this.renderAnswer(item)}
+    </div>
+  ));
+
+  renderQuestion = (item) => (
+    <div>
+      <div className="header">
+        <div>{item.createdAt}</div>
       </div>
-    ));
-  }
+      <div className="title">
+        <Link to={`/question/${item.id}`}>{item.title}</Link>
+      </div>
+      <div className="info">
+        {item.answersCount}个回答 · {item.upVotesCount}个赞同
+      </div>
+    </div>
+  );
+
+  renderQuestions = tab => tab.data.map((item, index) => (
+    <div className={styles.card} key={index}>
+      {this.renderQuestion(item)}
+    </div>
+  ));
 
   renderTabData() {
     const {tab} = this.state;
@@ -243,7 +334,7 @@ export default class PersonalCenter extends React.Component {
   }
 
   renderStream() {
-    const { tab } = this.state;
+    const { tab, currentPage, totalPages } = this.state;
     const userId = this.props.params.id;
 
     return (
@@ -265,7 +356,12 @@ export default class PersonalCenter extends React.Component {
             提问 · {this.state.user.questionsCount}
           </Link>
         </div>
-        <div className={styles.stream}>{this.renderTabData()}</div>
+        <div className={styles.stream}>
+          {this.renderTabData()}
+          {currentPage < totalPages &&
+            <div className={styles.more} onClick={this.loadMore}>点击加载更多</div>
+          }
+        </div>
       </div>
     );
   }

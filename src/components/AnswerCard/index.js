@@ -30,21 +30,6 @@ export default class AnswerCard extends React.Component {
     content
     upVotesCount
     comments(page: 1, count: 5) {
-      data {
-        id
-        user {
-          id
-          displayName
-        }
-        replyTo {
-          id
-          displayName
-        }
-        content
-        upVotesCount
-        createdAt
-        updatedAt
-      }
       meta {
         current_page
         total_pages
