@@ -48,6 +48,19 @@ export default class Reference extends React.Component {
   }
 
   handleAddDataReport = () => {
+    // TODO popup component
+    const title = prompt('Input title:');
+    if (!title) return;
+    const url = prompt('Input URL:');
+    if (!url) return;
+    this.createDataSet(title, url).then(item => {
+      this.fireChange({
+        dataReports: [
+          ...this.props.dataReports,
+          item,
+        ],
+      });
+    });
   }
 
   renderDataSet(dataset, key) {

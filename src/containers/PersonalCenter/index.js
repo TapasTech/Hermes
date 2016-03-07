@@ -229,7 +229,7 @@ export default class PersonalCenter extends React.Component {
     return (
       <div className={styles.info}>
         <div className={styles.base}>
-          <Avatar url={user.avatar || 'http://ww2.sinaimg.cn/mw690/a56031a1jw1esek4jvzmtj206606674f.jpg'} large={true} />
+          <Avatar name={user.displayName} url={user.avatar} large={true} />
           <div className="name">{user.displayName}</div>
         </div>
         <div className={styles.data}>

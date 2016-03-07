@@ -209,7 +209,7 @@ export default class Answer extends React.Component {
         <div className="sidebar">
           <div className={styles.submit}>
             <div className={styles.author}>
-              <Avatar url={user.avatar || 'http://ww2.sinaimg.cn/mw690/a56031a1jw1esek4jvzmtj206606674f.jpg'} />
+              <Avatar name={user.displayName} url={user.avatar} />
               <div className={styles.subTitle}>{user.displayName}</div>
             </div>
             <div className="submit-options">

@@ -240,7 +240,7 @@ export default class Question extends React.Component {
             />
             <div className={styles.submit}>
               <div className={styles.author}>
-                <Avatar url={user.avatar || 'http://ww2.sinaimg.cn/mw690/a56031a1jw1esek4jvzmtj206606674f.jpg'} />
+                <Avatar name={user.displayName} url={user.avatar} />
                 <div className={styles.subTitle}>{user.displayName}</div>
                 <div className={styles.tip}>爱装逼</div>
               </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 
+import {hashColor} from '#/utils';
 import styles from './style.less';
 
 export default class Avatar extends React.Component {
@@ -27,7 +28,7 @@ export default class Avatar extends React.Component {
       );
     } else {
       return (
-        <div className={clx}>{name.substr(0, 4)}</div>
+        <div className={clx} style={{backgroundColor: hashColor(name)}}>{name && name.slice(0, 4)}</div>
       );
     }
   }

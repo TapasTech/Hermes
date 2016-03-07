@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import { GraphqlRest } from '#/utils';
+import { GraphqlRest, hashColor } from '#/utils';
 
 import styles from './style.less';
 
@@ -44,17 +44,8 @@ export default class HotTopics extends React.Component {
     const { id, name, questions } = topic;
     const question = questions.data[0];
 
-    let hash = 0;
-    for (let i in name) {
-      hash = hash * 6147 + name.charCodeAt(0);
-      hash &= 0xffffff;
-    }
-    let color = hash.toString(16);
-    while (color.length < 6) color = '0' + color;
-    color = '#' + color;
-
     const imgStyle = {
-      backgroundColor: color,
+      backgroundColor: hashColor(name),
     };
 
     return (
