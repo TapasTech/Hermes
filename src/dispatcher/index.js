@@ -1,6 +1,7 @@
 import { Dispatcher } from 'flux';
 import Store from '#/store';
-import {GraphqlRest, setToken} from '#/utils';
+import {GraphqlRest} from '#/utils';
+import { setToken } from '#/services/auth';
 
 let AppDispatcher = new Dispatcher();
 

@@ -8,11 +8,15 @@ import {getUserInfo} from '#/services/auth';
 import styles from './style.less';
 
 export default class Header extends React.Component {
+  static PropTypes = {
+    query: React.PropTypes.string
+  };
+
   constructor(props) {
     super(props);
     this.state = {
-      content: undefined,
-      user: {},
+      query: this.props.query,
+      user: {}
     };
   }
 
@@ -20,9 +24,15 @@ export default class Header extends React.Component {
     getUserInfo();
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      query: nextProps.query
+    });
+  }
+
   handleSearchInput(e) {
     this.setState({
-      content: e.target.value
+      query: e.target.value
     });
   }
 
@@ -32,6 +42,15 @@ export default class Header extends React.Component {
       type: 'USER_LOGOUT',
       data: {},
     });
+  }
+
+  handleSearch() {
+    const { query } = this.state;
+    if (query) {
+      browserHistory.push(`/search?q=${this.state.query}`);
+    } else {
+      browserHistory.push('/search');
+    }
   }
 
   _onChange = () => {
@@ -49,7 +68,7 @@ export default class Header extends React.Component {
   }
 
   render() {
-    const { content, user } = this.state;
+    const { query, user } = this.state;
     return (
       <nav className={styles.header}>
         <div className="wrap">
@@ -73,10 +92,10 @@ export default class Header extends React.Component {
               <input
                 type="text"
                 className="input"
-                value={content}
+                value={query}
                 onChange={::this.handleSearchInput}
                 placeholder="搜索问题"/>
-              <Link className="link search-btn" to={`/search?q=${content}`}>搜索</Link>
+              <div className="link search-btn" onClick={::this.handleSearch}>搜索</div>
             </div>
             <div className="nav">
               <Link className="link" to="/">首页</Link>

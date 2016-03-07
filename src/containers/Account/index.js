@@ -2,7 +2,7 @@ import React from 'react';
 import { browserHistory } from 'react-router';
 
 import { GraphqlRest } from '#/utils';
-import auth from '#/services/auth';
+import * as auth from '#/services/auth';
 import AppDispatcher from '#/dispatcher';
 
 import styles from './style.less';
@@ -20,6 +20,7 @@ export default class Account extends React.Component {
     super(props);
     this.state = {
       formData: {
+        displayName: undefined,
         email: undefined,
         password: undefined
       },
@@ -60,8 +61,8 @@ export default class Account extends React.Component {
   }
 
   signupRequset(cb) {
-    const { email, password } = this.state.formData;
-    auth.signUp(email, password).then(() => {
+    const { displayName, email, password } = this.state.formData;
+    auth.signUp(displayName, email, password).then(() => {
       browserHistory.push('/');
     });
   }
@@ -80,6 +81,15 @@ export default class Account extends React.Component {
               onClick={this.handleSwitch.bind(this, 'login')}>登录</div>
           </div>
           <div className={styles.form}>
+            {
+              !login
+                && <input
+                className="field"
+                type="texts"
+                value={formData.displayName}
+                onChange={this.handleFormChange.bind(this, 'displayName')}
+                placeholder="用户名" />
+            }
             <input
               className="field"
               type="text"

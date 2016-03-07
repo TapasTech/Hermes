@@ -45,8 +45,8 @@ function prepareLogIn(email, password) {
   };
 }
 
-function prepareSignUp(email, password) {
-  const query = `createUser(displayName: "${email}", email: "${email}", password: "${password}") {id}`;
+function prepareSignUp(displayName, email, password) {
+  const query = `createUser(displayName: "${displayName}", email: "${email}", password: "${password}") {id}`;
   return {
     query,
   };
@@ -86,9 +86,9 @@ export function logIn(email, password) {
   );
 };
 
-export function signUp(email, password) {
+export function signUp(displayName, email, password) {
   return GraphqlRest.handleMutations(
-    prepareSignUp(email, password),
+    prepareSignUp(displayName, email, password),
     prepareLogIn(email, password)
   );
 };

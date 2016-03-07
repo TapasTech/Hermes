@@ -1,16 +1,19 @@
 import React from 'react';
+import { GraphqlRest } from '#/utils';
 
-import { TopicCard, NewestDataSets } from '#/components';
+import { AnswerCard, NewestDataSets } from '#/components';
 
 import styles from './style.less';
 
 import { topicList } from '#/__mock__';
 
-export default class TopicList extends React.Component {
+export default class SearchResult extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentPage: 1
+      currentPage: 1,
+      questionList: {},
+      questionMeta: {}
     };
   }
 
@@ -20,11 +23,61 @@ export default class TopicList extends React.Component {
     });
   }
 
+  prepareData(keyword) {
+    const query = `
+      query {
+        searchQuestions(query: "${keyword}", page: 1, count: 10) {
+          data {
+            id
+            user {
+              id
+              displayName
+            }
+            answers(page: 1, count: 1) {
+              data {
+                id
+                content
+                commentsCount
+              }
+            }
+          }
+          meta {
+            current_page
+            total_pages
+            total_count
+          }
+        }
+      }
+    `;
+    GraphqlRest.post(query).then(res => {
+      const { data, meta }  = res.searchQuestions;
+      this.setState({
+        questionList: data,
+        questionMeta: meta
+      });
+      console.log(res);
+    });
+  }
+
+  componentDidMount() {
+    const { q } = this.props.location.query;
+    if (q) {
+      this.prepareData(q);
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { q } = this.props.location.query;
+    if (q && (q !== prevProps.location.query.q)) {
+      this.prepareData(q);
+    }
+  }
+
   renderTopicCard(content, index) {
     const { tag, topic } = content;
     return (
       <div className={styles.topic} key={index}>
-        <TopicCard content={content} />
+        <AnswerCard content={content} />
       </div>
     );
   }
@@ -56,7 +109,7 @@ export default class TopicList extends React.Component {
     return (
       <div className="container">
         <div className="main">
-          { this.renderQuestionList() }
+          {/* this.renderQuestionList() */}
         </div>
         <div className="sidebar">
           <NewestDataSets />
