@@ -6,7 +6,7 @@ import Discovery from './Discovery';
 import PersonalCenter from './PersonalCenter';
 import Reply from './Edit/Reply';
 import SearchResult from './SearchResult';
-import TopicDetail from './TopicDetail';
+import Detail from './Detail';
 
 export default {
   Account,
@@ -17,5 +17,5 @@ export default {
   PersonalCenter,
   Reply,
   SearchResult,
-  TopicDetail,
+  Detail,
 };

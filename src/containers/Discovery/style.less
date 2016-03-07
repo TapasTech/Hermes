@@ -1,6 +1,21 @@
 :local(.listArea) {
   background-color: #fff;
-  padding: 15px;
+  padding: 15px 15px 0;
+
+  .more,
+  .end {
+    margin-top: 10px;
+    padding: 5px 0;
+    font-size: 14px;
+    line-height: 26px;
+    text-align: center;
+    color: #a6a6a6;
+    border-top: 1px solid #eee;
+  }
+
+  .more {
+    cursor: pointer;
+  }
 
   :local(.header) {
     margin-bottom: 10px;
@@ -15,7 +30,6 @@
 
     .item {
       display: inline-block;
-      width: 60px;
       margin-right: 5px;
       padding: 5px;
       box-sizing: border-box;
@@ -23,7 +37,7 @@
 
       .name {
         display: inline-block;
-        width: 50px;
+        min-width: 50px;
         margin: 0 auto;
         padding: 0 5px;
         text-align: center;
@@ -73,6 +87,10 @@
 
     .topic {
       text-align: left;
+
+      .num {
+        color: #333;
+      }
 
       .tip {
         color: #999;

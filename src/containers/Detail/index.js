@@ -7,7 +7,7 @@ import { GraphqlRest } from '#/utils';
 
 import styles from './style.less';
 
-export default class TopicDetail extends React.Component {
+export default class Detail extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -39,6 +39,7 @@ export default class TopicDetail extends React.Component {
               displayName
             }
           }
+          readCount
           followersCount
           answers(page: ${page}, count: 10) {
             data {
@@ -347,7 +348,7 @@ export default class TopicDetail extends React.Component {
   }
 
   renderTopic() {
-    const { id, title, content, dataReports, dataSets, createdAt, upVotesCount, user } = this.state.question;
+    const { id, title, content, dataReports, dataSets, createdAt, upVotesCount, readCount, user } = this.state.question;
     const isMine = user && (user.id === this.state.user.id);
     return (
       <div className={styles.topic}>
@@ -374,7 +375,7 @@ export default class TopicDetail extends React.Component {
               })
           }
         </div>
-        <div className={styles.tip}>{createdAt} · {upVotesCount} 阅读</div>
+        <div className={styles.tip}>{createdAt} · {readCount || 0 } 阅读</div>
       </div>
     );
   }

@@ -226,6 +226,7 @@ type Question {
   title: String
   content: String
   topics: [Topic]
+  readCount: Int
   dataSets(page: Int, count: Int): PaginatedDataSet
   dataReports(page: Int, count: Int): PaginatedDataReport
   answers(page: Int, count: Int): PaginatedAnswer

@@ -11,7 +11,7 @@ export default class Root extends React.Component {
         <Route path="/" component={Pages.Base}>
           <IndexRoute component={Pages.AnswerList} />
           <Route path="account" component={Pages.Account} />
-          <Route path="detail/:id" component={Pages.TopicDetail} />
+          <Route path="detail/:id" component={Pages.Detail} />
           <Route path="discovery" component={Pages.Discovery} />
           <Route path="search" component={Pages.SearchResult} />
           <Route path="question">
