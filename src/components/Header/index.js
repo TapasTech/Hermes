@@ -30,7 +30,7 @@ export default class Header extends React.Component {
     });
   }
 
-  handleSearchInput(e) {
+  handleSearchInput = (e) => {
     this.setState({
       query: e.target.value
     });
@@ -44,7 +44,8 @@ export default class Header extends React.Component {
     });
   }
 
-  handleSearch() {
+  handleSearch = e => {
+    e && e.preventDefault && e.preventDefault();
     const { query } = this.state;
     if (query) {
       browserHistory.push(`/search?q=${this.state.query}`);
@@ -88,15 +89,15 @@ export default class Header extends React.Component {
             }
           </div>
           <div className="main">
-            <div className="search">
+            <form className="search" onSubmit={this.handleSearch}>
               <input
                 type="text"
                 className="input"
                 value={query}
-                onChange={::this.handleSearchInput}
+                onChange={this.handleSearchInput}
                 placeholder="搜索问题"/>
-              <div className="link search-btn" onClick={::this.handleSearch}>搜索</div>
-            </div>
+              <button type="submit" className="link search-btn">搜索</button>
+            </form>
             <div className="nav">
               <Link className="link" to="/">首页</Link>
               <Link className="link" to="/discovery">发现</Link>

@@ -6,14 +6,14 @@ export default class Base extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      query: undefined,
+      query: '',
       messages: [],
     }
   }
 
   componentDidMount() {
     this.setState({
-      query: this.getQuery()
+      query: this.props.location.query.q,
     });
     Store.on('EVT_MSG', (msg) => {
       this.state.messages.push(msg);
@@ -25,21 +25,10 @@ export default class Base extends React.Component {
     document.body.style.overflow = 'auto';
   }
 
-  getQuery() {
-    let query = this.props.location.search.substring(1);
-    let vars = query.split('&');
-    const pair = vars[0].split('=');
-    if (decodeURIComponent(pair[0]) == 'q') {
-      return decodeURIComponent(pair[1]);
-    } else {
-      return undefined;
-    }
-  }
-
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.location.search !== this.props.location.search) {
+    if (prevProps.location.query !== this.props.location.query) {
       this.setState({
-        query: this.getQuery()
+        query: this.props.location.query.q,
       });
     }
   }

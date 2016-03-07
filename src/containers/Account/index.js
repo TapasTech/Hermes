@@ -45,26 +45,21 @@ export default class Account extends React.Component {
 
   handleLogin() {
     const { email, password } = this.state.formData;
-    this.loginRequset(email, password)
-  }
-
-  handleSignup() {
-    const { email, password } = this.state.formData;
-    this.signupRequset(::this.loginRequset);
-  }
-
-  loginRequset() {
-    const { email, password } = this.state.formData;
     auth.logIn(email, password).then(() => {
       browserHistory.push('/');
     });
   }
 
-  signupRequset(cb) {
+  handleSignup() {
     const { displayName, email, password } = this.state.formData;
     auth.signUp(displayName, email, password).then(() => {
       browserHistory.push('/');
     });
+  }
+
+  handleSubmit = e => {
+    e && e.preventDefault && e.preventDefault();
+    this.state.login ? this.handleLogin() : this.handleSignup();
   }
 
   render() {
@@ -80,7 +75,7 @@ export default class Account extends React.Component {
               className={login ? "tab active" : "tab"}
               onClick={this.handleSwitch.bind(this, 'login')}>登录</div>
           </div>
-          <div className={styles.form}>
+          <form className={styles.form} onSubmit={this.handleSubmit}>
             {
               !login
                 && <input
@@ -102,14 +97,8 @@ export default class Account extends React.Component {
               value={formData.password}
               onChange={this.handleFormChange.bind(this, 'password')}
               placeholder="密码" />
-          </div>
-          <div className={styles.submit}>
-            {
-              login
-              ? <div className="btn primary" onClick={::this.handleLogin}>登录</div>
-              : <div className="btn primary" onClick={::this.handleSignup}>注册</div>
-            }
-          </div>
+            <button type="submit" className="btn primary">{login ? '登录' : '注册'}</button>
+          </form>
         </div>
       </div>
     );

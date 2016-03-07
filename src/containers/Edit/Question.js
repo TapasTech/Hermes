@@ -242,13 +242,15 @@ export default class Question extends React.Component {
               <div className={styles.author}>
                 <Avatar name={user.displayName} url={user.avatar} />
                 <div className={styles.subTitle}>{user.displayName}</div>
-                <div className={styles.tip}>爱装逼</div>
+                <div className={styles.tip}>{user.description}</div>
               </div>
               <div className="submit-options">
+                {/*
                 <label className="anonymous">
                   <input type="checkbox" value={anonymous} onChange={this.handleAnonymousChange} />
                   <span className="tip">匿名发布</span>
                 </label>
+                */}
                 <div className="btn ghost postIt" onClick={this.handlePost}>发布</div>
               </div>
             </div>
