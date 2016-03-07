@@ -2,21 +2,34 @@ import React from 'react';
 import { Link } from 'react-router';
 
 import { Avatar } from '#/components';
+import {GraphqlRest, encodeField} from '#/utils';
 import styles from './style.less';
 
 export default class Comment extends React.Component {
 
   static propTypes = {
-    content: React.PropTypes.object,
+    data: React.PropTypes.object,
     onComment: React.PropTypes.func,
-    onCommentPoke: React.PropTypes.func
   };
+
+  static fragments = `
+  fragment fragComment on Comment {
+    id
+    createdAt
+    updatedAt
+    content
+    upVotesCount
+    user { id displayName }
+    replyTo { id displayName }
+  }
+  `;
 
   constructor(props) {
     super(props);
     this.state = {
       showReply: false,
-      comment: undefined
+      upVotesCount: props.data.upVotesCount,
+      comment: '',
     };
   }
 
@@ -32,27 +45,48 @@ export default class Comment extends React.Component {
     });
   }
 
-  handleInputSubmit() {
-    const { id } = this.props.content.user;
-    const { comment } = this.state;
-    if (comment) {
-      this.props.onComment(comment, id)
-      .then(() => {
-        this.setState({
-          comment: '',
-          showReply: false
-        });
-      })
-    }
+  handleInputSubmit = () => {
+    this.props.onComment(this.props.data.user.id, this.state.comment)
+    .then(() => {
+      this.setState({
+        comment: '',
+        showReply: false,
+      });
+    });
   }
 
-  handleCommentPoke(id) {
-    this.props.onCommentPoke(id);
+  prepareUpVote() {
+    const query = `
+    comment(id: ${encodeField(this.props.data.id)}) {
+      mutation {
+        voteUp {
+          id
+          upVotesCount
+        }
+      }
+    }
+    `;
+    const callback = data => {
+      const {upVotesCount} = data.comment.mutation.voteUp;
+      this.setState({
+        upVotesCount,
+      });
+    };
+    return {
+      query,
+      callback,
+    };
+  }
+
+  handleUpVote = () => {
+    GraphqlRest.handleQueries(
+      this.prepareUpVote()
+    );
   }
 
   renderOptionArea() {
-    const { id, createdAt, upVotesCount } = this.props.content;
-    const { comment } = this.state;
+    const { id, createdAt } = this.props.data;
+    const { comment, upVotesCount } = this.state;
     const clx = comment ? "btn primary" : "btn disabled";
 
     return (
@@ -62,7 +96,7 @@ export default class Comment extends React.Component {
             <div>{createdAt}</div>
             <div className="option-btns">
               <div className="reply options" onClick={::this.handleShowInput}>回复</div>
-              <div className="like options" onClick={this.handleCommentPoke.bind(this, id)}>赞</div>
+              <div className="like options" onClick={this.handleUpVote}>赞</div>
               <div className="report options">举报</div>
             </div>
           </div>
@@ -72,7 +106,7 @@ export default class Comment extends React.Component {
           this.state.showReply
             && <div className="reply-area">
               <textarea className="reply-input" value={comment} onChange={::this.handleInput} />
-              <div className={clx} onClick={::this.handleInputSubmit}>回复</div>
+              <div className={clx} onClick={this.handleInputSubmit}>回复</div>
             </div>
         }
       </div>
@@ -80,7 +114,7 @@ export default class Comment extends React.Component {
   }
 
   render() {
-    const { content, createdAt, replyTo, user } = this.props.content;
+    const { content, createdAt, replyTo, user } = this.props.data;
     return (
       <div className={styles.detail}>
         <div className="avatar">

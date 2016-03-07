@@ -28,6 +28,12 @@ export default class Answer extends React.Component {
     });
   }
 
+  getShortAnswer(content) {
+    const div = document.createElement('div');
+    div.innerHTML = content;
+    return div.textContent.slice(0, 140);
+  }
+
   render() {
     const { answerFull, answerShort, pic } = this.props;
     const _answerHTML = { __html: answerFull };
@@ -41,7 +47,7 @@ export default class Answer extends React.Component {
                 <div className="hide" onClick={::this.handleHideFull}>收起回答</div>
               </div>
               : <div className="short" onClick={::this.handleShowFull}>
-                { answerShort.substr(0, 140) }<span className="show">...显示全部</span>
+                { this.getShortAnswer(answerShort) }<span className="show">...显示全部</span>
               </div>
           }
         </div>

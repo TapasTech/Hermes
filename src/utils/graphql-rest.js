@@ -82,11 +82,12 @@ function handleGraphQL(type, queries) {
     if (item) {
       item.query && res.queries.push(item.query);
       item.callback && res.callbacks.push(item.callback);
+      item.fragments && res.fragments.push(item.fragments);
     }
     return res;
-  }, {queries: [], callbacks: []});
+  }, {queries: [], callbacks: [], fragments: []});
   if (!queryData.queries.length) return Promise.resolve();
-  const query = `${type} { ${queryData.queries.join(' ')} }`;
+  const query = `${type} { ${queryData.queries.join(' ')} } ${queryData.fragments.join(' ')}`;
   return post(query).then(data => (
     Promise.all(queryData.callbacks.map(callback => callback(data)))
   ));

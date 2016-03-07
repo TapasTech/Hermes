@@ -1,73 +1,124 @@
 import React from 'react';
 
 import { Comment } from '#/components';
+import {GraphqlRest, encodeField} from '#/utils';
 
 import styles from './style.less';
 
 export default class CommentList extends React.Component {
+  // FIXME vote up / comment count
   static propTypes = {
-    comments: React.PropTypes.object,
-    onClose: React.PropTypes.func,
-    onComment: React.PropTypes.func,
-    onCommentPoke: React.PropTypes.func,
-    onCommentsMore: React.PropTypes.func
+    answerId: React.PropTypes.string,
   };
 
   constructor(props) {
     super(props);
     this.state = {
       currentPage: 1,
-      comment: undefined
+      totalPages: 1,
+      comment: '',
+      data: [],
     }
   }
 
-  handleShowMore() {
-    this.setState({
-      currentPage: this.state.currentPage + 1
-    }, () => this.props.onCommentsMore(this.state.currentPage));
+  componentDidMount() {
+    GraphqlRest.handleQueries(
+      this.prepareData()
+    );
   }
 
-  handleInput(e) {
+  prepareData(page = 0) {
+    const query = `
+    answer(id: ${encodeField(this.props.answerId)}) {
+      comments(page: ${page}, count: 5) {
+        data {
+          ...fragComment
+        }
+        meta { current_page total_pages total_count }
+      }
+    }`;
+    const callback = data => {
+      const comments = data.answer.comments;
+      this.setState({
+        currentPage: comments.meta.current_page,
+        totalPages: comments.meta.total_pages,
+        data: [
+          ... this.state.data,
+          ... comments.data,
+        ],
+      });
+    };
+    return {
+      query,
+      callback,
+      fragments: Comment.fragments,
+    };
+  }
+
+  handleShowMore = () => {
+    GraphqlRest.handleQueries(
+      this.prepareData(this.state.currentPage + 1)
+    );
+  }
+
+  handleInput = (e) => {
     this.setState({
       comment: e.target.value
     });
   }
 
-  handleInputSubmit() {
-    const { comment } = this.state;
-    if (comment) {
-      this.props.onComment(comment)
-      .then(() => {
-        this.setState({
-          comment: ''
-        });
-      })
+  handleInputSubmit = () => {
+    this.handleComment('', this.state.comment)
+    .then(() => {
+      this.setState({
+        comment: ''
+      });
+    });
+  }
+
+  prepareComment(replyToId, content) {
+    const query = `
+    answer(id: ${this.props.answerId}) {
+      mutation {
+        comment: createComment(content: "${content}", reply_to_id: "${replyToId}") {
+          ...fragComment
+        }
+      }
     }
+    `;
+    const callback = data => {
+      const comment = data.answer.mutation.comment;
+      const _data = this.state.data;
+      _data.unshift(comment);
+      this.setState({});
+    };
+    return {
+      query,
+      callback,
+      fragments: Comment.fragments,
+    };
+  }
+
+  handleComment = (replyToId, content) => {
+    return GraphqlRest.handleQueries(
+      this.prepareComment(replyToId, content)
+    );
   }
 
   render() {
-    const { data, meta } = this.props.comments;
-    const { current_page, total_pages, total_count } = meta;
-    const { currentPage, comment } = this.state;
-    const commentList = [].concat(data);
-
+    const { currentPage, totalPages, comment, data } = this.state;
     const clx = comment ? "btn primary" : "btn disabled";
-
     return (
       <div className={styles.commentList}>
-        {
-          commentList.map((item, index) =>
-            <Comment key={index} content={item} onComment={this.props.onComment} onCommentPoke={this.props.onCommentPoke} />
-          )
-        }
-        {
-          (current_page < total_pages)
-            ? <div className="option" onClick={::this.handleShowMore}>显示更多</div>
-            : <div className="option" onClick={::this.props.onClose}>收起评论</div>
+        {data.map((item, index) => (
+          <Comment key={index} data={item} onComment={this.handleComment} />
+        ))}
+        {currentPage < totalPages &&
+          <div className="option" onClick={this.handleShowMore}>显示更多</div>
         }
         <div className="reply-area">
-          <textarea className="reply-input" value={comment} onChange={::this.handleInput} />
-          <div className={clx} onClick={::this.handleInputSubmit}>回复</div>
+          <textarea className="reply-input" value={comment} onChange={this.handleInput} />
+          <div className={clx} onClick={this.handleInputSubmit}>回复</div>
         </div>
       </div>
     );
