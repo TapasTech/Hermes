@@ -18,6 +18,7 @@ id
 email
 displayName
 gender
+description
 `;
 
 function prepareLogIn(email, password) {
