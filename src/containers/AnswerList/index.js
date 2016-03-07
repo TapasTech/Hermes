@@ -48,35 +48,6 @@ export default class AnswerList extends React.Component {
     };
   }
 
-  handleCommentPoke(answerId) {
-    return (id) => {
-      const mutation = `
-        query {
-          comment(id: ${id}) {
-            mutation {
-              voteUp {
-                id
-                upVotesCount
-              }
-            }
-          }
-        }
-      `;
-
-      GraphqlRest.post(mutation).then(res => {
-        const { id, upVotesCount } = res.comment.mutation.voteUp;
-        const { data } = this.state;
-        const newAnwerList = [].concat(data);
-        const tmp = newAnwerList.find(item => item.id === answerId);
-        const tmpComment = tmp.comments.data.find(item => item.id === id);
-        tmpComment.upVotesCount = upVotesCount;
-        this.setState({
-          answerList: newAnwerList
-        });
-      });
-    }
-  }
-
   handleMoreAnwers() {
     GraphqlRest.handleQueries(
       this.prepareHotAnswers(this.state.currentPage + 1)

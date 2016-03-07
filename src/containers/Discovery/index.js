@@ -128,7 +128,7 @@ export default class Discovery extends React.Component {
         <div className="topic item">
           <Link className="num" to={`/question/${item.id}`}>{item.title}</Link>
           {
-            <div className="tip">{item.user.displayName} 提出了该问题 {timeFormatter(item.createdAt)}</div>
+            <div className="tip">{timeFormatter(item.createdAt)}</div>
           }
         </div>
       </div>

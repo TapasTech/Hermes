@@ -92,7 +92,6 @@ export default class PersonalCenter extends React.Component {
     }
     `;
     const callback = data => {
-      console.log(data.user);
       this.setState({
         user: data.user,
       });

@@ -486,7 +486,7 @@ export default class Detail extends React.Component {
   renderRelated(item, key) {
     return (
       <div className={styles.relatedTopics} key={key}>
-        <Link className="link" to={`/detail/${item.id}`}>
+        <Link className="link" to={`/question/${item.id}`}>
           <span>{item.title}</span>
           &nbsp;
           <span className="tip">{item.answersCount}个回答</span>
