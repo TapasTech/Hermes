@@ -8,7 +8,8 @@ export default class Comment extends React.Component {
 
   static propTypes = {
     content: React.PropTypes.object,
-    onComment: React.PropTypes.func
+    onComment: React.PropTypes.func,
+    onCommentPoke: React.PropTypes.func
   };
 
   constructor(props) {
@@ -45,8 +46,12 @@ export default class Comment extends React.Component {
     }
   }
 
+  handleCommentPoke(id) {
+    this.props.onCommentPoke(id);
+  }
+
   renderOptionArea() {
-    const { createdAt, upVotesCount } = this.props.content;
+    const { id, createdAt, upVotesCount } = this.props.content;
     const { comment } = this.state;
     const clx = comment ? "btn primary" : "btn disabled";
 
@@ -57,7 +62,7 @@ export default class Comment extends React.Component {
             <div>{createdAt}</div>
             <div className="option-btns">
               <div className="reply options" onClick={::this.handleShowInput}>回复</div>
-              <div className="like options">赞</div>
+              <div className="like options" onClick={this.handleCommentPoke.bind(this, id)}>赞</div>
               <div className="report options">举报</div>
             </div>
           </div>

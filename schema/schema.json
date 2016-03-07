@@ -168,6 +168,33 @@
 							"deprecationReason": null
 						},
 						{
+							"name": "comment",
+							"description": null,
+							"args": [
+								{
+									"name": "id",
+									"description": null,
+									"type": {
+										"kind": "NON_NULL",
+										"name": "Non-Null",
+										"ofType": {
+											"kind": "SCALAR",
+											"name": "String",
+											"ofType": null
+										}
+									},
+									"defaultValue": null
+								}
+							],
+							"type": {
+								"kind": "OBJECT",
+								"name": "Comment",
+								"ofType": null
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
 							"name": "data_sets",
 							"description": null,
 							"args": [
@@ -390,6 +417,18 @@
 						},
 						{
 							"name": "displayName",
+							"description": null,
+							"args": [],
+							"type": {
+								"kind": "SCALAR",
+								"name": "String",
+								"ofType": null
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "description",
 							"description": null,
 							"args": [],
 							"type": {
@@ -3793,6 +3832,16 @@
 										"ofType": null
 									},
 									"defaultValue": null
+								},
+								{
+									"name": "description",
+									"description": null,
+									"type": {
+										"kind": "SCALAR",
+										"name": "String",
+										"ofType": null
+									},
+									"defaultValue": null
 								}
 							],
 							"type": {
@@ -3872,6 +3921,16 @@
 								},
 								{
 									"name": "email",
+									"description": null,
+									"type": {
+										"kind": "SCALAR",
+										"name": "String",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "description",
 									"description": null,
 									"type": {
 										"kind": "SCALAR",

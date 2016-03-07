@@ -9,6 +9,7 @@ export default class CommentList extends React.Component {
     comments: React.PropTypes.object,
     onClose: React.PropTypes.func,
     onComment: React.PropTypes.func,
+    onCommentPoke: React.PropTypes.func,
     onCommentsMore: React.PropTypes.func
   };
 
@@ -55,7 +56,9 @@ export default class CommentList extends React.Component {
     return (
       <div className={styles.commentList}>
         {
-          commentList.map((item, index) => <Comment key={index} content={item} onComment={this.props.onComment} />)
+          commentList.map((item, index) =>
+            <Comment key={index} content={item} onComment={this.props.onComment} onCommentPoke={this.props.onCommentPoke} />
+          )
         }
         {
           (current_page < total_pages)

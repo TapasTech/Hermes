@@ -15,6 +15,7 @@ export default class AnswerCard extends React.Component {
     upVotesCount: React.PropTypes.number,
     onPokeClick: React.PropTypes.func,
     onCommentClick: React.PropTypes.func,
+    onCommentPoke: React.PropTypes.func,
     onMoreComments: React.PropTypes.func
   };
 
@@ -65,6 +66,7 @@ export default class AnswerCard extends React.Component {
             && <CommentList
               comments={comments}
               onComment={this.props.onCommentClick}
+              onCommentPoke={this.props.onCommentPoke}
               onCommentsMore={this.props.onMoreComments}
               onClose={::this.handleHideComment} />
         }

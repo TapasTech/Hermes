@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 
 import Store from '#/store';
-import { AnswerCard, Avatar, Answer, CommentList, ShareBar, PokeButton } from '#/components';
+import { Avatar, Answer, CommentList, ShareBar, PokeButton } from '#/components';
 import { GraphqlRest } from '#/utils';
 
 import styles from './style.less';
@@ -46,6 +46,7 @@ export default class TopicDetail extends React.Component {
               user {
                 id
                 displayName
+                description
               }
               question {
                 id
@@ -302,6 +303,35 @@ export default class TopicDetail extends React.Component {
     }
   }
 
+  handleCommentPoke(answerId) {
+    return (id) => {
+      const mutation = `
+        query {
+          comment(id: ${id}) {
+            mutation {
+              voteUp {
+                id
+                upVotesCount
+              }
+            }
+          }
+        }
+      `;
+
+      GraphqlRest.post(mutation).then(res => {
+        const { id, upVotesCount } = res.comment.mutation.voteUp;
+        const { question } = this.state;
+        const newQuestion = Object.assign({}, question);
+        const tmp = newQuestion.answers.data.find(item => item.id === answerId);
+        const tmpComment = tmp.comments.data.find(item => item.id === id);
+        tmpComment.upVotesCount = upVotesCount;
+        this.setState({
+          question: newQuestion
+        });
+      });
+    }
+  }
+
   handleMoreComments(answerId) {
     const { commentPage } = this.state;
     const newCommentPage = Object.assign({}, commentPage);
@@ -370,6 +400,7 @@ export default class TopicDetail extends React.Component {
             && <CommentList
               comments={comments}
               onComment={this.handleComment(answerId)}
+              onCommentPoke={this.handleCommentPoke(answerId)}
               onCommentsMore={this.handleMoreComments.bind(this, answerId)}
               onClose={this.handleHideComment.bind(this, answerId)} />
         }
@@ -393,7 +424,7 @@ export default class TopicDetail extends React.Component {
                   <div className={styles.author}>
                     <Avatar name={user.displayName} />
                     <div className={styles.subTitle}>{user.displayName}</div>
-                    <div className={styles.tip}>"用户简介"</div>
+                    <div className={styles.tip}>{user.description || '该用户尚未留下任何关于自己的描述哦'}</div>
                   </div>
                   <PokeButton count={upVotesCount} onClick={this.handlePoke.bind(this, item.id)} />
                 </div>

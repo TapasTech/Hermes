@@ -185,18 +185,45 @@ export default class AnswerList extends React.Component {
       const query = this.answerMutationRoot(mutation);
 
       return GraphqlRest.post(query(answerId)).then(res => {
-        console.log(1);
-        // const { comment } = res.answer.mutation;
+        const { comment } = res.answer.mutation;
+        const { answerList } = this.state;
+        const newAnwerList = [].concat(answerList);
+        const tmp = newAnwerList.find(item => item.id === answerId);
+        // 未做分页
+        tmp.comments.data.push(comment);
+        tmp.comments.meta.total_count += 1;
+        this.setState({
+          answerList: newAnwerList
+        });
+      });
+    }
+  }
 
-        // const { answerList } = this.state;
-        // const newAnwerList = [].concat(answerList);
-        // const tmp = newAnwerList.find(item => item.id === answerId);
-        // // 未做分页
-        // tmp.comments.data.push(comment);
-        // tmp.comments.meta.total_count += 1;
-        // this.setState({
-        //   answerList: newAnwerList
-        // });
+  handleCommentPoke(answerId) {
+    return (id) => {
+      const mutation = `
+        query {
+          comment(id: ${id}) {
+            mutation {
+              voteUp {
+                id
+                upVotesCount
+              }
+            }
+          }
+        }
+      `;
+
+      GraphqlRest.post(mutation).then(res => {
+        const { id, upVotesCount } = res.comment.mutation.voteUp;
+        const { answerList } = this.state;
+        const newAnwerList = [].concat(answerList);
+        const tmp = newAnwerList.find(item => item.id === answerId);
+        const tmpComment = tmp.comments.data.find(item => item.id === id);
+        tmpComment.upVotesCount = upVotesCount;
+        this.setState({
+          answerList: newAnwerList
+        });
       });
     }
   }
@@ -221,6 +248,7 @@ export default class AnswerList extends React.Component {
             ? <AnswerCard
               onPokeClick={this.handlePoke.bind(this, item.id)}
               onCommentClick={this.handleComment(item.id)}
+              onCommentPoke={this.handleCommentPoke(item.id)}
               onMoreComments={this.prepareMoreComments(item.id)}
               {...item} />
             : <div>loading...</div> }
