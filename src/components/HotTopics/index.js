@@ -54,12 +54,16 @@ export default class HotTopics extends React.Component {
           <div className="img" style={imgStyle}>{name.substr(0,1)}</div>
           <div className="name">{name}</div>
         </div>
-        <Link className="link" to={`/detail/${question.id}`}>{question.title}</Link>
+        {
+          question
+            && <Link className="link" to={`/detail/${question.id}`}>{question.title}</Link>
+        }
       </div>
     )
   }
 
   render() {
+    const { hotTopics } = this.state;
     return (
       <div className={styles.hotTopic}>
         <div className="title">
@@ -67,7 +71,8 @@ export default class HotTopics extends React.Component {
           <Link className="more" to="/discovery">更多</Link>
         </div>
         {
-          this.state.hotTopics.map((item, index) => {
+          hotTopics[0]
+            && hotTopics.map((item, index) => {
             return item
               ? this.renderHotTopic(item, index)
               : <div>loading...</div>

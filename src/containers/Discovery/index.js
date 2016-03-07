@@ -145,7 +145,8 @@ export default class Discovery extends React.Component {
             <div className={styles.header}>最新问题</div>
             <div className={styles.domains}>
               {
-                topics.map((item, index) => {
+                topics
+                  && topics.map((item, index) => {
                   const clx = item.id === domainSelected ? "item selected" : "item"
                   return (
                     <div key={index} className={clx} onClick={this.handleDomainSelected.bind(this, item.id)}>

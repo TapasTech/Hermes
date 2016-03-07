@@ -26,7 +26,7 @@
     "port": "8008",
     "aliasRoot": "#",
     "proxy": {
-      "/graphql": "http://hermes-devel.dtcj.com/graphql"
+      "/graphql": "http://sayindata.dtcj.com:8080/graphql"
     }
   },
   "config": {
