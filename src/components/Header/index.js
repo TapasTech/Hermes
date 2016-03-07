@@ -59,7 +59,7 @@ export default class Header extends React.Component {
           <div className="side">
             {user.id
               ? <div>
-                <Link className="user" to={`/person/${user.id}`}>{user.displayName}</Link>
+                <Link className="user" to={`/user/${user.id}`}>{user.displayName}</Link>
                 <div className="menu">
                   <div className="item">设置</div>
                   <div className="item" onClick={::this.handleLogout}>退出登录</div>

@@ -50,18 +50,20 @@ export default class AnswerCard extends React.Component {
     return (
       <div className={styles.cardOption}>
         <div className="other">
-          <PokeButton count={upVotesCount} onClick={onPokeClick} />
+          { onPokeClick && <PokeButton count={upVotesCount} onClick={onPokeClick} /> }
+          { comments &&
           <div className="comment" onClick={::this.handleShowComment}>
             <span>评论</span>
             <span className="count">{ comments.meta.total_count  }</span>
           </div>
+          }
           <div className="share">
             <span onClick={::this.handleShowShare}>分享</span>
             { this.state.showShare && <ShareBar className="bar" url={`/detail/${question.id}`} title={question.title} /> }
           </div>
         </div>
         {
-          this.state.showComment
+          comments && this.state.showComment
             && comments.data
             && <CommentList
               comments={comments}
@@ -80,7 +82,7 @@ export default class AnswerCard extends React.Component {
       <div className={styles.topicCard}>
         <Link className="title" to={`/detail/${question.id}`}>{question.title}</Link>
         <div className="author">
-          <Link className="link" to={`/person/${user.id}`}>{user.displayName}</Link>
+          <Link className="link" to={`/user/${user.id}`}>{user.displayName}</Link>
           <span>的答案：</span>
         </div>
         <Answer answerShort={content} answerFull={content} />
