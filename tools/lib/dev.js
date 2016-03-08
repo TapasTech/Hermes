@@ -8,7 +8,7 @@ import webpackConfig from '../webpack.config';
 const options = {
   noInfo: true,
   publicPath: webpackConfig.output.publicPath,
-  stats: { colors: true }
+  stats: { colors: true },
 };
 
 export function register(app) {
@@ -27,6 +27,16 @@ export function register(app) {
   // });
 
   const compiler = webpack(webpackConfig);
-  app.use(webpackDevMiddleware(compiler, options));
+  const middleware = webpackDevMiddleware(compiler, options);
+  app.use(middleware);
   app.use(webpackHotMiddleware(compiler));
+
+  // history fallback
+  app.use(historyFallback);
+  app.use(middleware);
+}
+
+function* historyFallback(next) {
+  this.url = '/';
+  yield* next;
 }

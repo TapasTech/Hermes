@@ -22,7 +22,11 @@ export default {
   output: {
     path: path.resolve('build'),
     filename: `[name]${isProd ? '.[chunkhash:8]' : ''}.js`,
-    publicPath: isProd ? 'http://7xrmgq.com2.z0.glb.qiniucdn.com/assets/' : '/',
+    ... isProd ? {
+      publicPath: 'http://7xrmgq.com2.z0.glb.qiniucdn.com/assets/',
+    } : {
+      publicPath: '/',
+    },
   },
   module: {
     loaders: [
