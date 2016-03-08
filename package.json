@@ -55,28 +55,27 @@
     "babel-preset-react-hmre": "^1.1.1",
     "del": "^2.2.0",
     "ensure-dir": "^0.1.0",
+    "event": "^1.0.0",
+    "flux": "^2.1.1",
     "ghooks": "^1.0.3",
+    "graphql": "^0.4.18",
     "graphql-readable": "^1.1.2",
+    "isomorphic-fetch": "^2.2.1",
     "koa-proxypass": "^0.1.1",
     "koa-webpack-dev-middleware": "^1.1.0",
     "koa-webpack-hot-middleware": "^1.0.3",
-    "request": "^2.69.0",
-    "tapas-build": "^0.4.5",
-    "validate-commit-msg": "^2.1.0",
-    "webpack": "^1.12.14"
-  },
-  "dependencies": {
-    "event": "^1.0.0",
-    "flux": "^2.1.1",
-    "graphql": "^0.4.18",
-    "isomorphic-fetch": "^2.2.1",
-    "koa": "^1.2.0",
     "normalize.css": "^3.0.3",
-    "qiniu": "^6.1.9",
     "qrcode-react": "^0.1.10",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
     "react-router": "^2.0.0",
-    "tapas-editor": "^1.0.3"
+    "tapas-build": "^0.4.5",
+    "tapas-editor": "^1.0.3",
+    "validate-commit-msg": "^2.1.0",
+    "webpack": "^1.12.14"
+  },
+  "dependencies": {
+    "koa": "^1.2.0",
+    "qiniu": "^6.1.9"
   }
 }

@@ -2,6 +2,7 @@ import webpack from 'webpack';
 import webpackDevMiddleware from "koa-webpack-dev-middleware";
 import webpackHotMiddleware from "koa-webpack-hot-middleware";
 import proxypass from 'koa-proxypass';
+// import send from 'koa-send';
 import webpackConfig from '../webpack.config';
 
 const options = {
@@ -20,6 +21,10 @@ export function register(app) {
       changeOrigin: true,
     }],
   }));
+
+  // app.use(function* (next) {
+  //   yield send(this, '/index.html', {root: 'build'});
+  // });
 
   const compiler = webpack(webpackConfig);
   app.use(webpackDevMiddleware(compiler, options));

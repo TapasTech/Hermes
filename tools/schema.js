@@ -1,22 +1,19 @@
-var fs = require('fs')
-var path = require('path')
-var request = require('request')
-var parser = require('graphql-readable')
+const fs = require('fs');
+const path = require('path');
+const http = require('http');
+const parser = require('graphql-readable');
+const ensureDir = require('ensure-dir');
 
-request({
-  url: 'http://hermes-devel.dtcj.com/graphql',
-  headers: {
-    'Content-Type': 'application/json'
-  }
-}, function (err, res, body) {
-  if (err) console.log(err)
-  fs.writeFileSync(
-    path.join(__dirname, '../schema/schema.json'),
-    JSON.stringify(JSON.parse(body), null, '\t')
-  )
-
-  fs.writeFileSync(
-    path.join(__dirname, '../schema/schema.graphql'),
-    parser(JSON.parse(body), 'GraphQL')
-  )
-})
+new Promise((resolve, reject) => http.get('http://hermes-devel.dtcj.com/graphql', res => {
+  var data = '';
+  res
+  .on('data', (chunk) => data += chunk)
+  .on('end', () => resolve(data))
+  .on('error', err => reject(err));
+})).then(raw => {
+  const data = JSON.parse(raw);
+  ensureDir('schema').then(() => {
+    fs.writeFile('schema/schema.json', JSON.stringify(data, null, '\t'));
+    fs.writeFile('schema/schema.graphql', parser(data, 'GraphQL'));
+  });
+});

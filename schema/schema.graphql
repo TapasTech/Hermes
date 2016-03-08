@@ -215,6 +215,7 @@ type Query {
   dataSets(page: Int, count: Int): PaginatedDataSet
   dataReports(page: Int, count: Int): PaginatedDataReport
   hotAnswers(page: Int, count: Int): PaginatedAnswer
+  bestAnalysts(page: Int, count: Int): PaginatedUser
   searchQuestions(query: String!, page: Int, count: Int): PaginatedQuestion
 }
 
@@ -292,6 +293,8 @@ type User {
   answersCount: Int
   dataSets(page: Int, count: Int): PaginatedDataSet
   dataReports(page: Int, count: Int): PaginatedDataReport
+  upVotesCount: Int
+  downVotesCount: Int
   activities(page: Int, count: Int): PaginatedActivity
   mutation: UserMutation
 }

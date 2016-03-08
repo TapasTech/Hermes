@@ -294,6 +294,39 @@
 							"deprecationReason": null
 						},
 						{
+							"name": "bestAnalysts",
+							"description": null,
+							"args": [
+								{
+									"name": "page",
+									"description": null,
+									"type": {
+										"kind": "SCALAR",
+										"name": "Int",
+										"ofType": null
+									},
+									"defaultValue": null
+								},
+								{
+									"name": "count",
+									"description": null,
+									"type": {
+										"kind": "SCALAR",
+										"name": "Int",
+										"ofType": null
+									},
+									"defaultValue": null
+								}
+							],
+							"type": {
+								"kind": "OBJECT",
+								"name": "PaginatedUser",
+								"ofType": null
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
 							"name": "searchQuestions",
 							"description": null,
 							"args": [
@@ -806,6 +839,30 @@
 							"type": {
 								"kind": "OBJECT",
 								"name": "PaginatedDataReport",
+								"ofType": null
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "upVotesCount",
+							"description": "Up votes got through answers",
+							"args": [],
+							"type": {
+								"kind": "SCALAR",
+								"name": "Int",
+								"ofType": null
+							},
+							"isDeprecated": false,
+							"deprecationReason": null
+						},
+						{
+							"name": "downVotesCount",
+							"description": "Down votes got through answers",
+							"args": [],
+							"type": {
+								"kind": "SCALAR",
+								"name": "Int",
 								"ofType": null
 							},
 							"isDeprecated": false,
