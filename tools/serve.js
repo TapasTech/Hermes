@@ -12,22 +12,9 @@ app.use(function* (next) {
   }
 });
 
-if (process.env.NODE_ENV !== 'production') {
-  const webpack = require('webpack');
-  const webpackDevMiddleware = require("koa-webpack-dev-middleware");
-  const webpackHotMiddleware = require("koa-webpack-hot-middleware");
-  const webpackConfig = require('../webpack.config.dev');
-
-  var compiler = webpack(webpackConfig)
-  var options = {
-    noInfo: false,
-    quiet: false,
-    publicPath: webpackConfig.output.publicPath,
-    stats: { colors: true }
-  }
-
-  app.use(webpackDevMiddleware(compiler, options))
-  app.use(webpackHotMiddleware(compiler))
+if (!config.isProd) {
+  const register = require('./lib/dev').register;
+  register(app);
 }
 
 app.listen(config.port, () => {

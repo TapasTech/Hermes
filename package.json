@@ -3,11 +3,10 @@
   "version": "0.1.0",
   "description": "Say in Data",
   "scripts": {
-    "schema": "node ./bin/schema.js",
-    "start": "tapas-build",
-    "build:new": "rimraf build && NODE_ENV=production webpack --config webpack.config.prod.js",
-    "build": "node ./node_modules/.bin/tapas-build --production",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "schema": "node tools/schema.js",
+    "start": "babel-node tools/serve",
+    "tapas-build": "tapas-build",
+    "build": "babel-node tools/build"
   },
   "repository": {
     "type": "git",
@@ -26,7 +25,7 @@
     "port": "8008",
     "aliasRoot": "#",
     "proxy": {
-      "/graphql": "http://hermes-devel.dtcj.com/graphql"
+      "/graphql": "http://sayindata.dtcj.com:8080/graphql"
     }
   },
   "config": {
@@ -54,8 +53,11 @@
     "babel-plugin-transform-class-properties": "^6.6.0",
     "babel-preset-react": "^6.5.0",
     "babel-preset-react-hmre": "^1.1.1",
+    "del": "^2.2.0",
+    "ensure-dir": "^0.1.0",
     "ghooks": "^1.0.3",
     "graphql-readable": "^1.1.2",
+    "koa-proxypass": "^0.1.1",
     "koa-webpack-dev-middleware": "^1.1.0",
     "koa-webpack-hot-middleware": "^1.0.3",
     "request": "^2.69.0",

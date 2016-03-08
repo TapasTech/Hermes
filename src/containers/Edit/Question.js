@@ -193,18 +193,21 @@ export default class Question extends React.Component {
       ... dataReportsDiff.remove.map((id, i) => `datareport_remove_${i}: removeDataReport(id: ${encodeField(id)}) {id}`),
     ];
     qid && mutations.push(`update(title: ${encodeField(title)}, content: ${encodeField(content)}) {id}`);
-    const mutation = mutations.length ? `mutation { ${mutations.join(' ')} }` : 'id';
+    const mutation = mutations.length ? `mutation { ${mutations.join(' ')} }` : '';
     const query = qid ? `query updateQuestion {
       question(id: ${encodeField(qid)}) {
+        id
         ${mutation}
       }
     }` : `mutation createQuestion {
       question: createQuestion(title: ${encodeField(title)}, content: ${encodeField(content)}) {
+        id
         ${mutation}
       }
     }`;
     GraphqlRest.post(query).then(data => {
-      console.log(data);
+      const qid = data.question.id;
+      browserHistory.push(`/question/${qid}`);
     });
   };
 
