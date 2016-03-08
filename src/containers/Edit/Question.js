@@ -34,10 +34,16 @@ export default class Question extends React.Component {
         ready: true,
       });
     });
-    Store.on('EVT_USER', () => {
-      this.setState({
-        user: Store.user.index().data,
-      });
+    Store.on('EVT_USER', this.updateUserInfo);
+  }
+
+  componentWillUnmount() {
+    Store.off('EVT_USER', this.updateUserInfo);
+  }
+
+  updateUserInfo = () => {
+    this.setState({
+      user: Store.user.index().data,
     });
   }
 

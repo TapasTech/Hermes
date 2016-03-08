@@ -65,7 +65,7 @@ export default class Header extends React.Component {
   }
 
   componentWillUnmount() {
-    Store.removeListener('EVT_USER', this._onChange);
+    Store.off('EVT_USER', this._onChange);
   }
 
   render() {
