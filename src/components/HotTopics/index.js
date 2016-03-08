@@ -56,7 +56,7 @@ export default class HotTopics extends React.Component {
         </div>
         {
           question
-            && <Link className="link" to={`/detail/${question.id}`}>{question.title}</Link>
+            && <Link className="link" to={`/question/${question.id}`}>{question.title}</Link>
         }
       </div>
     )
