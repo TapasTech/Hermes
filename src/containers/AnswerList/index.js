@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import { AnswerCard, HotTopics, NewestDataSets, Loader } from '#/components';
+import { AnswerCard, HotTopics, NewestDataSets, Loader, LoadMore } from '#/components';
 import { GraphqlRest } from '#/utils';
 import Store from '#/store';
 import AppDispatcher from '#/dispatcher';
@@ -51,7 +51,7 @@ export default class AnswerList extends React.Component {
     };
   }
 
-  handleMoreAnwers() {
+  handleMoreAnwers = () => {
     GraphqlRest.handleQueries(
       this.prepareHotAnswers(this.state.currentPage + 1)
     );
@@ -100,10 +100,7 @@ export default class AnswerList extends React.Component {
               : <div key={index}>loading...</div>
           })
         }
-        { currentPage < totalPages
-          ? <div className="more" onClick={::this.handleMoreAnwers}>点击加载更多</div>
-          : <div className="end">已到结尾</div>
-        }
+        <LoadMore condition={currentPage < totalPages} onLoadMore={this.handleMoreAnwers} />
       </div>
     );
   }

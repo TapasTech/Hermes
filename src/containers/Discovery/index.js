@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import { HotTopics, Loader } from '#/components';
+import { HotTopics, Loader, LoadMore } from '#/components';
 import { GraphqlRest, formatter } from '#/utils';
 import Questions from './Questions';
 
@@ -30,7 +30,7 @@ export default class Discovery extends React.Component {
 
   prepareTopics(page) {
     const query = `
-    topics(page: ${page}, count: 10) {
+    topics(page: ${page}, count: 50) {
       data {
         id
         name
@@ -115,6 +115,12 @@ export default class Discovery extends React.Component {
     }
   }
 
+  handleMoreQuestions = () => {
+    GraphqlRest.handleQueries(
+      this.prepareQuestions(this.state.questions.currentPage + 1)
+    );
+  }
+
   renderTopic = (item, index) => {
     const topicId = this.props.params.id || '';
     const className = topicId === item.id ? 'item selected' : 'item';
@@ -138,9 +144,8 @@ export default class Discovery extends React.Component {
               { topics.data.map(this.renderTopic) }
             </div>
             <Questions data={questions.data} />
-            { questions.currentPage < questions.totalPages
-              ? <div className="more" onClick={this.handleMoreQuestions}>点击加载更多</div>
-              : !loading && <div className="end">已到结尾</div>
+            {!loading &&
+              <LoadMore condition={questions.currentPage < questions.totalPages} onLoadMore={this.handleMoreQuestions} />
             }
           </div>
         </div>
