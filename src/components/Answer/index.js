@@ -4,14 +4,20 @@ import styles from './style.less';
 
 export default class Answer extends React.Component {
   static propTypes = {
-    answerContent: React.PropTypes.string,
-    pic: React.PropTypes.string
+    answerContent: React.PropTypes.string.isRequired,
+    showFull: React.PropTypes.bool
   };
 
   constructor(props) {
     super(props);
+    const { answerContent, showFull } = this.props;
+    const divEl = document.createElement('div');
+    divEl.innerHTML = this.props.answerContent;
+    const imgEL = divEl.getElementsByTagName('img')[0];
     this.state = {
-      full: false
+      full: showFull ? true : false,
+      shortAnswer: divEl.textContent.slice(0, 140),
+      pic: imgEL ? imgEL.src : undefined
     };
   }
 
@@ -27,26 +33,19 @@ export default class Answer extends React.Component {
     });
   }
 
-  getShortAnswer(content) {
-    const div = document.createElement('div');
-    div.innerHTML = content;
-    return div.textContent.slice(0, 140);
-  }
-
   render() {
-    const { answerContent, pic } = this.props;
-    const _answerHTML = { __html: answerContent };
+    const { shortAnswer, pic }  = this.state;
     return (
       <div className={styles.answer}>
         <div className={styles.content}>
           {
             this.state.full
               ?  <div>
-                <div className="long" dangerouslySetInnerHTML={_answerHTML}></div>
+                <div className="long" dangerouslySetInnerHTML={{__html: this.props.answerContent}}></div>
                 <div className="hide" onClick={::this.handleHideFull}>收起回答</div>
               </div>
               : <div className="short" onClick={::this.handleShowFull}>
-                { this.getShortAnswer(answerContent) }<span className="show">...显示全部</span>
+                { shortAnswer }<span className="show">...显示全部</span>
               </div>
           }
         </div>
