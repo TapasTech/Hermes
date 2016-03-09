@@ -77,18 +77,23 @@ export default class Header extends React.Component {
           <div className="navtop-logo">
             <Link to="/"></Link>
           </div>
-          <div className="navtop-user pull-right">
-            {user.id
-              ? <div>
-                <Link className="user" to={`/user/${user.id}`}>{user.displayName}</Link>
+          {user.id &&
+            <div className="navtop-user pull-right">
+              <div>
+                <Link className="link" to={`/user/${user.id}`}>{user.displayName}</Link>
                 <div className="menu">
                   <div className="item">设置</div>
                   <div className="item" onClick={::this.handleLogout}>退出登录</div>
                 </div>
               </div>
-              : <Link className="user" to="/account">登录/注册</Link>
-            }
-          </div>
+            </div>
+          }{!user.id &&
+            <div className="navtop-user pull-right">
+              <Link className="link" to="/account?sign_up=1">注册</Link>
+              <span className="divider"></span>
+              <Link className="link" to="/account">登录</Link>
+            </div>
+          }
           <form className="navtop-search pull-left" onSubmit={this.handleSearch}>
             <input
               type="text"

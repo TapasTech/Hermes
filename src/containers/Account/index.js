@@ -1,5 +1,5 @@
 import React from 'react';
-import { browserHistory } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 
 import { GraphqlRest } from '#/utils';
 import * as auth from '#/services/auth';
@@ -19,39 +19,39 @@ export default class Account extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      formData: {
-        displayName: undefined,
-        email: undefined,
-        password: undefined
-      },
-      login: false,
+      displayName: '',
+      email: '',
+      password: '',
+      ... this.statePatch(props),
     };
   }
 
-  handleSwitch(item = 'signup') {
-    const result = item === 'login' ? true : false;
-    this.setState({
-      login: result
-    });
+  componentWillReceiveProps(nextProps) {
+    this.setState(this.statePatch(nextProps));
   }
+
+  statePatch(props) {
+    return {
+      login: !props.location.query.sign_up,
+    };
+  }
+
   // handle form value changes
   handleFormChange(name, e) {
-    let newFormData = Object.assign({}, this.state.formData);
-    newFormData[name] = e.target.value;
     this.setState({
-      formData: newFormData
+      [name]: e.target.value,
     });
   }
 
   handleLogin() {
-    const { email, password } = this.state.formData;
+    const { email, password } = this.state;
     auth.logIn(email, password).then(() => {
       browserHistory.push('/');
     });
   }
 
   handleSignup() {
-    const { displayName, email, password } = this.state.formData;
+    const { displayName, email, password } = this.state;
     auth.signUp(displayName, email, password).then(() => {
       browserHistory.push('/');
     });
@@ -63,17 +63,13 @@ export default class Account extends React.Component {
   }
 
   render() {
-    const { formData, login } = this.state;
+    const { displayName, email, password, login } = this.state;
     return (
       <div className={styles.account}>
         <div className={styles.content}>
           <div className={styles.switch}>
-            <div
-              className={login ? "tab" : "tab active"}
-              onClick={::this.handleSwitch}>注册</div>
-            <div
-              className={login ? "tab active" : "tab"}
-              onClick={this.handleSwitch.bind(this, 'login')}>登录</div>
+            <Link className={login ? "tab" : "tab active"} to="/account?sign_up=1">注册</Link>
+            <Link className={login ? "tab active" : "tab"} to="/account">登录</Link>
           </div>
           <form className={styles.form} onSubmit={this.handleSubmit}>
             {
@@ -81,20 +77,20 @@ export default class Account extends React.Component {
                 && <input
                 className="field"
                 type="texts"
-                value={formData.displayName}
+                value={displayName}
                 onChange={this.handleFormChange.bind(this, 'displayName')}
                 placeholder="用户名" />
             }
             <input
               className="field"
               type="text"
-              value={formData.email}
+              value={email}
               onChange={this.handleFormChange.bind(this, 'email')}
               placeholder="邮箱" />
             <input
               className="field"
               type="password"
-              value={formData.password}
+              value={password}
               onChange={this.handleFormChange.bind(this, 'password')}
               placeholder="密码" />
             <button type="submit" className="btn primary">{login ? '登录' : '注册'}</button>
