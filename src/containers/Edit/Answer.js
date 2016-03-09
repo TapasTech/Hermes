@@ -1,14 +1,13 @@
 import React from 'react';
 import {browserHistory} from 'react-router';
-import TapasEditor from 'tapas-editor';
 
 import { Avatar } from '#/components';
 import {GraphqlRest, encodeField} from '#/utils';
 import Store from '#/store';
 import Reference from './Reference';
+import Editor from './Editor';
 import {diffList} from './utils';
 
-import config from './config';
 import styles from './style.less';
 
 export default class Answer extends React.Component {
@@ -186,10 +185,6 @@ export default class Answer extends React.Component {
   }
 
   render() {
-    const events = {
-      TUploadImage: this.handleUpload,
-    };
-
     const {user, question, content, anonymous, dataSets, dataReports} = this.state;
 
     return (
@@ -197,14 +192,7 @@ export default class Answer extends React.Component {
         <div className="main">
           <div className={styles.edit}>
             <div className={styles.title}>{question.title}</div>
-            <div>
-              <TapasEditor
-                config={config}
-                events={events}
-                content={content}
-                onChange={this.handleContentChange}
-              />
-            </div>
+            <Editor content={content} onChange={this.handleContentChange} />
             <Reference
               dataSets={dataSets}
               dataReports={dataReports}

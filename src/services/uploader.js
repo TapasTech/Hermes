@@ -17,7 +17,7 @@ function getToken() {
 }
 
 export function upload(file) {
-  return getToken().then(token => new Promise(resolve, reject) => {
+  return getToken().then(token => new Promise((resolve, reject) => {
     const formData = new FormData;
     formData.append('token', token);
     formData.append('file', file);
@@ -35,12 +35,12 @@ export function upload(file) {
       }
     };
     xhr.send(formData);
-  });
+  }));
 }
 
 export function getUrl(data, options) {
   options = options || {};
-  var params = _.reduce(['w', 'h', 'q'], function (result, k) {
+  var params = ['w', 'h', 'q'].reduce((result, k) => {
     var v = options[k];
     return result + (v ? '/' + k + '/' + v : '');
   }, '');

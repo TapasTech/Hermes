@@ -1,13 +1,13 @@
 import React from 'react';
-import TapasEditor from 'tapas-editor';
+import {browserHistory} from 'react-router';
 
 import { Avatar } from '#/components';
 import {GraphqlRest, encodeField} from '#/utils';
 import Store from '#/store';
 import Reference from './Reference';
+import Editor from './Editor';
 import {diffList} from './utils';
 
-import config from './config';
 import styles from './style.less';
 
 export default class Question extends React.Component {
@@ -218,10 +218,6 @@ export default class Question extends React.Component {
   };
 
   render() {
-    const events = {
-      TUploadImage: this.handleUpload,
-    };
-
     const { user, title, content, anonymous, topics, dataSets, dataReports } = this.state;
 
     return (
@@ -234,14 +230,7 @@ export default class Question extends React.Component {
               value={title}
               onChange={this.handleTitleChange}
               placeholder="请输入标题" />
-            <div>
-              <TapasEditor
-                config={config}
-                events={events}
-                content={content}
-                onChange={this.handleContentChange}
-              />
-            </div>
+            <Editor content={content} onChange={this.handleContentChange} />
             <Reference
               dataSets={dataSets}
               dataReports={dataReports}

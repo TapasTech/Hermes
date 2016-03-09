@@ -22,6 +22,11 @@ const config = {
 };
 
 export default class Editor extends React.Component {
+  static propTypes = {
+    content: React.PropTypes.string,
+    onChange: React.PropTypes.func,
+  }
+
   handleUpload = (e, editor) => {
     const file = e.data;
     upload(file).then(data => e.callback(getUrl(data)));
