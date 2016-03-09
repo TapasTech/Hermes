@@ -8,7 +8,7 @@ import webpackConfig from '../webpack.config';
 const options = {
   noInfo: true,
   publicPath: webpackConfig.output.publicPath,
-  stats: { colors: true },
+  stats: { colors: true }
 };
 
 export function register(app) {
@@ -17,7 +17,7 @@ export function register(app) {
       match: {
         path: '/graphql',
       },
-      target: 'http://sayindata.dtcj.com:8080',
+      target: 'http://hermes-devel.dtcj.com/',
       changeOrigin: true,
     }],
   }));

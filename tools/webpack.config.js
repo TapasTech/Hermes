@@ -9,6 +9,17 @@ import {isProd} from './config';
 const imageName = `images/[name]${isProd ? '.[hash:8]' : ''}.[ext]`;
 const fontName = `fonts/[name]${isProd ? '.[hash:8]' : ''}.[ext]`;
 
+const babelRC = {
+  presets:  ['react', 'es2015', 'stage-0'],
+  plugins: ['transform-runtime'],
+  env: {
+    development: {
+      presets: ['react-hmre']
+    }
+  },
+  cacheDirectory: true
+};
+
 export default {
   devtool: isProd ? false : 'eval',
   entry: {
@@ -31,7 +42,7 @@ export default {
   module: {
     loaders: [
       { test: /\.json$/, loader: 'json' },
-      { test: /\.js$/, loader: 'babel', include: path.resolve('src'), query: {presets: ['react', 'es2015', 'stage-0']} },
+      { test: /\.js$/, loader: 'babel', include: path.resolve('src'), query: babelRC },
       { test: /\.css$/, loader: cssLoader('css?importLoaders=1!postcss?pack=default'), include: path.resolve('src') },
       { test: /\.css$/, loader: cssLoader('css!postcss?pack=default'), include: path.resolve('node_modules') },
       { test: /\.less$/, loader: cssLoader('css?importLoaders=1!less') },
