@@ -51,7 +51,7 @@ export default class Header extends React.Component {
     if (query) {
       browserHistory.push(`/search?q=${this.state.query}`);
     } else {
-      browserHistory.push('/search');
+      browserHistory.push('/');
     }
   }
 
@@ -72,12 +72,12 @@ export default class Header extends React.Component {
   render() {
     const { query, user } = this.state;
     return (
-      <nav className={styles.header}>
-        <div className="wrap">
-          <div className="logo">
+      <nav className="navtop">
+        <div className="navtop-wrap">
+          <div className="navtop-logo">
             <Link to="/"></Link>
           </div>
-          <div className="side">
+          <div className="navtop-user pull-right">
             {user.id
               ? <div>
                 <Link className="user" to={`/user/${user.id}`}>{user.displayName}</Link>
@@ -89,22 +89,20 @@ export default class Header extends React.Component {
               : <Link className="user" to="/account">登录/注册</Link>
             }
           </div>
-          <div className="main">
-            <form className="search" onSubmit={this.handleSearch}>
-              <input
-                type="text"
-                className="input"
-                value={query}
-                onChange={this.handleSearchInput}
-                placeholder="搜索问题"/>
-              <button type="submit" className="btn link">搜索</button>
-            </form>
-            <div className="nav">
-              <Link className="link" to="/">首页</Link>
-              <Link className="link" to="/discovery">发现</Link>
-              <span className="divider"></span>
-              <Link className="link" to="/question/_new">提问</Link>
-            </div>
+          <form className="navtop-search pull-left" onSubmit={this.handleSearch}>
+            <input
+              type="text"
+              className="navtop-search-input"
+              value={query}
+              onChange={this.handleSearchInput}
+              placeholder="搜索问题"/>
+            <button type="submit" className="btn link">搜索</button>
+          </form>
+          <div className="navtop-menu pull-right">
+            <Link className="link" to="/">首页</Link>
+            <Link className="link" to="/discovery">发现</Link>
+            <span className="divider"></span>
+            <Link className="link" to="/question/_new">提问</Link>
           </div>
         </div>
       </nav>

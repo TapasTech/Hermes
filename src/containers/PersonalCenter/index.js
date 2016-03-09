@@ -377,7 +377,7 @@ export default class PersonalCenter extends React.Component {
   render() {
     return (
       <div className="container">
-        <div className="sidebar">
+        <div className="sidebar-left">
           { this.renderInfo() }
           { this.renderIntro() }
         </div>

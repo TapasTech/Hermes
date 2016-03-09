@@ -46,6 +46,7 @@ function template(strings, ...keys) {
 }
 
 export function post(query) {
+  query = query.replace(/\s+/g, ' ').trim();
   return request('POST', query);
 }
 

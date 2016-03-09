@@ -24,6 +24,20 @@ textarea {
   resize: none;
 }
 
+.pull-left {
+  float: left;
+}
+.pull-right {
+  float: right;
+}
+.clearfix {
+  &::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+}
+
 /* ---- base ---- */
 
 .btn {
@@ -64,23 +78,38 @@ textarea {
 }
 
 .container {
-  max-width: 960px;
-  margin: 20px auto;
-  display: flex;
+  max-width: 1070px;
+  margin: 10px auto;
+
+  .clearfix;
+
+  > * {
+    float: left;
+  }
 
   .main {
-    flex: 1;
-
-    & + .sidebar {
-      margin-left: 20px;
+    width: 100%;
+    > * {
+      margin-right: 240px + 10px;
     }
   }
 
   .sidebar {
-    width: 250px;
+    width: 240px;
+    margin-left: -240px;
+    > * {
+      margin-bottom: 10px;
+    }
+  }
 
-    & + .main {
-      margin-left: 20px;
+  .sidebar-left {
+    width: 270px;
+    margin-right: -270px;
+    + .main {
+      > * {
+        margin-right: 0;
+        margin-left: 270px + 10px;
+      }
     }
   }
 }

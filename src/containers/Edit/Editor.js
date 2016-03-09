@@ -7,7 +7,7 @@ const config = {
   resize: false,
   menubar: '',
   toolbar: 'undo redo | bold removeformat image t_image',
-  plugins: 'searchreplace autoresize paste t_image',
+  plugins: 'searchreplace autoresize paste t_image t_autofloat',
   content_style:
     '*{line-height:25px;color:#555;font-size:15px;font-family:\'Hiragino Sans GB\',\'Microsoft YaHei\',\'黑体\',Helvetica,Arial,Tahoma,sans-serif;}' +
     'img{max-width:100%;}' +
@@ -18,7 +18,7 @@ const config = {
   paste_as_text: true,
   paste_data_images: true,
   autoresize_min_height: 500,
-  //autofloat_top_offset: 50,
+  autofloat_top_offset: 64,
 };
 
 export default class Editor extends React.Component {
