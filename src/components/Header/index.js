@@ -6,6 +6,7 @@ import AppDispatcher from '#/dispatcher';
 import {GraphqlRest} from '#/utils';
 import {getUserInfo} from '#/services/auth';
 import styles from './style.less';
+import Logo from '#/assets/logo.png';
 
 export default class Header extends React.Component {
   static PropTypes = {
@@ -74,7 +75,7 @@ export default class Header extends React.Component {
       <nav className={styles.header}>
         <div className="wrap">
           <div className="logo">
-            <Link className="link" to="/">Hermes</Link>
+            <Link to="/"></Link>
           </div>
           <div className="side">
             {user.id
@@ -96,7 +97,7 @@ export default class Header extends React.Component {
                 value={query}
                 onChange={this.handleSearchInput}
                 placeholder="搜索问题"/>
-              <button type="submit" className="link search-btn">搜索</button>
+              <button type="submit" className="btn link">搜索</button>
             </form>
             <div className="nav">
               <Link className="link" to="/">首页</Link>

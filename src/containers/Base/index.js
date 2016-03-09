@@ -1,6 +1,7 @@
 import React from 'react';
 import { Header, MessageBox } from '#/components';
 import Store from '#/store';
+import style from './style.less';
 
 export default class Base extends React.Component {
   constructor(props) {
@@ -56,7 +57,7 @@ export default class Base extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className={style.base}>
         {this.renderMessages()}
         <Header query={this.state.query} />
         {this.props.children || 'Welcome to Hermes'}

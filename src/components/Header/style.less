@@ -1,8 +1,22 @@
 :local(.header) {
-  height: 50px;
+  @height: 64px;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: @height;
   color: #fff;
-  background-color: #000;
+  background-color: #434343;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.24);
+
+  a,
+  .btn {
+    color: white;
+    &:hover {
+      color: #b8ed06;
+    }
+  }
 
   .wrap {
     max-width: 960px;
@@ -19,13 +33,18 @@
 
   .logo {
     float: left;
-    width: 150px;
-    font-size: 18px;
-    line-height: 50px;
+    height: 100%;
+    margin-right: 16px;
+    > a {
+      display: block;
+      width: 150px;
+      height: 100%;
+      background: url(../../assets/logo.png) no-repeat center / contain;
+    }
   }
 
-  .search-btn {
-    border: 1px solid #fff;
+  .btn {
+    border: 1px solid currentColor;
     border-radius: 3px;
     margin-left: 10px;
     line-height: 26px;
@@ -36,7 +55,6 @@
     display: inline-block;
     width: 50px;
     text-align: center;
-    color: #fff;
     cursor: pointer;
   }
 
@@ -65,9 +83,9 @@
     position: relative;
     float: right;
     max-width: 120px;
-    min-width: 60px;
-    line-height: 50px;
-    color: #fff;
+    min-width: 80px;
+    height: 100%;
+    line-height: @height;
     text-align: center;
 
     .user {
@@ -76,12 +94,11 @@
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
-      color: #fff;
     }
 
     .menu {
       position: absolute;
-      top: 50px;
+      top: 100%;
       right: 0;
       width: 100%;
       display: none;
