@@ -85,28 +85,30 @@
       top: 100%;
       right: 0;
       width: 100%;
-      display: none;
-      background-color: #000;
-      opacity: 0;
-      transition: opacity 1s linear;
-      border-bottom-right-radius: 3px;
-      border-bottom-left-radius: 3px;
+      height: 0;
+      background-color: #434343;
+      transition: all 0.25s ease;
       text-align: center;
     }
 
+    @height: 64px;
+    &:hover .menu {
+      height: @height;
+
+      .item {
+        visibility: visible;
+      }
+    }
+
     .item {
+      visibility: hidden;
       font-size: 14px;
-      line-height: 38px;
+      line-height: @height/2;
       cursor: pointer;
 
       & + .item {
         border-top: 1px solid #a6a6a6;
       }
-    }
-
-    &:hover .menu {
-      display: block;
-      opacity: 0.85;
     }
   }
 }
