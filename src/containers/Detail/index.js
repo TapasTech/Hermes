@@ -415,12 +415,7 @@ export default class Detail extends React.Component {
   }
 
   handleFollowStatus(follow) {
-    let status;
-    if (follow) {
-      status = `follow`;
-    } else {
-      status = `unfollow`;
-    }
+    const status = follow ? `follow` : 'unfollow';
     const { id } = this.props.params;
     const mutation = `
       query {
@@ -543,7 +538,7 @@ export default class Detail extends React.Component {
                 </div>
               </div>
             );
-        })
+          })
         }
         {
           (meta.current_page) && (meta.current_page < meta.total_pages)

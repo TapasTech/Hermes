@@ -27,6 +27,7 @@ export default class Root extends React.Component {
             <Route path=":id" component={Pages.PersonalCenter} />
             <Route path=":id/:tab" component={Pages.PersonalCenter} />
           </Route>
+          <Route path="rank" component={Pages.AnalystRank} />
         </Route>
       </Router>
     );

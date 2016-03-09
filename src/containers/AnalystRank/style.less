@@ -1,0 +1,75 @@
+:local(.rank) {
+  max-width: 960px;
+  margin: 0 auto;
+  background-color: #fff;
+  margin-top: 10px;
+  padding: 15px;
+}
+
+:local(.title) {
+  margin-bottom: 10px;
+}
+
+:local(.analyst) {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 5px;
+  border-top: 1px solid #E0E0E0;
+
+  .left-part {
+    display: flex;
+    align-items: center;
+
+    .num {
+      margin-right: 20px;
+      font-size: 24px;
+      color: #9E9E9E;
+    }
+  }
+
+  .detail {
+    margin-left: 20px;
+    color: #BDBDBD;
+
+    .username {
+      display: inline-block;
+      margin-bottom: 5px;
+      color: #404040;
+      font-size: 16px;
+    }
+
+    .divider {
+      margin: 0 5px;
+      border-right: 1px solid #BDBDBD;
+    }
+
+    .tag-list {
+      margin-top: 5px;
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      display: inline-block;
+      border-radius: 3px;
+      padding: 0 5px;
+      line-height: 24px;
+      color: #43A047;
+      background-color: #DCEDC8;
+
+      & + .tag {
+        margin-left: 10px;
+      }
+    }
+  }
+
+  .right-part {
+    display: inline-block;
+    float: right;
+
+    .btn {
+      width: 80px;
+    }
+  }
+}

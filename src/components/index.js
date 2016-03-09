@@ -3,6 +3,7 @@ export Answer from './Answer';
 export AnswerCard from './AnswerCard';
 export Comment from './Comment';
 export CommentList from './CommentList';
+export LoadMore from './LoadMore';
 export Header from './Header';
 export HotTopics from './HotTopics';
 export NewestDataSets from './NewestDataSets';

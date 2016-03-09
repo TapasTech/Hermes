@@ -1,6 +1,7 @@
 :local(.avatar) {
 
   @normal: 40px;
+  @medium: 60px;
   @large: 80px;
   height: @normal;
   width: @normal;
@@ -16,9 +17,17 @@
   justify-content: center;
   align-items: center;
 
+  &.medium {
+    width: @medium;
+    height: @medium;
+    line-height: @medium;
+    font-size: 18px;
+  }
+
   &.large {
     width: @large;
     height: @large;
     line-height: @large;
+    font-size: 20px;
   }
 }

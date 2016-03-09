@@ -26,25 +26,6 @@ export function config(options) {
   }
 }
 
-export function query(name, res) {
-  return template`query { data: ${0} { ${1} } }`(name, res);
-}
-
-export function mutation(name, res) {
-  return template`mutation { data: ${0} { ${1} } }`(name, res);
-}
-
-function template(strings, ...keys) {
-  return (function(...values) {
-    var result = [strings[0]];
-    keys.forEach(function(key, i) {
-      var value = values[key];
-      result.push(value, strings[i + 1]);
-    });
-    return result.join('');
-  });
-}
-
 export function post(query) {
   query = query.replace(/\s+/g, ' ').trim();
   return request('POST', query);

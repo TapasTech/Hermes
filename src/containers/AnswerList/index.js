@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 import { AnswerCard, HotTopics, NewestDataSets, Loader } from '#/components';
 import { GraphqlRest } from '#/utils';
@@ -62,6 +63,15 @@ export default class AnswerList extends React.Component {
     );
   }
 
+  renderBestAnalysts() {
+    return (
+      <Link className={styles.bestAnalysts} to="/rank">
+        <div className="top">全球分析师</div>
+        <div className="bottom">排行榜</div>
+      </Link>
+    );
+  }
+
   renderAnswerCard(item, index) {
     const { question } = item;
     return (
@@ -106,6 +116,7 @@ export default class AnswerList extends React.Component {
           { this.state.data ? this.renderQuestionList() : <div>loading...</div> }
         </div>
         <div className="sidebar">
+          { this.renderBestAnalysts() }
           <HotTopics />
           <NewestDataSets />
         </div>
