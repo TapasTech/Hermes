@@ -6,7 +6,9 @@
     "schema": "node tools/schema.js",
     "start": "babel-node tools/serve",
     "tapas-build": "tapas-build",
-    "build": "babel-node tools/build"
+    "build": "babel-node tools/build",
+    "predeploy": "npm run build --production",
+    "deploy": "node tools/upload.js"
   },
   "repository": {
     "type": "git",
