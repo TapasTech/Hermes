@@ -45,6 +45,7 @@ export default class AnswerCard extends React.Component {
       showShare: false,
       showComment: false,
       upVotesCount: props.answer.upVotesCount,
+      commentsCount: props.answer.comments.meta.total_count,
     };
   }
 
@@ -95,6 +96,13 @@ export default class AnswerCard extends React.Component {
     );
   }
 
+  onSetCount = (total) => {
+    console.log(total);
+    this.setState({
+      commentsCount: total,
+    });
+  }
+
   renderOptionArea() {
     const { answer } = this.props;
     const {upVotesCount} = this.state;
@@ -104,14 +112,16 @@ export default class AnswerCard extends React.Component {
           <PokeButton count={upVotesCount} onClick={this.handleUpVote} />
           <div className="comment" onClick={::this.handleShowComment}>
             <span>评论</span>
-            <span className="count">{ answer.comments.meta.total_count  }</span>
+            <span className="count">{ this.state.commentsCount }</span>
           </div>
           <div className="share">
             <span onClick={::this.handleShowShare}>分享</span>
             { this.state.showShare && <ShareBar className="bar" url={`/question/${question.id}`} title={answer.question.title} /> }
           </div>
         </div>
-        { this.state.showComment && <CommentList answerId={answer.id} /> }
+        { this.state.showComment &&
+          <CommentList answerId={answer.id} onSetCount={this.onSetCount} />
+        }
       </div>
     );
   }

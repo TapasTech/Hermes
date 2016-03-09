@@ -76,6 +76,7 @@ export default class PersonalCenter extends React.Component {
       description
       followersCount
       followeesCount
+      upVotesCount
       questionsCount
       answersCount
       location { name }
@@ -235,15 +236,15 @@ export default class PersonalCenter extends React.Component {
         </div>
         <div className={styles.data}>
           <div className="item">
-            <div className="num">{user.followeesCount}</div>
+            <div className="num">{user.followeesCount || 0}</div>
             <div className="tip">关注</div>
           </div>
           <div className="item">
-            <div className="num">{user.followersCount}</div>
+            <div className="num">{user.followersCount || 0}</div>
             <div className="tip">粉丝</div>
           </div>
           <div className="item">
-            <div className="num">92432</div>
+            <div className="num">{user.upVotesCount || 0}</div>
             <div className="tip">赞同</div>
           </div>
         </div>

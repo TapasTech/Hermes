@@ -33,6 +33,14 @@ export default class Comment extends React.Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      showReply: false,
+      upVotesCount: nextProps.data.upVotesCount,
+      comment: '',
+    });
+  }
+
   handleShowInput() {
     this.setState({
       showReply: !this.state.showReply

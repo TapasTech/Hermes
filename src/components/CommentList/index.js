@@ -6,9 +6,9 @@ import {GraphqlRest, encodeField} from '#/utils';
 import styles from './style.less';
 
 export default class CommentList extends React.Component {
-  // FIXME vote up / comment count
   static propTypes = {
     answerId: React.PropTypes.string,
+    onSetCount: React.PropTypes.func,
   };
 
   constructor(props) {
@@ -19,6 +19,7 @@ export default class CommentList extends React.Component {
       comment: '',
       data: [],
     }
+    this.totalCount = 0;
   }
 
   componentDidMount() {
@@ -47,12 +48,18 @@ export default class CommentList extends React.Component {
           ... comments.data,
         ],
       });
+      this.setTotal(comments.meta.total_count);
     };
     return {
       query,
       callback,
       fragments: Comment.fragments,
     };
+  }
+
+  setTotal(total) {
+    const onSetCount = this.props.onSetCount;
+    onSetCount && onSetCount(this.totalCount = total);
   }
 
   handleShowMore = () => {
@@ -73,6 +80,7 @@ export default class CommentList extends React.Component {
       this.setState({
         comment: ''
       });
+      this.setTotal(this.totalCount + 1);
     });
   }
 

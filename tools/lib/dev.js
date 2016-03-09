@@ -17,7 +17,7 @@ export function register(app) {
       match: {
         path: '/graphql',
       },
-      target: 'http://sayindata.dtcj.com:8080',
+      target: 'http://hermes-devel.dtcj.com',
       changeOrigin: true,
     }],
   }));
