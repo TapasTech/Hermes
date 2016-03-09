@@ -13,10 +13,6 @@ export default class Questions extends React.Component {
       answersCount
       readCount
       createdAt
-      user {
-        id
-        displayName
-      }
     }
     meta {
       current_page
@@ -25,6 +21,7 @@ export default class Questions extends React.Component {
     }
   }
   `;
+
   renderQuestion(item, index) {
     return (
       <div className={styles.topicList} key={index}>

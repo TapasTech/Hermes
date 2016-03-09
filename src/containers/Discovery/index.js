@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import { HotTopics } from '#/components';
+import { HotTopics, Loader } from '#/components';
 import { GraphqlRest, formatter } from '#/utils';
 import Questions from './Questions';
 
@@ -24,6 +24,7 @@ export default class Discovery extends React.Component {
         currentPage: 1,
         totalPages: 1,
       },
+      loading: true,
     };
   }
 
@@ -53,7 +54,6 @@ export default class Discovery extends React.Component {
       };
       this.setState({
         topics,
-        index: 0,
       });
     };
     return {
@@ -82,6 +82,7 @@ export default class Discovery extends React.Component {
       };
       this.setState({
         questions,
+        loading: false,
       });
     };
     return {
@@ -106,6 +107,7 @@ export default class Discovery extends React.Component {
           currentPage: 1,
           totalPages: 1,
         },
+        loading: true,
       });
       GraphqlRest.handleQueries(
         this.prepareQuestions(1)
@@ -125,9 +127,10 @@ export default class Discovery extends React.Component {
   }
 
   render() {
-    const { topics, questions } = this.state;
+    const { topics, questions, loading } = this.state;
     return (
       <div className="container">
+        {loading && <Loader full={true} />}
         <div className="main">
           <div className={styles.listArea}>
             <div className={styles.header}>最新问题</div>
@@ -137,7 +140,7 @@ export default class Discovery extends React.Component {
             <Questions data={questions.data} />
             { questions.currentPage < questions.totalPages
               ? <div className="more" onClick={this.handleMoreQuestions}>点击加载更多</div>
-              : <div className="end">已到结尾</div>
+              : !loading && <div className="end">已到结尾</div>
             }
           </div>
         </div>
