@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { AnswerCard, HotTopics, NewestDataSets } from '#/components';
+import { AnswerCard, HotTopics, NewestDataSets, Loader } from '#/components';
 import { GraphqlRest } from '#/utils';
 import Store from '#/store';
 import AppDispatcher from '#/dispatcher';
@@ -12,6 +12,7 @@ export default class AnswerList extends React.Component {
     super(props);
     this.state = {
       currentPage: 1,
+      loading: true,
       data: [],
     };
   }
@@ -39,6 +40,7 @@ export default class AnswerList extends React.Component {
         currentPage: meta.current_page,
         totalPages: meta.total_pages,
         totalCount: meta.total_count,
+        loading: false,
       });
     };
     return {
@@ -99,6 +101,7 @@ export default class AnswerList extends React.Component {
   render() {
     return (
       <div className="container">
+        {this.state.loading && <Loader full={true} />}
         <div className="main">
           { this.state.data ? this.renderQuestionList() : <div>loading...</div> }
         </div>

@@ -2,7 +2,7 @@ import React from 'react';
 import {Link, browserHistory} from 'react-router';
 
 import Store from '#/store';
-import { AnswerCard, Avatar, TopicCard } from '#/components';
+import { AnswerCard, Avatar, TopicCard, Loader } from '#/components';
 import {GraphqlRest, encodeField, formatter} from '#/utils';
 import styles from './style.less';
 
@@ -29,6 +29,7 @@ export default class PersonalCenter extends React.Component {
       user: {},
       currentPage: 1,
       totalPages: 0,
+      loading: true,
     };
   }
 
@@ -95,6 +96,7 @@ export default class PersonalCenter extends React.Component {
     const callback = data => {
       this.setState({
         user: data.user,
+        loading: false,
       });
     };
     return {
@@ -377,6 +379,7 @@ export default class PersonalCenter extends React.Component {
   render() {
     return (
       <div className="container">
+        {this.state.loading && <Loader full={true} />}
         <div className="sidebar-left">
           { this.renderInfo() }
           { this.renderIntro() }
