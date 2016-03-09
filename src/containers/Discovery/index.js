@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 import { HotTopics } from '#/components';
 
-import { GraphqlRest, timeFormatter } from '#/utils';
+import { GraphqlRest, formatter } from '#/utils';
 
 import styles from './style.less';
 
@@ -128,7 +128,7 @@ export default class Discovery extends React.Component {
         <div className="topic item">
           <Link className="num" to={`/question/${item.id}`}>{item.title}</Link>
           {
-            <div className="tip">{timeFormatter(item.createdAt)}</div>
+            <div className="tip">{formatter.time(item.createdAt)}</div>
           }
         </div>
       </div>
