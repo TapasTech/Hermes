@@ -538,7 +538,7 @@ export default class Detail extends React.Component {
                   <PokeButton count={upVotesCount} onClick={this.handlePoke.bind(this, item.id)} />
                 </div>
                 <div className={styles.answerContent}>
-                  <Answer answerContent={content} />
+                  <Answer answerContent={content} showFull={true} />
                   { this.renderOptionArea(comments, id) }
                 </div>
               </div>

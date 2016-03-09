@@ -4,16 +4,18 @@ import styles from './style.less';
 
 export default class Answer extends React.Component {
   static propTypes = {
-    answerContent: React.PropTypes.string.isRequired
+    answerContent: React.PropTypes.string.isRequired,
+    showFull: React.PropTypes.bool
   };
 
   constructor(props) {
     super(props);
+    const { answerContent, showFull } = this.props;
     const divEl = document.createElement('div');
     divEl.innerHTML = this.props.answerContent;
     const imgEL = divEl.getElementsByTagName('img')[0];
     this.state = {
-      full: false,
+      full: showFull ? true : false,
       shortAnswer: divEl.textContent.slice(0, 140),
       pic: imgEL ? imgEL.src : undefined
     };
