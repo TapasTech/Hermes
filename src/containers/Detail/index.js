@@ -20,7 +20,80 @@ export default class Detail extends React.Component {
     }
   }
 
-  prepareTopicDetail(id, page) {
+  prepareMoreAnswers(page) {
+    const { id } = this.props.params;
+    const query = `
+      query {
+        question(id: "${id}") {
+          id
+          answers(page: ${page}, count: 10) {
+            data {
+              id
+              user {
+                id
+                displayName
+                description
+              }
+              question {
+                id
+                title
+                topics {
+                  id
+                  name
+                }
+              }
+              content
+              upVotesCount
+              comments(page: 1, count: 5) {
+                data {
+                  id
+                  user {
+                    id
+                    displayName
+                  }
+                  replyTo {
+                    id
+                    displayName
+                  }
+                  content
+                  upVotesCount
+                  createdAt
+                  updatedAt
+                }
+                meta {
+                  current_page
+                  total_pages
+                  total_count
+                }
+              }
+            }
+            meta {
+              current_page
+              total_pages
+              total_count
+            }
+          }
+        }
+      }
+    `;
+
+    GraphqlRest.post(query).then(res => {
+      const { id, answers } = res.question;
+      const { question } = this.state;
+      const newQuestion = Object.assign({}, question);
+      if (newQuestion.id === id) {
+        const { data, meta } = answers;
+        newQuestion.answers.data = newQuestion.answers.data.concat(data);
+        newQuestion.answers.meta = meta;
+        this.setState({
+          question: newQuestion
+        });
+      }
+    })
+  }
+
+  prepareTopicDetail() {
+    const { id } = this.props.params;
     const query = `
       query {
         question(id: "${id}") {
@@ -41,7 +114,7 @@ export default class Detail extends React.Component {
           }
           readCount
           followersCount
-          answers(page: ${page}, count: 10) {
+          answers(page: 1, count: 10) {
             data {
               id
               user {
@@ -177,10 +250,9 @@ export default class Detail extends React.Component {
   }
 
   handleShowMore() {
-    const { id } = this.props.params;
     this.setState({
       page: this.state.page + 1
-    }, () => this.prepareTopicDetail(id, this.state.page));
+    }, () => this.prepareMoreAnswers(this.state.page));
   }
 
   prepareMoreComments(answerId, commentPage) {
@@ -384,8 +456,7 @@ export default class Detail extends React.Component {
   }
 
   componentDidMount() {
-    const { id } = this.props.params;
-    this.prepareTopicDetail(id, 1);
+    this.prepareTopicDetail();
   }
 
   renderTopic() {
@@ -475,7 +546,7 @@ export default class Detail extends React.Component {
         })
         }
         {
-          ((answers.length > 10) && (endIndex < answers.length))
+          (meta.current_page) && (meta.current_page < meta.total_pages)
           ? <div className="more" onClick={::this.handleShowMore}>点击加载更多</div>
           : <div className="end">已到结尾</div>
         }

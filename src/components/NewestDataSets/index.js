@@ -15,7 +15,7 @@ export default class NewestDataSets extends React.Component {
   componentDidMount() {
     const query = `
       query {
-        dataSets(page: 1, count: 10) {
+        dataSets(page: 1, count: 5) {
           data {
             id
             title
