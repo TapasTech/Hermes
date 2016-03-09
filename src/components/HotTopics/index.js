@@ -17,7 +17,7 @@ export default class HotTopics extends React.Component {
   componentDidMount() {
     const query = `
       query {
-        topics(page: 1) {
+        topics(page: 1, count: 5) {
           data {
             id
             name

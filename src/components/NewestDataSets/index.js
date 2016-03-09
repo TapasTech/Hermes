@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import { GraphqlRest } from '#/utils';
+import { GraphqlRest, formatter } from '#/utils';
 import styles from './style.less';
 
 export default class NewestDataSets extends React.Component {
@@ -43,7 +43,7 @@ export default class NewestDataSets extends React.Component {
         {
           this.state.dataSets.map((item, index) => {
             return (
-              <a key={index} className="link" href={item.url}>· {item.title}</a>
+              <a key={index} className="link" target="_blank" href={formatter.url(item.url)}>· {item.title}</a>
             );
           })
         }

@@ -3,7 +3,7 @@ import {Link, browserHistory} from 'react-router';
 
 import Store from '#/store';
 import { AnswerCard, Avatar, TopicCard } from '#/components';
-import {GraphqlRest, encodeField, timeFormatter} from '#/utils';
+import {GraphqlRest, encodeField, formatter} from '#/utils';
 import styles from './style.less';
 
 const fragQuestion = `
@@ -272,7 +272,7 @@ export default class PersonalCenter extends React.Component {
           data = (
             <div className={styles.card} key={index}>
               <div className="header">
-                <div>{timeFormatter(item.createdAt)}</div>
+                <div>{formatter.time(item.createdAt)}</div>
               </div>
               <div className="action">
                 <Link to={`/user/${user.id}`}>{user.displayName}</Link>
@@ -288,7 +288,7 @@ export default class PersonalCenter extends React.Component {
           data = (
             <div className={styles.card} key={index}>
               <div className="header">
-                <div>{timeFormatter(item.createdAt)}</div>
+                <div>{formatter.time(item.createdAt)}</div>
               </div>
               <div className="action">
                 <Link to={`/user/${user.id}`}>{user.displayName}</Link>
@@ -308,7 +308,7 @@ export default class PersonalCenter extends React.Component {
   renderAnswers = tab => tab.data.map((item, index) => (
     <div className={styles.card} key={index}>
       <div className="header">
-        <div>{timeFormatter(item.createdAt)}</div>
+        <div>{formatter.time(item.createdAt)}</div>
       </div>
       {this.renderAnswer(item)}
     </div>
@@ -316,9 +316,6 @@ export default class PersonalCenter extends React.Component {
 
   renderQuestion = (item) => (
     <div>
-      <div className="header">
-        <div>{timeFormatter(item.createdAt)}</div>
-      </div>
       <div className="title">
         <Link to={`/question/${item.id}`}>{item.title}</Link>
       </div>

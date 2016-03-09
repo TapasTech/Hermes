@@ -8,7 +8,7 @@ import webpackConfig from '../webpack.config';
 const options = {
   noInfo: true,
   publicPath: webpackConfig.output.publicPath,
-  stats: { colors: true },
+  stats: { colors: true }
 };
 
 export function register(app) {

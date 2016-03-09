@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 import Store from '#/store';
 import { Avatar, Answer, CommentList, ShareBar, PokeButton } from '#/components';
-import { GraphqlRest, timeFormatter } from '#/utils';
+import { GraphqlRest, formatter } from '#/utils';
 
 import styles from './style.less';
 
@@ -417,7 +417,7 @@ export default class Detail extends React.Component {
               })
           }
         </div>
-        <div className={styles.tip}>{timeFormatter(createdAt)} · {readCount || 0 } 阅读</div>
+        <div className={styles.tip}>{formatter.time(createdAt)} · {readCount || 0 } 阅读</div>
       </div>
     );
   }
