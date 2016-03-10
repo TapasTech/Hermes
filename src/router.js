@@ -28,6 +28,10 @@ export default class Root extends React.Component {
             <Route path=":id/:tab" component={Pages.PersonalCenter} />
           </Route>
           <Route path="rank" component={Pages.AnalystRank} />
+          <Route path="settings" component={Pages.Settings}>
+            <IndexRoute />
+            <Route path=":tab" />
+          </Route>
         </Route>
       </Router>
     );
