@@ -79,36 +79,30 @@
     height: 100%;
     line-height: @height;
     text-align: center;
-
-    .menu {
-      position: absolute;
-      top: 100%;
-      right: 0;
-      width: 100%;
-      height: 0;
-      background-color: #434343;
-      transition: all 0.25s ease;
-      text-align: center;
+    .navtop-menu {
+      transform: scaleY(0);
+      transform-origin: 50% 0;
     }
-
-    @height: 64px;
-    &:hover .menu {
-      height: @height;
-
-      .item {
-        visibility: visible;
-      }
+    &:hover .navtop-menu {
+      transform: scaleY(1);
     }
+  }
 
-    .item {
-      visibility: hidden;
+  &-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 100%;
+    background-color: #434343;
+    transition: transform 0.25s ease;
+    text-align: center;
+
+    &-item {
+      display: block;
       font-size: 14px;
-      line-height: @height/2;
+      line-height: 2;
       cursor: pointer;
-
-      & + .item {
-        border-top: 1px solid #a6a6a6;
-      }
+      border-top: 1px solid #a6a6a6;
     }
   }
 }
