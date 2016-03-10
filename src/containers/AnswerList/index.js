@@ -76,12 +76,10 @@ export default class AnswerList extends React.Component {
     const { question } = item;
     return (
       <div className={styles.topic} key={index}>
-        <div className="tag">{question && question.topics[0].name}</div>
+        <div className="tag">{question && question.topics[0] && question.topics[0].name}</div>
         <div className={styles.content}>
-          <div className="tip">热门回答，来自 {question && question.topics[0].name} 话题</div>
-          { item
-            ? <AnswerCard answer={item} />
-            : <div>loading...</div> }
+          <div className="tip">热门回答，来自 {question && question.topics[0] && question.topics[0].name} 话题</div>
+          <AnswerCard answer={item} />
         </div>
       </div>
     );
