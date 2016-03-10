@@ -1,7 +1,6 @@
 import React from 'react';
 import {Link, browserHistory} from 'react-router';
 
-import Store from '#/store';
 import { AnswerCard, Avatar, TopicCard, Loader } from '#/components';
 import {GraphqlRest, encodeField, formatter} from '#/utils';
 import styles from './style.less';
@@ -231,9 +230,9 @@ export default class PersonalCenter extends React.Component {
   renderInfo() {
     const {user} = this.state;
     return (
-      <div className={styles.info}>
+      <div className={`panel ${styles.info}`}>
         <div className={styles.base}>
-          <Avatar name={user.displayName} url={user.avatar} large={true} />
+          <Avatar name={user.displayName} url={user.avatar} size="large" />
           <div className="name">{user.displayName}</div>
         </div>
         <div className={styles.data}>
@@ -251,16 +250,11 @@ export default class PersonalCenter extends React.Component {
           </div>
         </div>
         <div className="btn primary">关注</div>
-      </div>
-    );
-  }
-
-  renderIntro() {
-    return (
-      <div className={styles.intro}>
-        <div>上海 | 咨询</div>
-        <div>CBNData | 数据分析师</div>
-        <div>加州大学伯克利分校 (UC Berkeley)</div>
+        <div className={styles.intro}>
+          <div>上海 | 咨询</div>
+          <div>CBNData | 数据分析师</div>
+          <div>加州大学伯克利分校 (UC Berkeley)</div>
+        </div>
       </div>
     );
   }
@@ -348,7 +342,7 @@ export default class PersonalCenter extends React.Component {
     const userId = this.props.params.id;
 
     return (
-      <div className={styles.pipe}>
+      <div className="panel">
         <div className={styles.tabs}>
           <Link
             className={`tab ${tab.index === 0 ? 'active' : ''}`}
@@ -378,11 +372,10 @@ export default class PersonalCenter extends React.Component {
 
   render() {
     return (
-      <div className="container">
+      <div className={`container ${styles.container}`}>
         {this.state.loading && <Loader full={true} />}
-        <div className="sidebar-left">
+        <div className="sidebar">
           { this.renderInfo() }
-          { this.renderIntro() }
         </div>
         <div className="main">
           { this.renderStream() }

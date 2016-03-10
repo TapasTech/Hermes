@@ -8,28 +8,23 @@ export default class Avatar extends React.Component {
   static propTypes = {
     name: React.PropTypes.string,
     url: React.PropTypes.string,
-    large: React.PropTypes.bool,
+    size: React.PropTypes.string,
     className: React.PropTypes.string
   };
 
-  constructor(props) {
-    super(props);
-  }
-
   render() {
-    const { name, url, large, medium, className } = this.props;
+    const { name, url, size, className } = this.props;
 
-    let clx = styles.avatar;
-    className && (clx = `${clx} ${className}`);
-    large && (clx = `${clx} large`);
-    medium && (clx = `${clx} medium`);
+    let cls = styles.avatar;
+    if (className) cls += ' ' + className;
+    if (['large', 'medium'].includes(size)) cls += ' ' + size;
     if (url) {
       return (
-        <div className={clx} style={{backgroundImage: `url(${url})`}}></div>
+        <div className={cls} style={{backgroundImage: `url(${url})`}}></div>
       );
     } else {
       return (
-        <div className={clx} style={{backgroundColor: hashColor(name)}}>{name && name.slice(0, 4)}</div>
+        <div className={cls} style={{backgroundColor: hashColor(name)}}>{name && name.slice(0, 4)}</div>
       );
     }
   }

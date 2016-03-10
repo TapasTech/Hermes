@@ -110,7 +110,7 @@ export default class AnalystRank extends React.Component {
       <div className={styles.analyst} key={index}>
         <div className="left-part">
           <div className="num">#{index + 1}</div>
-          <Avatar name={item.displayName} medium={true} />
+          <Avatar name={item.displayName} size="medium" />
           <div className="detail">
             <Link className="username" to={`/user/${id}`}>{displayName}</Link>
             <div>
