@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 
 import Store from '#/store';
-import { Avatar, Answer, CommentList, ShareBar, PokeButton } from '#/components';
+import { Avatar, Answer, CommentList, ShareBar, PokeButton, Loader } from '#/components';
 import { GraphqlRest, formatter } from '#/utils';
 
 import styles from './style.less';
@@ -567,7 +567,11 @@ export default class Detail extends React.Component {
       <div className="container">
         <div className="main">
           { this.renderTopic() }
-          { (answers && answers.data.length) ? this.renderAnswers() : <div>尚未有人回答过这个问题</div> }
+          {
+            answers
+              ? answers.data.length ? this.renderAnswers() : <div className={styles.emptyArea}>尚未有人回答过这个问题</div>
+              : <Loader full={true} />
+          }
         </div>
         <div className="sidebar">
           <div className="watch">
