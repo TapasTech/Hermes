@@ -82,6 +82,7 @@ export default class Header extends React.Component {
               <Link className="link" to={`/user/${user.id}`}>{user.displayName}</Link>
               <div className="navtop-menu">
                 <Link className="navtop-menu-item" to="/settings">设置</Link>
+                <Link className="navtop-menu-item" to={`/user/${user.id}`}>个人主页</Link>
                 <a className="navtop-menu-item" onClick={this.handleLogout}>退出登录</a>
               </div>
             </div>
