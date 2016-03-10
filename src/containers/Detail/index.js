@@ -20,6 +20,33 @@ export default class Detail extends React.Component {
     }
   }
 
+  static fragments = `
+  fragment fragDataSets on PaginatedDataSet {
+    data {
+      id
+      title
+      url
+    }
+    meta {
+      current_page
+      total_pages
+      total_count
+    }
+  }
+  fragment fragDataReports on PaginatedDataReport {
+    data {
+      id
+      title
+      url
+    }
+    meta {
+      current_page
+      total_pages
+      total_count
+    }
+  }
+  `;
+
   prepareMoreAnswers(page) {
     const { id } = this.props.params;
     const query = `
@@ -95,65 +122,63 @@ export default class Detail extends React.Component {
   prepareTopicDetail() {
     const { id } = this.props.params;
     const query = `
-      query {
-        question(id: "${id}") {
+    question(id: "${id}") {
+      id
+      createdAt
+      updatedAt
+      user {
+        id
+        displayName
+      }
+      title
+      content
+      followers(page: 1, count: 10) {
+        data {
           id
-          createdAt
-          updatedAt
+          displayName
+        }
+      }
+      readCount
+      followersCount
+      answers(page: 1, count: 10) {
+        data {
+          id
           user {
             id
             displayName
+            description
           }
-          title
-          content
-          followers(page: 1, count: 10) {
-            data {
+          question {
+            id
+            title
+            topics {
               id
-              displayName
+              name
             }
           }
-          readCount
-          followersCount
-          answers(page: 1, count: 10) {
+          content
+          dataSets(page: 1, count: 5) {
+            ...fragDataSets
+          }
+          dataReports(page: 1, count: 5) {
+            ...fragDataReports
+          }
+          upVotesCount
+          comments(page: 1, count: 5) {
             data {
               id
               user {
                 id
                 displayName
-                description
               }
-              question {
+              replyTo {
                 id
-                title
-                topics {
-                  id
-                  name
-                }
+                displayName
               }
               content
               upVotesCount
-              comments(page: 1, count: 5) {
-                data {
-                  id
-                  user {
-                    id
-                    displayName
-                  }
-                  replyTo {
-                    id
-                    displayName
-                  }
-                  content
-                  upVotesCount
-                  createdAt
-                  updatedAt
-                }
-                meta {
-                  current_page
-                  total_pages
-                  total_count
-                }
-              }
+              createdAt
+              updatedAt
             }
             meta {
               current_page
@@ -161,57 +186,49 @@ export default class Detail extends React.Component {
               total_count
             }
           }
-          topics {
-            id
-            name
-            questions(page: 1, count: 1) {
-              data {
-                id
-                title
-                answersCount
-              }
-            }
-          }
-          dataSets(page: 1, count: 5) {
-            data {
-              id
-              title
-              url
-            }
-            meta {
-              current_page
-              total_pages
-              total_count
-            }
-          }
-          dataReports(page: 1, count: 5) {
-            data {
-              id
-              title
-              url
-            }
-            meta {
-              current_page
-              total_pages
-              total_count
-            }
-          }
-          upVotesCount
-          downVotesCount
-          totalVotesCount
-          followed
+        }
+        meta {
+          current_page
+          total_pages
+          total_count
         }
       }
-    `;
-
-    GraphqlRest.post(query).then(res => {
-      const newCommentPage = Object.assign({}, this.state.commentPage);
-      res.question.answers.data.map(item => newCommentPage[item.id] = 1);
+      topics {
+        id
+        name
+        questions(page: 1, count: 1) {
+          data {
+            id
+            title
+            answersCount
+          }
+        }
+      }
+      dataSets(page: 1, count: 5) {
+        ...fragDataSets
+      }
+      dataReports(page: 1, count: 5) {
+        ...fragDataReports
+      }
+      upVotesCount
+      downVotesCount
+      totalVotesCount
+      followed
+    }`;
+    const callback = data => {
       this.setState({
-        question: res.question,
-        commentPage: newCommentPage
+        question: data.question,
+        commentPage: data.question.answers.data.reduce((res, item) => {
+          res[item.id] = 1;
+          return res;
+        }, {}),
       });
-    });
+    };
+    return {
+      query,
+      callback,
+      fragments: Detail.fragments,
+    };
   }
 
   handleShowShare(answerId) {
@@ -451,7 +468,9 @@ export default class Detail extends React.Component {
   }
 
   componentDidMount() {
-    this.prepareTopicDetail();
+    GraphqlRest.handleQueries(
+      this.prepareTopicDetail()
+    );
   }
 
   renderTopic() {
@@ -507,7 +526,7 @@ export default class Detail extends React.Component {
         {
           list
             && list.map((item, index) => {
-            const { id, content, comments, user, upVotesCount } = item;
+            const { id, content, comments, user, upVotesCount, dataSets, dataReports } = item;
             return (
               <div key={index} className={styles.answer}>
                 <div className={styles.header}>
@@ -520,6 +539,7 @@ export default class Detail extends React.Component {
                 </div>
                 <div className={styles.answerContent}>
                   <Answer answerContent={content} showFull={true} />
+                  <DataSources dataSets={dataSets} dataReports={dataReports} />
                   { this.renderOptionArea(comments, id) }
                 </div>
               </div>
