@@ -6,7 +6,7 @@ import Root from './router';
 import './config';
 
 import 'normalize.css';
-import './main.less';
+import './styles/index.less';
 
 ReactDOM.render(
   <Root />,

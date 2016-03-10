@@ -16,13 +16,13 @@ export default class Reference extends React.Component {
     return (
       <div className={styles.reference}>
         <div className="source">
-          <div className="btn ghost" onClick={this.handleAddDataSet}>+ 数据来源</div>
+          <div className="btn btn-info" onClick={this.handleAddDataSet}>+ 数据来源</div>
           <div className="list">
             {dataSets.map(this.renderDataSet)}
           </div>
         </div>
         <div className="report">
-          <div className="btn ghost" onClick={this.handleAddDataReport}>+ 数据报告</div>
+          <div className="btn btn-info" onClick={this.handleAddDataReport}>+ 数据报告</div>
           <div className="list">
             {dataReports.map(this.renderDataSet)}
           </div>

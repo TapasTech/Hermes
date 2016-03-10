@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 
 import Store from '#/store';
-import { Avatar, Answer, CommentList, ShareBar, PokeButton, Loader } from '#/components';
+import { Avatar, Answer, CommentList, ShareBar, PokeButton, Loader, DataSources } from '#/components';
 import { GraphqlRest, formatter } from '#/utils';
 
 import styles from './style.less';
@@ -19,6 +19,33 @@ export default class Detail extends React.Component {
       user: Store.user.index().data
     }
   }
+
+  static fragments = `
+  fragment fragDataSets on PaginatedDataSet {
+    data {
+      id
+      title
+      url
+    }
+    meta {
+      current_page
+      total_pages
+      total_count
+    }
+  }
+  fragment fragDataReports on PaginatedDataReport {
+    data {
+      id
+      title
+      url
+    }
+    meta {
+      current_page
+      total_pages
+      total_count
+    }
+  }
+  `;
 
   prepareMoreAnswers(page) {
     const { id } = this.props.params;
@@ -95,65 +122,63 @@ export default class Detail extends React.Component {
   prepareTopicDetail() {
     const { id } = this.props.params;
     const query = `
-      query {
-        question(id: "${id}") {
+    question(id: "${id}") {
+      id
+      createdAt
+      updatedAt
+      user {
+        id
+        displayName
+      }
+      title
+      content
+      followers(page: 1, count: 10) {
+        data {
           id
-          createdAt
-          updatedAt
+          displayName
+        }
+      }
+      readCount
+      followersCount
+      answers(page: 1, count: 10) {
+        data {
+          id
           user {
             id
             displayName
+            description
           }
-          title
-          content
-          followers(page: 1, count: 10) {
-            data {
+          question {
+            id
+            title
+            topics {
               id
-              displayName
+              name
             }
           }
-          readCount
-          followersCount
-          answers(page: 1, count: 10) {
+          content
+          dataSets(page: 1, count: 5) {
+            ...fragDataSets
+          }
+          dataReports(page: 1, count: 5) {
+            ...fragDataReports
+          }
+          upVotesCount
+          comments(page: 1, count: 5) {
             data {
               id
               user {
                 id
                 displayName
-                description
               }
-              question {
+              replyTo {
                 id
-                title
-                topics {
-                  id
-                  name
-                }
+                displayName
               }
               content
               upVotesCount
-              comments(page: 1, count: 5) {
-                data {
-                  id
-                  user {
-                    id
-                    displayName
-                  }
-                  replyTo {
-                    id
-                    displayName
-                  }
-                  content
-                  upVotesCount
-                  createdAt
-                  updatedAt
-                }
-                meta {
-                  current_page
-                  total_pages
-                  total_count
-                }
-              }
+              createdAt
+              updatedAt
             }
             meta {
               current_page
@@ -161,57 +186,49 @@ export default class Detail extends React.Component {
               total_count
             }
           }
-          topics {
-            id
-            name
-            questions(page: 1, count: 1) {
-              data {
-                id
-                title
-                answersCount
-              }
-            }
-          }
-          dataSets(page: 1, count: 5) {
-            data {
-              id
-              title
-              url
-            }
-            meta {
-              current_page
-              total_pages
-              total_count
-            }
-          }
-          dataReports(page: 1, count: 5) {
-            data {
-              id
-              title
-              url
-            }
-            meta {
-              current_page
-              total_pages
-              total_count
-            }
-          }
-          upVotesCount
-          downVotesCount
-          totalVotesCount
-          followed
+        }
+        meta {
+          current_page
+          total_pages
+          total_count
         }
       }
-    `;
-
-    GraphqlRest.post(query).then(res => {
-      const newCommentPage = Object.assign({}, this.state.commentPage);
-      res.question.answers.data.map(item => newCommentPage[item.id] = 1);
+      topics {
+        id
+        name
+        questions(page: 1, count: 1) {
+          data {
+            id
+            title
+            answersCount
+          }
+        }
+      }
+      dataSets(page: 1, count: 5) {
+        ...fragDataSets
+      }
+      dataReports(page: 1, count: 5) {
+        ...fragDataReports
+      }
+      upVotesCount
+      downVotesCount
+      totalVotesCount
+      followed
+    }`;
+    const callback = data => {
       this.setState({
-        question: res.question,
-        commentPage: newCommentPage
+        question: data.question,
+        commentPage: data.question.answers.data.reduce((res, item) => {
+          res[item.id] = 1;
+          return res;
+        }, {}),
       });
-    });
+    };
+    return {
+      query,
+      callback,
+      fragments: Detail.fragments,
+    };
   }
 
   handleShowShare(answerId) {
@@ -451,7 +468,9 @@ export default class Detail extends React.Component {
   }
 
   componentDidMount() {
-    this.prepareTopicDetail();
+    GraphqlRest.handleQueries(
+      this.prepareTopicDetail()
+    );
   }
 
   renderTopic() {
@@ -468,21 +487,7 @@ export default class Detail extends React.Component {
           }
         </div>
         <div className={styles.content} dangerouslySetInnerHTML={_questionHTML}></div>
-        <div className={styles.tip}>相关数据</div>
-        <div className={styles.links}>
-          {
-            dataSets
-              && dataSets.data.map((item, index) => {
-                return <a key={index} target="_blank" className={styles.link} href={item.url}>{item.title}</a>;
-              })
-          }
-          {
-            dataReports
-              && dataReports.data.map((item, index) => {
-                return <a key={index} target="_blank" className={styles.link} href={item.url}>{item.title}</a>;
-              })
-          }
-        </div>
+        <DataSources dataSets={dataSets} dataReports={dataReports} />
         <div className={styles.tip}>{formatter.time(createdAt)} · {readCount || 0 } 阅读</div>
       </div>
     );
@@ -521,7 +526,7 @@ export default class Detail extends React.Component {
         {
           list
             && list.map((item, index) => {
-            const { id, content, comments, user, upVotesCount } = item;
+            const { id, content, comments, user, upVotesCount, dataSets, dataReports } = item;
             return (
               <div key={index} className={styles.answer}>
                 <div className={styles.header}>
@@ -534,6 +539,7 @@ export default class Detail extends React.Component {
                 </div>
                 <div className={styles.answerContent}>
                   <Answer answerContent={content} showFull={true} />
+                  <DataSources dataSets={dataSets} dataReports={dataReports} />
                   { this.renderOptionArea(comments, id) }
                 </div>
               </div>
@@ -567,21 +573,17 @@ export default class Detail extends React.Component {
       <div className="container">
         <div className="main">
           { this.renderTopic() }
-          {
-            answers
-              ? answers.data.length ? this.renderAnswers() : <div className={styles.emptyArea}>尚未有人回答过这个问题</div>
-              : <Loader full={true} />
-          }
+          { (answers && answers.data.length) ? this.renderAnswers() : <div>尚未有人回答过这个问题</div> }
         </div>
         <div className="sidebar">
           <div className="watch">
             <div className="operate">
               {
                 followed
-                  ? <div className="btn ghost" onClick={this.handleFollowStatus.bind(this, false)}>取消关注</div>
-                  : <div className="btn primary" onClick={this.handleFollowStatus.bind(this, true)}>关注问题</div>
+                  ? <div className="btn btn-info" onClick={this.handleFollowStatus.bind(this, false)}>取消关注</div>
+                  : <div className="btn btn-primary" onClick={this.handleFollowStatus.bind(this, true)}>关注问题</div>
               }
-              <Link className="btn ghost" to={`/question/${id}/answer`}>回答</Link>
+              <Link className="btn btn-info" to={`/question/${id}/answer`}>回答</Link>
             </div>
             <div className="watcher">
               <span className="count">{followersCount}</span>

@@ -1,0 +1,51 @@
+.btn {
+  display: inline-block;
+  padding: 0 10px;
+  line-height: @control-height;
+  cursor: pointer;
+  text-align: center;
+  border-radius: @border-radius;
+  &,
+  &:focus,
+  &:hover,
+  &:active {
+    outline: none;
+  }
+}
+
+.btn-mixin(@color, @background-color, @border-color: currentColor) {
+  &,
+  &:focus {
+    color: @color;
+    background-color: @background-color;
+    border: 1px solid @border-color;
+  }
+  &:hover {
+    color: @color;
+    background-color: darken(@background-color, 5%);
+  }
+  &:active {
+    color: @color;
+    background-color: darken(@background-color, 17%);
+  }
+}
+
+.btn-default {
+  .btn-mixin(@brand-primary, transparent);
+}
+
+.btn-primary {
+  .btn-mixin(white, @brand-primary, @brand-primary);
+}
+
+.btn-info {
+  .btn-mixin(@brand-primary, @brand-info);
+}
+
+.btn-reverse {
+  .btn-mixin(white, transparent);
+  &:hover,
+  &:active {
+    color: @brand-primary;
+  }
+}

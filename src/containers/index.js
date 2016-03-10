@@ -8,6 +8,7 @@ import PersonalCenter from './PersonalCenter';
 import Question from './Edit/Question';
 import Answer from './Edit/Answer';
 import Search from './Search';
+import Settings from './Settings';
 
 export default {
   Account,
@@ -19,5 +20,6 @@ export default {
   Question,
   Answer,
   Search,
-  AnalystRank
+  AnalystRank,
+  Settings,
 };

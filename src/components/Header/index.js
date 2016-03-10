@@ -79,12 +79,10 @@ export default class Header extends React.Component {
           </div>
           {user.id &&
             <div className="navtop-user pull-right">
-              <div>
-                <Link className="link" to={`/user/${user.id}`}>{user.displayName}</Link>
-                <div className="menu">
-                  <div className="item">设置</div>
-                  <div className="item" onClick={::this.handleLogout}>退出登录</div>
-                </div>
+              <Link className="link" to={`/user/${user.id}`}>{user.displayName}</Link>
+              <div className="navtop-menu">
+                <Link className="navtop-menu-item" to="/settings">设置</Link>
+                <a className="navtop-menu-item" onClick={this.handleLogout}>退出登录</a>
               </div>
             </div>
           }{!user.id &&
@@ -97,13 +95,14 @@ export default class Header extends React.Component {
           <form className="navtop-search pull-left" onSubmit={this.handleSearch}>
             <input
               type="text"
-              className="navtop-search-input"
+              className="form-control"
               value={query}
               onChange={this.handleSearchInput}
-              placeholder="搜索问题"/>
-            <button type="submit" className="btn link">搜索</button>
+              placeholder="搜索问题"
+            />
+            <button type="submit" className="btn">搜索</button>
           </form>
-          <div className="navtop-menu pull-right">
+          <div className="pull-right">
             <Link className="link" to="/">首页</Link>
             <Link className="link" to="/discovery">发现</Link>
             <span className="divider"></span>

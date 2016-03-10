@@ -51,12 +51,14 @@ function request(method, query) {
     });
   })
   .catch(err => {
+    let content = '网络错误！';
     if (err.status === 500) {
-      Store.emit('EVT_MSG', {
-        type: 'error',
-        content: '服务器错误！',
-      });
+      content = '服务器错误！';
     }
+    Store.emit('EVT_MSG', {
+      type: 'error',
+      content,
+    });
     throw err;
   });
 }

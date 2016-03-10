@@ -249,7 +249,7 @@ export default class Question extends React.Component {
                   <span className="tip">匿名发布</span>
                 </label>
                 */}
-                <div className="btn ghost postIt" onClick={this.handlePost}>发布</div>
+                <div className="btn btn-info postIt" onClick={this.handlePost}>发布</div>
               </div>
             </div>
           </div>

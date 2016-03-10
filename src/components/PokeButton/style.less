@@ -1,29 +1,24 @@
 :local(.poke) {
-  display: flex;
   font-size: 14px;
 
-  .text {
+  > * {
     display: inline-block;
     height: 30px;
-    width: 30px;
-    padding: 0 5px;
+    padding: 0 8px;
     line-height: 30px;
+    vertical-align: top;
     color: rgb(84, 109, 165);
+    border: 1px solid currentColor;
     background-color: rgba(241, 248, 251, 1);
-    border: 1px solid rgb(84, 109, 165);
+  }
+
+  .text {
     border-top-left-radius: 3px;
     border-bottom-left-radius: 3px;
   }
 
   .poke-area {
-    display: inline-block;
-    height: 30px;
     min-width: 25px;
-    padding: 0 5px;
-    line-height: 30px;
-    color: rgb(84, 109, 165);
-    background-color: rgba(241, 248, 251, 1);
-    border: 1px solid rgb(84, 109, 165);
     border-left: 0;
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
@@ -32,7 +27,7 @@
     text-align: center;
 
     .poke {
-      transition: all .1s linear;
+      transition: transform .1s linear;
     }
 
     &:hover .poke {
