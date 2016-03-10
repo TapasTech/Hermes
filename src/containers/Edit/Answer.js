@@ -207,7 +207,7 @@ export default class Answer extends React.Component {
               <div className={styles.subTitle}>{user.displayName}</div>
             </div>
             <div className="submit-options">
-              <div className="btn ghost postIt" onClick={this.handlePost}>发布</div>
+              <div className="btn btn-info postIt" onClick={this.handlePost}>发布</div>
               {/*
               <label className="anonymous">
                 <input type="checkbox" value={anonymous} onChange={this.handleAnonymousChange} />

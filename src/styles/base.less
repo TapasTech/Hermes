@@ -1,0 +1,41 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", STHeiti, "Microsoft YaHei", "Microsoft JhengHei", "Source Han Sans SC", "Noto Sans CJK SC", "Source Han Sans CN", "Noto Sans SC", "Source Han Sans TC", "Noto Sans CJK TC", "WenQuanYi Micro Hei", SimSun, sans-serif;
+  color: @font-color;
+  background-color: @background-color;
+  overflow-x: hidden;
+  font-size: @font-size;
+}
+
+a {
+  text-decoration: none;
+  color: @link-color;
+
+  &:hover {
+    color: @link-hover-color;
+  }
+}
+
+hr {
+  border: none;
+  border-top: 1px solid @divider-color;
+  margin: @gap 0;
+}
+
+input {
+  outline: none;
+}
+
+textarea {
+  outline: none;
+  resize: none;
+}
+
+.text-gray {
+  color: #a6a6a6;
+}

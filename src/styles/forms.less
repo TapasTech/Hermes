@@ -1,0 +1,19 @@
+.form-group {
+  margin-bottom: @gap;
+  line-height: @control-height;
+  > * {
+    vertical-align: top;
+  }
+}
+
+.form-control {
+  width: 100%;
+  height: @control-height;
+  line-height: @control-height;
+  padding: 2px 5px;
+  border: 1px solid @form-control-border-color;
+  border-radius: @border-radius;
+  textarea& {
+    height: @textarea-height;
+  }
+}

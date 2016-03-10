@@ -1,0 +1,15 @@
+.label {
+  display: inline-block;
+  padding: 0 5px;
+  line-height: @control-height;
+  border-radius: @border-radius;
+}
+
+.label-mixin(@color, @background-color) {
+  color: @color;
+  background-color: @background-color;
+}
+
+.label-default {
+  .label-mixin(@font-color, @brand-default);
+}

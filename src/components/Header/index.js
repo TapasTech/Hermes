@@ -95,11 +95,12 @@ export default class Header extends React.Component {
           <form className="navtop-search pull-left" onSubmit={this.handleSearch}>
             <input
               type="text"
-              className="navtop-search-input"
+              className="form-control"
               value={query}
               onChange={this.handleSearchInput}
-              placeholder="搜索问题"/>
-            <button type="submit" className="btn link">搜索</button>
+              placeholder="搜索问题"
+            />
+            <button type="submit" className="btn">搜索</button>
           </form>
           <div className="pull-right">
             <Link className="link" to="/">首页</Link>

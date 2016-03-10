@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 
 import Store from '#/store';
-import { Avatar, Answer, CommentList, ShareBar, PokeButton } from '#/components';
+import { Avatar, Answer, CommentList, ShareBar, PokeButton, Loader, DataSources } from '#/components';
 import { GraphqlRest, formatter } from '#/utils';
 
 import styles from './style.less';
@@ -468,21 +468,7 @@ export default class Detail extends React.Component {
           }
         </div>
         <div className={styles.content} dangerouslySetInnerHTML={_questionHTML}></div>
-        <div className={styles.tip}>相关数据</div>
-        <div className={styles.links}>
-          {
-            dataSets
-              && dataSets.data.map((item, index) => {
-                return <a key={index} target="_blank" className={styles.link} href={item.url}>{item.title}</a>;
-              })
-          }
-          {
-            dataReports
-              && dataReports.data.map((item, index) => {
-                return <a key={index} target="_blank" className={styles.link} href={item.url}>{item.title}</a>;
-              })
-          }
-        </div>
+        <DataSources dataSets={dataSets} dataReports={dataReports} />
         <div className={styles.tip}>{formatter.time(createdAt)} · {readCount || 0 } 阅读</div>
       </div>
     );
@@ -574,10 +560,10 @@ export default class Detail extends React.Component {
             <div className="operate">
               {
                 followed
-                  ? <div className="btn ghost" onClick={this.handleFollowStatus.bind(this, false)}>取消关注</div>
-                  : <div className="btn primary" onClick={this.handleFollowStatus.bind(this, true)}>关注问题</div>
+                  ? <div className="btn btn-info" onClick={this.handleFollowStatus.bind(this, false)}>取消关注</div>
+                  : <div className="btn btn-primary" onClick={this.handleFollowStatus.bind(this, true)}>关注问题</div>
               }
-              <Link className="btn ghost" to={`/question/${id}/answer`}>回答</Link>
+              <Link className="btn btn-info" to={`/question/${id}/answer`}>回答</Link>
             </div>
             <div className="watcher">
               <span className="count">{followersCount}</span>

@@ -1,0 +1,33 @@
+.container {
+  position: relative;
+  max-width: @layout-width;
+  margin: @gap auto;
+
+  .clearfix;
+
+  > * {
+    float: left;
+  }
+
+  // 单栏占满，内容需wrap一层
+  .full {
+    width: 100%;
+  }
+
+  // 两栏布局左侧为主，内容需wrap一层
+  .main {
+    width: 100%;
+    > * {
+      margin-right: @layout-right-width + @gap;
+    }
+  }
+
+  // 两栏布局右侧边栏
+  .sidebar {
+    width: @layout-right-width;
+    margin-left: -@layout-right-width;
+    > * {
+      margin-bottom: @gap;
+    }
+  }
+}
