@@ -119,106 +119,111 @@ export default class Detail extends React.Component {
     })
   }
 
-  prepareTopicDetail() {
+  prepareDetail() {
     const { id } = this.props.params;
     const query = `
-    question(id: "${id}") {
-      id
-      createdAt
-      updatedAt
-      user {
-        id
-        displayName
-      }
-      title
-      content
-      followers(page: 1, count: 10) {
-        data {
-          id
-          displayName
-        }
-      }
-      readCount
-      followersCount
-      answers(page: 1, count: 10) {
-        data {
-          id
-          user {
+      question(id: "${id}") {
+        mutation {
+          read {
             id
-            displayName
-            description
-          }
-          question {
-            id
+            createdAt
+            updatedAt
+            user {
+              id
+              displayName
+            }
             title
+            content
+            followers(page: 1, count: 10) {
+              data {
+                id
+                displayName
+              }
+            }
+            readCount
+            followersCount
+            answers(page: 1, count: 10) {
+              data {
+                id
+                user {
+                  id
+                  displayName
+                  description
+                }
+                question {
+                  id
+                  title
+                  topics {
+                    id
+                    name
+                  }
+                }
+                content
+                dataSets(page: 1, count: 5) {
+                  ...fragDataSets
+                }
+                dataReports(page: 1, count: 5) {
+                  ...fragDataReports
+                }
+                upVotesCount
+                comments(page: 1, count: 5) {
+                  data {
+                    id
+                    user {
+                      id
+                      displayName
+                    }
+                    replyTo {
+                      id
+                      displayName
+                    }
+                    content
+                    upVotesCount
+                    createdAt
+                    updatedAt
+                  }
+                  meta {
+                    current_page
+                    total_pages
+                    total_count
+                  }
+                }
+              }
+              meta {
+                current_page
+                total_pages
+                total_count
+              }
+            }
             topics {
               id
               name
-            }
-          }
-          content
-          dataSets(page: 1, count: 5) {
-            ...fragDataSets
-          }
-          dataReports(page: 1, count: 5) {
-            ...fragDataReports
-          }
-          upVotesCount
-          comments(page: 1, count: 5) {
-            data {
-              id
-              user {
-                id
-                displayName
+              questions(page: 1, count: 1) {
+                data {
+                  id
+                  title
+                  answersCount
+                }
               }
-              replyTo {
-                id
-                displayName
-              }
-              content
-              upVotesCount
-              createdAt
-              updatedAt
             }
-            meta {
-              current_page
-              total_pages
-              total_count
+            dataSets(page: 1, count: 5) {
+              ...fragDataSets
             }
+            dataReports(page: 1, count: 5) {
+              ...fragDataReports
+            }
+            upVotesCount
+            downVotesCount
+            totalVotesCount
+            followed
           }
         }
-        meta {
-          current_page
-          total_pages
-          total_count
-        }
-      }
-      topics {
-        id
-        name
-        questions(page: 1, count: 1) {
-          data {
-            id
-            title
-            answersCount
-          }
-        }
-      }
-      dataSets(page: 1, count: 5) {
-        ...fragDataSets
-      }
-      dataReports(page: 1, count: 5) {
-        ...fragDataReports
-      }
-      upVotesCount
-      downVotesCount
-      totalVotesCount
-      followed
-    }`;
+      }`;
     const callback = data => {
+      const question = data.question.mutation.read;
       this.setState({
-        question: data.question,
-        commentPage: data.question.answers.data.reduce((res, item) => {
+        question: question,
+        commentPage: question.answers.data.reduce((res, item) => {
           res[item.id] = 1;
           return res;
         }, {}),
@@ -469,7 +474,7 @@ export default class Detail extends React.Component {
 
   componentDidMount() {
     GraphqlRest.handleQueries(
-      this.prepareTopicDetail()
+      this.prepareDetail()
     );
   }
 
