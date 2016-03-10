@@ -6,6 +6,7 @@ export CommentList from './CommentList';
 export LoadMore from './LoadMore';
 export Header from './Header';
 export HotTopics from './HotTopics';
+export Overlay from './Overlay';
 export NewestDataSets from './NewestDataSets';
 export PokeButton from './PokeButton';
 export ShareBar from './ShareBar';
