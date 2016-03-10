@@ -20,8 +20,8 @@ export default class TabAvatar extends React.Component {
             请上传小于2M的图片
           </div>
           <div className={style.buttons}>
-            <button className="btn">上传图片</button>
-            <button className="btn">保存</button>
+            <button className="btn btn-default mr">上传图片</button>
+            <button className="btn btn-primary">保存</button>
           </div>
         </div>
       </div>

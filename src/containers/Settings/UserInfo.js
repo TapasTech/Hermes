@@ -40,8 +40,8 @@ export default class TabUserInfo extends React.Component {
           <input type="text" className="form-control" placeholder="请输入教育经历" />
         </div>
         <div className={style.buttons}>
-          <button className="btn">保存</button>
-          <button className="btn">取消</button>
+          <button className="btn btn-primary mr">保存</button>
+          <button className="btn btn-default">取消</button>
         </div>
       </div>
     );

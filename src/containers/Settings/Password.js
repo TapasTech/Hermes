@@ -21,8 +21,8 @@ export default class TabPassword extends React.Component {
           <input type="password" className="form-control" />
         </div>
         <div className={style.buttons}>
-          <button className="btn">保存</button>
-          <button className="btn">取消</button>
+          <button className="btn btn-primary mr">保存</button>
+          <button className="btn btn-default">取消</button>
         </div>
       </div>
     );

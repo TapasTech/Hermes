@@ -1,7 +1,7 @@
 import React from 'react';
 import {browserHistory} from 'react-router';
 
-import { Avatar } from '#/components';
+import { Avatar, Loader } from '#/components';
 import {GraphqlRest, encodeField} from '#/utils';
 import Store from '#/store';
 import Reference from './Reference';
@@ -15,7 +15,7 @@ export default class Answer extends React.Component {
     super(props);
     this.state = {
       user: Store.user.index().data,
-      ready: false,
+      loading: true,
       question: {},
       content: '',
       anonymous: false,
@@ -30,7 +30,7 @@ export default class Answer extends React.Component {
       this.prepareData()
     ).then(() => {
       this.setState({
-        ready: true,
+        loading: false,
       });
     });
     Store.on('EVT_USER', this.updateUserInfo);
@@ -185,10 +185,11 @@ export default class Answer extends React.Component {
   }
 
   render() {
-    const {user, question, content, anonymous, dataSets, dataReports} = this.state;
+    const {user, question, content, anonymous, dataSets, dataReports, loading} = this.state;
 
     return (
       <div className="container reply">
+        {loading && <Loader full={true} />}
         <div className="main">
           <div className={styles.edit}>
             <div className={styles.title}>{question.title}</div>

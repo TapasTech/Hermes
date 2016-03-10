@@ -79,7 +79,7 @@ export default class Header extends React.Component {
           </div>
           {user.id &&
             <div className="navtop-user pull-right">
-              <Link className="link" to={`/user/${user.id}`}>{user.displayName}</Link>
+              <Link className="navtop-item" to={`/user/${user.id}`}>{user.displayName}</Link>
               <div className="navtop-menu">
                 <Link className="navtop-menu-item" to="/settings">设置</Link>
                 <a className="navtop-menu-item" onClick={this.handleLogout}>退出登录</a>
@@ -87,26 +87,26 @@ export default class Header extends React.Component {
             </div>
           }{!user.id &&
             <div className="navtop-user pull-right">
-              <Link className="link" to="/account?sign_up=1">注册</Link>
+              <Link className="navtop-item" to="/account?sign_up=1">注册</Link>
               <span className="divider"></span>
-              <Link className="link" to="/account">登录</Link>
+              <Link className="navtop-item" to="/account">登录</Link>
             </div>
           }
           <form className="navtop-search pull-left" onSubmit={this.handleSearch}>
             <input
               type="text"
-              className="form-control"
+              className="form-control mr"
               value={query}
               onChange={this.handleSearchInput}
               placeholder="搜索问题"
             />
-            <button type="submit" className="btn">搜索</button>
+            <button type="submit" className="btn btn-reverse">搜索</button>
           </form>
           <div className="pull-right">
-            <Link className="link" to="/">首页</Link>
-            <Link className="link" to="/discovery">发现</Link>
+            <Link className="navtop-item" to="/">首页</Link>
+            <Link className="navtop-item" to="/discovery">发现</Link>
             <span className="divider"></span>
-            <Link className="link" to="/question/_new">提问</Link>
+            <Link className="navtop-item" to="/question/_new">提问</Link>
           </div>
         </div>
       </nav>

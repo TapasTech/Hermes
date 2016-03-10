@@ -431,40 +431,46 @@ export default class Detail extends React.Component {
     }, () => this.prepareMoreComments(answerId, newCommentPage[answerId]));
   }
 
-  handleFollowStatus(follow) {
-    const status = follow ? `follow` : 'unfollow';
+  prepareFollow(follow) {
     const { id } = this.props.params;
-    const mutation = `
-      query {
-        question(id: ${id}) {
-          mutation {
-            status: ${status} {
+    const verb = follow ? 'follow' : 'unfollow';
+    const query = `
+    question(id: ${id}) {
+      mutation {
+        status: ${verb} {
+          id
+          followed
+          followers(page: 1, count: 10) {
+            data {
               id
-              followed
-              followers(page: 1, count: 10) {
-                data {
-                  id
-                  displayName
-                }
-              }
-              followersCount
+              displayName
             }
           }
+          followersCount
         }
       }
-    `;
-
-    GraphqlRest.post(mutation).then(res => {
-      const { followed, followers, followersCount } = res.question.mutation.status;
-      const { question } = this.state;
-      const newQuestion = Object.assign({}, question);
-      newQuestion.followed = followed;
-      newQuestion.followers = followers;
-      newQuestion.followersCount = followersCount;
+    }`;
+    const callback = data => {
+      const { followed, followers, followersCount } = data.question.mutation.status;
       this.setState({
-        question: newQuestion
+        question : {
+          ... this.state.question,
+          followed,
+          followers,
+          followersCount,
+        },
       });
-    });
+    };
+    return {
+      query,
+      callback,
+    };
+  }
+
+  toggleFollowStatus = () => {
+    GraphqlRest.handleQueries(
+      this.prepareFollow(!this.state.question.followed)
+    );
   }
 
   componentDidMount() {
@@ -578,11 +584,9 @@ export default class Detail extends React.Component {
         <div className="sidebar">
           <div className="watch">
             <div className="operate">
-              {
-                followed
-                  ? <div className="btn btn-info" onClick={this.handleFollowStatus.bind(this, false)}>取消关注</div>
-                  : <div className="btn btn-primary" onClick={this.handleFollowStatus.bind(this, true)}>关注问题</div>
-              }
+              <div className={`btn mr-sm ${followed ? 'btn-info' : 'btn-primary'}`} onClick={this.toggleFollowStatus}>
+                {followed ? '取消关注' : '关注问题'}
+              </div>
               <Link className="btn btn-info" to={`/question/${id}/answer`}>回答</Link>
             </div>
             <div className="watcher">
