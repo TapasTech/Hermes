@@ -88,7 +88,7 @@ export default class TabUserInfo extends React.Component {
         </div>
         <div className={style.buttons}>
           <button className="btn btn-primary mr" onClick={this.handleUpdate}>保存</button>
-          <button className="btn btn-default">取消</button>
+          <button className="btn btn-default" onClick={this.props.onCancel}>取消</button>
         </div>
       </div>
     );

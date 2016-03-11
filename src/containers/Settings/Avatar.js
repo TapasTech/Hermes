@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {Avatar} from '#/components';
 
 import style from './style.less';
@@ -38,7 +39,8 @@ export default class TabAvatar extends React.Component {
           </div>
           <div className={style.buttons}>
             <button className="btn btn-default mr" onClick={this.handleUpload}>上传图片</button>
-            <button className="btn btn-primary">保存</button>
+            <button className="btn btn-primary mr">保存</button>
+            <button className="btn btn-primary" onClick={this.props.onCancel}>取消</button>
           </div>
         </div>
       </div>

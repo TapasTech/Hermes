@@ -18,11 +18,15 @@ export default class Settings extends React.Component {
     );
   }
 
-  onUpdate = (me) => {
+  onUpdate = me => {
     this.setState({
       ... this.state.me,
       ... me,
     });
+  }
+
+  onCancel = () => {
+    browserHistory.push(`/user/${this.state.me.id}`);
   }
 
   render() {
@@ -43,7 +47,7 @@ export default class Settings extends React.Component {
         <div className="full">
           <div className="panel">
             <Tabs tabs={tabs} active={index}>
-              {Tab && me && <Tab me={me} onUpdate={this.onUpdate} />}
+              {Tab && me && <Tab me={me} onUpdate={this.onUpdate} onCancel={this.onCancel} />}
             </Tabs>
           </div>
         </div>
@@ -52,7 +56,12 @@ export default class Settings extends React.Component {
   }
 
   prepareData() {
-    const query = `me {...fragUserInfo ...fragUserAvatar}`;
+    const query = `
+    me {
+      id
+      ...fragUserInfo
+      ...fragUserAvatar
+    }`;
     const callback = data => {
       const {me} = data;
       this.setState({
