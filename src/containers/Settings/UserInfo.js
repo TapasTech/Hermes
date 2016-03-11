@@ -1,7 +1,6 @@
 import React from 'react';
 
 import {Loader} from '#/components';
-import {GraphqlRest, encodeField} from '#/utils';
 import Store from '#/store';
 import style from './style.less';
 
@@ -9,6 +8,7 @@ export default class TabUserInfo extends React.Component {
   static fragments = `
   fragment fragUserInfo on User {
     email
+    avatar
     displayName
     gender
     description
@@ -43,9 +43,11 @@ export default class TabUserInfo extends React.Component {
   }
 
   handleUpdate = () => {
-    GraphqlRest.handleQueries(
-      this.prepareUpdate()
-    );
+    this.props.onUpdate(this.state).then(() => {
+      Store.emit('EVT_MSG', {
+        content: '设置已保存！',
+      });
+    });
   }
 
   render() {
@@ -92,57 +94,5 @@ export default class TabUserInfo extends React.Component {
         </div>
       </div>
     );
-  }
-
-  prepareUpdate() {
-    const {displayName, gender, description, location, employment, position, education, email} = this.state;
-    const query = `
-    me {
-      mutation {
-        update(displayName: ${encodeField(displayName)}, description: ${encodeField(description || '')}, gender: ${gender}, email: ${encodeField(email)}) {id}
-      }
-      location {
-        mutation {
-          update(name: ${encodeField(location || '')}) {name}
-        }
-      }
-      employment {
-        mutation {
-          update(employment: ${encodeField(employment || '')}, position: ${encodeField(position || '')}) {employment}
-        }
-      }
-      education {
-        mutation {
-          update(organization: ${encodeField(education || '')}) {organization}
-        }
-      }
-    }
-    `;
-    const callback = data => {
-      this.setState({loading: false});
-      const onUpdate = this.props.onUpdate;
-      onUpdate && onUpdate({
-        displayName,
-        gender,
-        description,
-        location: {
-          name: location,
-        },
-        employment: {
-          employment,
-          position,
-        },
-        education: {
-          organization: education,
-        },
-      });
-      Store.emit('EVT_MSG', {
-        content: '设置已保存！',
-      });
-    };
-    return {
-      query,
-      callback,
-    };
   }
 }

@@ -78,6 +78,7 @@ export default class PersonalCenter extends React.Component {
       displayName
       gender
       description
+      avatar
       followersCount
       followeesCount
       upVotesCount

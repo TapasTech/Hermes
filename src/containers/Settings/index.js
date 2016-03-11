@@ -1,8 +1,8 @@
 import React from 'react';
 import {Link, browserHistory} from 'react-router';
 
-import {Tabs} from '#/components';
-import {GraphqlRest} from '#/utils';
+import {Tabs, Loader} from '#/components';
+import {GraphqlRest, encodeField} from '#/utils';
 import UserInfo from './UserInfo';
 import Avatar from './Avatar';
 import Password from './Password';
@@ -10,7 +10,9 @@ import Password from './Password';
 import style from './style.less';
 
 export default class Settings extends React.Component {
-  state = {}
+  state = {
+    loading: true,
+  }
 
   componentDidMount() {
     GraphqlRest.handleQueries(
@@ -18,11 +20,10 @@ export default class Settings extends React.Component {
     );
   }
 
-  onUpdate = me => {
-    this.setState({
-      ... this.state.me,
-      ... me,
-    });
+  onUpdate = update => {
+    return GraphqlRest.handleQueries(
+      this.prepareUpdate(update)
+    );
   }
 
   onCancel = () => {
@@ -31,7 +32,7 @@ export default class Settings extends React.Component {
 
   render() {
     const tab = this.props.params.tab || '';
-    const {me} = this.state;
+    const {me, loading} = this.state;
     const index = ['', 'avatar', 'password'].indexOf(tab);
     if (!~index) browserHistory.push('/settings');
     const tabs = [{
@@ -44,6 +45,7 @@ export default class Settings extends React.Component {
     const Tab = [UserInfo, Avatar, Password][index];
     return (
       <div className="container">
+        {loading && <Loader full={true} />}
         <div className="full">
           <div className="panel">
             <Tabs tabs={tabs} active={index}>
@@ -66,6 +68,7 @@ export default class Settings extends React.Component {
       const {me} = data;
       this.setState({
         me,
+        loading: false,
       });
     };
     return {
@@ -75,6 +78,83 @@ export default class Settings extends React.Component {
         UserInfo.fragments,
         Avatar.fragments,
       ],
+    };
+  }
+
+  prepareUpdate(update) {
+    const {
+      displayName, gender, description, email, avatar,
+      location,
+      employment, position,
+      education,
+    } = update;
+    const {me} = this.state;
+    const updated = {};
+    const queries = [];
+    const notEmpty = list => list.some(v => v != null);
+    const fallback = (value, key) => {
+      return (value == null ? me[key] : value) || '';
+    };
+    if (notEmpty([displayName, gender, description, email, avatar])) {
+      queries.push(
+        `mutation { update(
+          displayName: ${encodeField(fallback(displayName, 'displayName'))},
+          description: ${encodeField(fallback(description, 'description'))},
+          gender: ${fallback(gender, 'gender')},
+          email: ${encodeField(fallback(email, 'email'))},
+          avatar: ${encodeField(fallback(avatar, 'avatar'))}
+        ) {id} }`
+      );
+      Object.assign(updated, {
+        displayName,
+        gender,
+        description,
+        avatar,
+      });
+    }
+    if (location != null) {
+      queries.push(
+        `location {
+          mutation {
+            update(name: ${encodeField(location || '')}) {name}
+          }
+        }`
+      );
+      updated.location = {name: location};
+    }
+    if (notEmpty([employment, position])) {
+      queries.push(
+        `employment {
+          mutation {
+            update(employment: ${encodeField(employment || '')}, position: ${encodeField(position || '')}) {employment}
+          }
+        }`
+      );
+      updated.employment = {employment, position};
+    }
+    if (education != null) {
+      queries.push(
+        `education {
+          mutation {
+            update(organization: ${encodeField(education || '')}) {organization}
+          }
+        }`
+      );
+      updated.education = {organization: education};
+    }
+    if (!queries.length) return;
+    const query = `me { ${queries.join(' ')} }`;
+    const callback = data => {
+      this.setState({
+        me: {
+          ... this.state.me,
+          ... updated,
+        }
+      });
+    };
+    return {
+      query,
+      callback,
     };
   }
 }

@@ -1,6 +1,9 @@
 import React from 'react';
 
 import {Avatar} from '#/components';
+import {upload, getUrl} from '#/services/uploader';
+import {GraphqlRest, encodeField} from '#/utils';
+import Store from '#/store';
 
 import style from './style.less';
 
@@ -22,7 +25,28 @@ export default class TabAvatar extends React.Component {
   }
 
   handleUpload = () => {
-    const url = prompt('请输入URL：');
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = () => {
+      const files = input.files;
+      if (files && files[0])
+        upload(files[0]).then(data => {
+          const avatar = getUrl(data);
+          this.setState({
+            avatar,
+          });
+        });
+    };
+    input.click();
+  }
+
+  handleSave = () => {
+    this.props.onUpdate(this.state).then(() => {
+      Store.emit('EVT_MSG', {
+        content: '头像已更新！',
+      });
+    });
   }
 
   render() {
@@ -39,7 +63,7 @@ export default class TabAvatar extends React.Component {
           </div>
           <div className={style.buttons}>
             <button className="btn btn-default mr" onClick={this.handleUpload}>上传图片</button>
-            <button className="btn btn-primary mr">保存</button>
+            <button className="btn btn-primary mr" onClick={this.handleSave}>保存</button>
             <button className="btn btn-primary" onClick={this.props.onCancel}>取消</button>
           </div>
         </div>
