@@ -19,6 +19,7 @@ email
 displayName
 gender
 description
+avatar
 `;
 
 function prepareLogIn(email, password) {

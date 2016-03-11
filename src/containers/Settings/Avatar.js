@@ -4,6 +4,7 @@ import {Avatar} from '#/components';
 import {upload, getUrl} from '#/services/uploader';
 import {GraphqlRest, encodeField} from '#/utils';
 import Store from '#/store';
+import AppDispatcher from '#/dispatcher';
 
 import style from './style.less';
 
@@ -45,6 +46,13 @@ export default class TabAvatar extends React.Component {
     this.props.onUpdate(this.state).then(() => {
       Store.emit('EVT_MSG', {
         content: '头像已更新！',
+      });
+      AppDispatcher.dispatch({
+        type: 'USER_INFO',
+        data: {
+          ... Store.user.index().data,
+          avatar: this.state.avatar,
+        },
       });
     });
   }
