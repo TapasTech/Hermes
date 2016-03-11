@@ -26,15 +26,15 @@ export default class Questions extends React.Component {
     return (
       <div className={styles.topicList} key={index}>
         <div className="reply item">
-          <div className="num">{item.answersCount}</div>
+          <div className="num title">{item.answersCount}</div>
           <div className="tip">回答</div>
         </div>
         <div className="read item">
-          <div className="num">{item.readCount || 0}</div>
+          <div className="num title">{item.readCount || 0}</div>
           <div className="tip">阅读</div>
         </div>
         <div className="topic item">
-          <Link className="num" to={`/question/${item.id}`}>{item.title}</Link>
+          <Link className="num title" to={`/question/${item.id}`}>{item.title}</Link>
           {
             <div className="tip">{formatter.time(item.createdAt)}</div>
           }

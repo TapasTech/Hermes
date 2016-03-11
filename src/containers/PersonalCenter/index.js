@@ -345,17 +345,17 @@ export default class PersonalCenter extends React.Component {
       <div className="panel">
         <div className={styles.tabs}>
           <Link
-            className={`tab ${tab.index === 0 ? 'active' : ''}`}
+            className={`tab title ${tab.index === 0 ? 'active' : ''}`}
             to={`/user/${userId}`}>
             最新动态
           </Link>
           <Link
-            className={`tab ${tab.index === 1 ? 'active' : ''}`}
+            className={`tab title ${tab.index === 1 ? 'active' : ''}`}
             to={`/user/${userId}/answers`}>
             回答 · {this.state.user.answersCount}
           </Link>
           <Link
-            className={`tab ${tab.index === 2 ? 'active' : ''}`}
+            className={`tab title ${tab.index === 2 ? 'active' : ''}`}
             to={`/user/${userId}/questions`}>
             提问 · {this.state.user.questionsCount}
           </Link>

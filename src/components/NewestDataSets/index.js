@@ -35,8 +35,8 @@ export default class NewestDataSets extends React.Component {
 
   render() {
     return (
-      <div className={styles.newest}>
-        <div className="title">
+      <div className="newest-dataset panel">
+        <div className="header">
           <span>最新数据</span>
           <Link className="more" to="/discovery">更多</Link>
         </div>

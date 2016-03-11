@@ -97,15 +97,14 @@ export default class AnswerCard extends React.Component {
   }
 
   onSetCount = (total) => {
-    console.log(total);
     this.setState({
       commentsCount: total,
     });
   }
 
   renderOptionArea() {
-    const { answer } = this.props;
-    const {upVotesCount} = this.state;
+    const { id, question } = this.props.answer;
+    const { upVotesCount } = this.state;
     return (
       <div className={styles.cardOption}>
         <div className="other">
@@ -116,11 +115,11 @@ export default class AnswerCard extends React.Component {
           </div>
           <div className="share">
             <span onClick={::this.handleShowShare}>分享</span>
-            { this.state.showShare && <ShareBar className="bar" url={`/question/${question.id}`} title={answer.question.title} /> }
+            { this.state.showShare && <ShareBar className="bar" url={`/question/${question.id}`} title={question.title} /> }
           </div>
         </div>
         { this.state.showComment &&
-          <CommentList answerId={answer.id} onSetCount={this.onSetCount} />
+          <CommentList answerId={id} onSetCount={this.onSetCount} />
         }
       </div>
     );

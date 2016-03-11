@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 import { GraphqlRest, hashColor } from '#/utils';
 
-import styles from './style.less';
+import './style.less';
 
 export default class HotTopics extends React.Component {
   constructor(props) {
@@ -49,9 +49,9 @@ export default class HotTopics extends React.Component {
     };
 
     return (
-      <div className={styles.topic} key={key}>
-        <div className="topic">
-          <div className="img" style={imgStyle}>{name.substr(0,1)}</div>
+      <div className="topic-item" key={key}>
+        <div className="topic clearfix">
+          <div className="img title" style={imgStyle}>{name.substr(0,1)}</div>
           <div className="name">{name}</div>
         </div>
         {
@@ -65,8 +65,8 @@ export default class HotTopics extends React.Component {
   render() {
     const { hotTopics } = this.state;
     return (
-      <div className={styles.hotTopic}>
-        <div className="title">
+      <div className="hot-topics panel">
+        <div className="header">
           <span>热门领域</span>
           <Link className="more" to="/discovery">更多</Link>
         </div>

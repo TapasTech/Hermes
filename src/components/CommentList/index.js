@@ -115,7 +115,7 @@ export default class CommentList extends React.Component {
 
   render() {
     const { currentPage, totalPages, comment, data } = this.state;
-    const clx = comment ? "btn primary" : "btn disabled";
+    const clx = comment ? "btn btn-primary" : "btn btn-disabled";
     return (
       <div className={styles.commentList}>
         {data.map((item, index) => (

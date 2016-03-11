@@ -65,7 +65,7 @@ export default class AnswerList extends React.Component {
 
   renderBestAnalysts() {
     return (
-      <Link className={styles.bestAnalysts} to="/rank">
+      <Link className="bestAnalysts panel" to="/rank">
         <div className="top">全球分析师</div>
         <div className="bottom">排行榜</div>
       </Link>

@@ -95,7 +95,7 @@ export default class Comment extends React.Component {
   renderOptionArea() {
     const { id, createdAt } = this.props.data;
     const { comment, upVotesCount } = this.state;
-    const clx = comment ? "btn primary" : "btn disabled";
+    const clx = comment ? "btn btn-primary" : "btn btn-disabled";
 
     return (
       <div className={styles.optionArea}>

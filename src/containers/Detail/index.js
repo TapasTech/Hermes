@@ -485,7 +485,7 @@ export default class Detail extends React.Component {
     return (
       <div className={styles.topic}>
         <div className={styles.header}>
-          <div className={styles.title}>{title}</div>
+          <div className="title">{title}</div>
           {
             isMine
               && <Link className={styles.tip} to={`/question/${id}/edit`}>修改</Link>
@@ -603,7 +603,7 @@ export default class Detail extends React.Component {
             </div>
           </div>
           <div className="related">
-            <div className="title">
+            <div className="header">
               <span>相关问题</span>
               <Link className="more" to="/discovery">更多</Link>
             </div>
