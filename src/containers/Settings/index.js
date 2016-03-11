@@ -1,7 +1,8 @@
 import React from 'react';
 import {Link, browserHistory} from 'react-router';
 
-import Store from '#/store';
+import {Tabs} from '#/components';
+import {GraphqlRest} from '#/utils';
 import UserInfo from './UserInfo';
 import Avatar from './Avatar';
 import Password from './Password';
@@ -9,52 +10,62 @@ import Password from './Password';
 import style from './style.less';
 
 export default class Settings extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      user: Store.user.index().data,
-    };
-  }
+  state = {}
 
   componentDidMount() {
-    Store.on('EVT_USER', this.updateUser);
+    GraphqlRest.handleQueries(
+      this.prepareData()
+    );
   }
 
-  componentWillUnmount() {
-    Store.off('EVT_USER', this.updateUser);
-  }
-
-  updateUser = () => {
+  onUpdate = (me) => {
     this.setState({
-      user: Store.user.index().data,
+      ... this.state.me,
+      ... me,
     });
   }
 
   render() {
     const tab = this.props.params.tab || '';
+    const {me} = this.state;
     const index = ['', 'avatar', 'password'].indexOf(tab);
     if (!~index) browserHistory.push('/settings');
+    const tabs = [{
+      title: <Link to="/settings">个人信息</Link>,
+    }, {
+      title: <Link to="/settings/avatar">设置头像</Link>,
+    }, {
+      title: <Link to="/settings/password">修改密码</Link>,
+    }];
     const Tab = [UserInfo, Avatar, Password][index];
     return (
       <div className="container">
         <div className="full">
           <div className="panel">
-            <ul className={`${style.tabs} clearfix`}>
-              <li className={index === 0 ? 'active' : ''}>
-                <Link to="/settings">个人信息</Link>
-              </li>
-              <li className={index === 1 ? 'active' : ''}>
-                <Link to="/settings/avatar">设置头像</Link>
-              </li>
-              <li className={index === 2 ? 'active' : ''}>
-                <Link to="/settings/password">修改密码</Link>
-              </li>
-              <span className={style.activeMark} style={{left: index * 120}}></span>
-            </ul>
-            {Tab && <Tab user={this.state.user} />}
+            <Tabs tabs={tabs} active={index}>
+              {Tab && me && <Tab me={me} onUpdate={this.onUpdate} />}
+            </Tabs>
           </div>
         </div>
       </div>
     );
+  }
+
+  prepareData() {
+    const query = `me {...fragUserInfo ...fragUserAvatar}`;
+    const callback = data => {
+      const {me} = data;
+      this.setState({
+        me,
+      });
+    };
+    return {
+      query,
+      callback,
+      fragments: [
+        UserInfo.fragments,
+        Avatar.fragments,
+      ],
+    };
   }
 }

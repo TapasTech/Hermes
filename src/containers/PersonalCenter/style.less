@@ -7,8 +7,7 @@
   }
   .sidebar {
     width: 270px;
-    margin-left: 0;
-    margin-right: -270px;
+    margin-left: -100%;
   }
 }
 
@@ -59,53 +58,31 @@
   line-height: 30px;
 }
 
-:local(.tabs) {
-  display: flex;
+:local(.card) {
+  border-top: 1px solid #d9d9d9;
+  padding: 15px 0;
 
-  .tab {
+  .header {
+    display: flex;
+    justify-content: space-between;
+    color: #999;
+  }
+
+  .title {
+    margin: 10px 0;
     font-size: 16px;
-    text-align: center;
-    cursor: pointer;
-    padding: 5px;
+    font-weight: bold;
+  }
 
-    &.active {
-      border-bottom: 2px solid #999;
-    }
-
-    & + .tab {
-      margin-left: 20px;
-    }
+  .info {
+    font-size: small;
+    color: #bbb;
   }
 }
 
-:local(.stream) {
-
-  :local(.card) {
-    border-top: 1px solid #d9d9d9;
-    padding: 15px 0;
-
-    .header {
-      display: flex;
-      justify-content: space-between;
-      color: #999;
-    }
-
-    .title {
-      margin: 10px 0;
-      font-size: 16px;
-      font-weight: bold;
-    }
-
-    .info {
-      font-size: small;
-      color: #bbb;
-    }
-  }
-
-  :local(.more) {
-    padding-top: 5px;
-    border-top: 1px solid #d9d9d9;
-    text-align: center;
-    cursor: pointer;
-  }
+:local(.more) {
+  padding-top: 5px;
+  border-top: 1px solid #d9d9d9;
+  text-align: center;
+  cursor: pointer;
 }
