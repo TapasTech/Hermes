@@ -11,6 +11,18 @@
   &:active {
     outline: none;
   }
+  &.disabled,
+  &[disabled] {
+    &,
+    &:focus,
+    &:hover,
+    &:active {
+      color: white;
+      background: gray;
+      border-color: gray;
+      cursor: not-allowed;
+    }
+  }
 }
 
 .btn-mixin(@color, @background-color, @border-color: currentColor) {
@@ -31,7 +43,7 @@
 }
 
 .btn-default {
-  .btn-mixin(@brand-primary, transparent);
+  .btn-mixin(@brand-primary, white);
 }
 
 .btn-primary {

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link, browserHistory} from 'react-router';
 
-import { AnswerCard, Avatar, TopicCard, Loader } from '#/components';
+import { AnswerCard, Avatar, TopicCard, Loader, LoadMore, Tabs } from '#/components';
 import {GraphqlRest, encodeField, formatter} from '#/utils';
 import styles from './style.less';
 
@@ -25,7 +25,11 @@ export default class PersonalCenter extends React.Component {
     super(props);
     this.state = {
       ... this.tabState(props),
-      user: {},
+      user: {
+        location: {},
+        employment: {},
+        education: {},
+      },
       currentPage: 1,
       totalPages: 0,
       loading: true,
@@ -74,11 +78,13 @@ export default class PersonalCenter extends React.Component {
       displayName
       gender
       description
+      avatar
       followersCount
       followeesCount
       upVotesCount
       questionsCount
       answersCount
+      followed
       location { name }
       employment { employment position }
       education { organization direction }
@@ -227,6 +233,38 @@ export default class PersonalCenter extends React.Component {
     );
   }
 
+  prepareFollow() {
+    const verb = this.state.user.followed ? 'unfollow' : 'follow';
+    const query = `
+    userFollow: user(id: ${encodeField(this.props.params.id)}) {
+      mutation {
+        action: ${verb} {
+          followed
+        }
+      }
+    }
+    `;
+    const callback = data => {
+      const followed = data.userFollow.mutation.action.followed;
+      this.setState({
+        user: {
+          ... this.state.user,
+          followed,
+        },
+      });
+    };
+    return {
+      query,
+      callback,
+    };
+  }
+
+  handleFollow = () => {
+    GraphqlRest.handleQueries(
+      this.prepareFollow()
+    );
+  }
+
   renderInfo() {
     const {user} = this.state;
     return (
@@ -249,11 +287,17 @@ export default class PersonalCenter extends React.Component {
             <div className="tip">赞同</div>
           </div>
         </div>
-        <div className="btn primary">关注</div>
+        { user.id !== this.props.params.id &&
+          <button onClick={this.handleFollow} className={`btn ${user.followed ? 'btn-info' : 'btn-primary'}`}>
+            {user.followed ? '取消关注' : '关注'}
+          </button>
+        }
         <div className={styles.intro}>
-          <div>上海 | 咨询</div>
-          <div>CBNData | 数据分析师</div>
-          <div>加州大学伯克利分校 (UC Berkeley)</div>
+          <div>{user.location.name || '地球'} | 打酱油</div>
+          {(user.employment.employment || user.employment.position) &&
+            <div>{user.employment.employment || '公司未填写'} | {user.employment.position || '职位未填写'}</div>
+          }
+          {user.education.organization && <div>{user.education.organization}</div>}
         </div>
       </div>
     );
@@ -338,34 +382,22 @@ export default class PersonalCenter extends React.Component {
   }
 
   renderStream() {
-    const { tab, currentPage, totalPages } = this.state;
+    const { tab, user, currentPage, totalPages } = this.state;
     const userId = this.props.params.id;
+    const tabs = [{
+      title: <Link to={`/user/${userId}`}>最新动态</Link>,
+    }, {
+      title: <Link to={`/user/${userId}/answers`}>回答 · {user.answersCount}</Link>,
+    }, {
+      title: <Link to={`/user/${userId}/questions`}>提问 · {user.questionsCount}</Link>,
+    }];
 
     return (
       <div className="panel">
-        <div className={styles.tabs}>
-          <Link
-            className={`tab title ${tab.index === 0 ? 'active' : ''}`}
-            to={`/user/${userId}`}>
-            最新动态
-          </Link>
-          <Link
-            className={`tab title ${tab.index === 1 ? 'active' : ''}`}
-            to={`/user/${userId}/answers`}>
-            回答 · {this.state.user.answersCount}
-          </Link>
-          <Link
-            className={`tab title ${tab.index === 2 ? 'active' : ''}`}
-            to={`/user/${userId}/questions`}>
-            提问 · {this.state.user.questionsCount}
-          </Link>
-        </div>
-        <div className={styles.stream}>
+        <Tabs active={tab.index} tabs={tabs}>
           {this.renderTabData()}
-          {currentPage < totalPages &&
-            <div className={styles.more} onClick={this.loadMore}>点击加载更多</div>
-          }
-        </div>
+          <LoadMore condition={currentPage < totalPages} onLoadMore={this.loadMore} />
+        </Tabs>
       </div>
     );
   }
@@ -374,11 +406,11 @@ export default class PersonalCenter extends React.Component {
     return (
       <div className={`container ${styles.container}`}>
         {this.state.loading && <Loader full={true} />}
-        <div className="sidebar">
-          { this.renderInfo() }
-        </div>
         <div className="main">
           { this.renderStream() }
+        </div>
+        <div className="sidebar">
+          { this.renderInfo() }
         </div>
       </div>
     );

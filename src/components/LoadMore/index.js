@@ -14,7 +14,7 @@ export default class LoadMore extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className={styles.wrap}>
         {
           this.props.condition
             ? <div className={styles.more} onClick={this.props.onLoadMore}>点击加载更多</div>

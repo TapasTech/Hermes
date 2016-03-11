@@ -13,3 +13,4 @@ export ShareBar from './ShareBar';
 export MessageBox from './MessageBox';
 export Loader from './Loader';
 export DataSources from './DataSources';
+export Tabs from './Tabs';

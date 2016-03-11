@@ -7,7 +7,7 @@
   width: 100%;
   height: @navtop-height;
   color: #fff;
-  background-color: #434343;
+  background-color: @navtop-background;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.24);
   z-index: 1000;
 
@@ -39,21 +39,6 @@
       height: 100%;
       background: url(../../assets/logo.png) no-repeat center / contain;
     }
-  }
-
-  .btn {
-    border: 1px solid currentColor;
-    border-radius: 3px;
-    margin-left: 10px;
-    line-height: 26px;
-    background-color: inherit;
-  }
-
-  .link {
-    display: inline-block;
-    width: 50px;
-    text-align: center;
-    cursor: pointer;
   }
 
   .divider {
@@ -98,5 +83,10 @@
       cursor: pointer;
       border-top: 1px solid #a6a6a6;
     }
+  }
+
+  &-item {
+    display: inline-block;
+    padding: 0 10px;
   }
 }

@@ -1,11 +1,20 @@
-:local(.tip) {
-  color: #a6a6a6;
+@import '../../styles/variables';
+
+:local(.data) {
+  margin-bottom: 5px;
+  padding: 5px;
+  background: @bg-warning;
 }
 
-:local(.links) {
-  margin: 10px 0;
+:local(.list) {
+  padding-left: 20px;
   a {
-    display: block;
-    color: #546da5;
+    padding: 2px 5px;
+    border-radius: @border-radius;
+    color: @brand-primary;
+    &:hover {
+      color: @brand-feature;
+      background: @navtop-background;
+    }
   }
 }
