@@ -1,0 +1,44 @@
+.tabs {
+  @menu-width: 120px;
+
+  &-header {
+    position: relative;
+    border-bottom: 1px solid #d9d9d9;
+  }
+
+  &-item {
+    float: left;
+    list-style-type: none;
+    text-align: center;
+    > a {
+      display: inline-block;
+      width: @menu-width;
+      padding: 10px;
+    }
+    &:not(:first-child) {
+      &::before {
+        content: '';
+        border-left: 1px solid #d9d9d9;
+      }
+    }
+  }
+
+  &-active-mark {
+    display: block;
+    position: absolute;
+    width: @menu-width;
+    height: 2px;
+    top: 100%;
+    left: 0;
+    background: #434343;
+    transition: left .25s;
+  }
+
+  .panel &:first-child {
+    margin-top: -10px;
+  }
+
+  .panel &:last-child {
+    margin-bottom: -10px;
+  }
+}

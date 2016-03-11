@@ -2,12 +2,12 @@ import React from 'react';
 import { Link } from 'react-router';
 
 import { Answer, CommentList, ShareBar, PokeButton } from '#/components';
+import DataSources from '../DataSources';
 import {GraphqlRest, encodeField} from '#/utils';
 
 import styles from './style.less';
 
 export default class AnswerCard extends React.Component {
-
   static propTypes = {
     answer: React.PropTypes.object,
   };
@@ -28,6 +28,12 @@ export default class AnswerCard extends React.Component {
       }
     }
     content
+    dataSets(page: 1, count: 5) {
+      ...fragDataSets
+    }
+    dataReports(page: 1, count: 5) {
+      ...fragDataReports
+    }
     upVotesCount
     comments(page: 1, count: 5) {
       meta {
@@ -36,8 +42,7 @@ export default class AnswerCard extends React.Component {
         total_count
       }
     }
-  }
-  `;
+  } ${DataSources.fragments}`;
 
   constructor(props) {
     super(props);
@@ -97,7 +102,6 @@ export default class AnswerCard extends React.Component {
   }
 
   onSetCount = (total) => {
-    console.log(total);
     this.setState({
       commentsCount: total,
     });
@@ -136,6 +140,7 @@ export default class AnswerCard extends React.Component {
           <span>的答案：</span>
         </div>
         <Answer answerContent={answer.content} />
+        <DataSources dataSets={answer.dataSets} dataReports={answer.dataReports} />
         { this.renderOptionArea() }
       </div>
     );

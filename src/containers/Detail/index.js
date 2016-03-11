@@ -20,33 +20,6 @@ export default class Detail extends React.Component {
     }
   }
 
-  static fragments = `
-  fragment fragDataSets on PaginatedDataSet {
-    data {
-      id
-      title
-      url
-    }
-    meta {
-      current_page
-      total_pages
-      total_count
-    }
-  }
-  fragment fragDataReports on PaginatedDataReport {
-    data {
-      id
-      title
-      url
-    }
-    meta {
-      current_page
-      total_pages
-      total_count
-    }
-  }
-  `;
-
   prepareMoreAnswers(page) {
     const { id } = this.props.params;
     const query = `
@@ -227,7 +200,7 @@ export default class Detail extends React.Component {
     return {
       query,
       callback,
-      fragments: Detail.fragments,
+      fragments: DataSources.fragments,
     };
   }
 

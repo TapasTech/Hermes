@@ -27,15 +27,36 @@ hr {
   margin: @gap 0;
 }
 
-input {
-  outline: none;
-}
-
+input,
 textarea {
   outline: none;
   resize: none;
+  &[disabled] {
+    background: #eee;
+    border: 1px solid #ccc;
+  }
 }
 
 .text-gray {
   color: #a6a6a6;
+}
+
+.text-primary {
+  color: @brand-primary;
+}
+
+.text-feature {
+  color: @brand-feature;
+}
+
+.text-info {
+  color: @brand-info;
+}
+
+.text-danger {
+  color: @brand-danger;
+}
+
+.text-warning {
+  color: @brand-warning;
 }

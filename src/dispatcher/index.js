@@ -29,7 +29,7 @@ AppDispatcher.register(function(action) {
       }
       break;
     case 'USER_LOGOUT':
-      setToken();
+      setToken('');
       Store.user.update({data});
       Store.emit('EVT_USER');
       break;
