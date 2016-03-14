@@ -14,3 +14,4 @@ export MessageBox from './MessageBox';
 export Loader from './Loader';
 export DataSources from './DataSources';
 export Tabs from './Tabs';
+export Modal from './Modal';

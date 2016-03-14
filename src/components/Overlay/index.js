@@ -1,13 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-import Modal from './Modal';
+import OuterLayer from './OuterLayer';
 
-export default class ModalContainer extends React.Component {
-  static propTypes = {
-    show: React.PropTypes.bool
-  };
-
+export default class Overlay extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -26,9 +23,11 @@ export default class ModalContainer extends React.Component {
   }
 
   renderModal(props) {
-    const { show, children} = props;
+    const { show, children } = props;
     return (
-      <Modal show={show}>{children}</Modal>
+      <ReactCSSTransitionGroup transitionName="fade" transitionEnterTimeout={300} transitionLeaveTimeout={300}>
+        { show && <OuterLayer>{children}</OuterLayer> }
+      </ReactCSSTransitionGroup>
     );
   }
 
@@ -38,20 +37,19 @@ export default class ModalContainer extends React.Component {
 
   renderIntoContainer(props) {
     ReactDOM.render(this.renderModal(props), this.container);
-    // ReactDOM.unstable_renderSubtreeIntoContainer(this, this.renderModal(), this.container, () => console.log(1))
   }
 
   getContainer() {
     if (!this.container) {
       this.container = document.createElement('div');
-      this.container.className = 'modal-container';
+      this.container.className = 'overlay';
       document.body.appendChild(this.container);
     }
     return this.container;
   }
 
   removeContainer() {
-    ReactDOM.unmountComponentAtNode(this.container);
+    ReactDOM.unmountComponentAtNode(this.getContainer());
     document.body.removeChild(this.container);
     this.container = null;
   }

@@ -1,0 +1,46 @@
+@import '../../styles/variables.less';
+
+.modal {
+  width: 550px;
+  height: 300px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  background-color: #fff;
+  z-index: 2;
+
+  &-head {
+    padding: 10px 15px;
+    background-color: @brand-info;
+
+    .remove {
+      float: right;
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      background: url('../../assets/remove.svg') no-repeat center/contain;
+    }
+  }
+
+  &-body {
+    padding: 10px 15px;
+  }
+
+  &-form {
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin: 5px 0;
+    }
+  }
+
+  &-options {
+    margin-top: 30px;
+    text-align: center;
+  }
+}

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Overlay } from '#/components';
+import { Modal } from '#/components';
 
 import {GraphqlRest, encodeField, valueLink} from '#/utils';
 
@@ -41,12 +41,8 @@ export default class Reference extends React.Component {
     const {dataSets, dataReports} = this.props;
     return (
       <div className={styles.reference}>
-        <div className="source">
-          { this.renderAdd('dataSets') }
-        </div>
-        <div className="report">
-          { this.renderAdd('dataReports') }
-        </div>
+        { this.renderAdd('dataSets') }
+        { this.renderAdd('dataReports') }
       </div>
     );
   }
@@ -59,25 +55,18 @@ export default class Reference extends React.Component {
         <div className="btn btn-default" onClick={this.handleShowModal.bind(this, key)}>
           + 数据{text}
         </div>
-        <Overlay show={this.state.showModal[key]}>
-          <div className="modal-content">
-            <div className="modal-title">
-              添加数据{text}
-              <span>标题:</span>
-              <i className="remove" onClick={this.handleCancel.bind(this, key)}></i>
-            </div>
-            <div className="modal-body">
-              <div className="label">标题:</div>
-              <input className="form-control" placeholder="请输入标题" value={title || ''} onChange={this.handleChange.bind(this, key, 'title')} />
-              <div className="label">URL:</div>
-              <input className="form-control" placeholder="请输入URL" value={url || ''} onChange={this.handleChange.bind(this, key, 'url')} />
-            </div>
-            <div className="modal-footer">
-              <button className="btn btn-primary" onClick={this.handleConfirm.bind(this, key)}>确认</button>
-              <button className="btn btn-default" onClick={this.handleCancel.bind(this, key)}>取消</button>
-            </div>
+        <Modal show={this.state.showModal[key]} title={`添加数据${text}标题:`}>
+          <div className="modal-form">
+            <label>标题:</label>
+            <input className="form-control" placeholder="请输入标题" value={title || ''} onChange={this.handleChange.bind(this, key, 'title')} />
+            <label>URL:</label>
+            <input className="form-control" placeholder="请输入URL" value={url || ''} onChange={this.handleChange.bind(this, key, 'url')} />
           </div>
-        </Overlay>
+          <div className="modal-options">
+            <button className="btn btn-primary mr" onClick={this.handleConfirm.bind(this, key)}>确认</button>
+            <button className="btn btn-default" onClick={this.handleCancel.bind(this, key)}>取消</button>
+          </div>
+        </Modal>
         <div className="list">
           { this.props[key][0] && this.props[key].map(this.renderDataSet) }
         </div>
