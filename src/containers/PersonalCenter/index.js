@@ -25,6 +25,29 @@ export default class PersonalCenter extends React.Component {
     super(props);
     this.state = {
       ... this.tabState(props),
+      ... this.initState(),
+    };
+    this.init();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.params.id !== this.props.params.id) {
+      this.setState({
+        loading: true,
+        ... this.tabState(nextProps),
+        ... this.initState(),
+      }, () => this.init());
+    } else {
+      this.setState(this.tabState(nextProps), () => {
+        GraphqlRest.handleQueries(
+          this.prepareTabData(this.state.currentPage)
+        );
+      });
+    }
+  }
+
+  initState() {
+    return {
       user: {
         location: {},
         employment: {},
@@ -34,14 +57,6 @@ export default class PersonalCenter extends React.Component {
       totalPages: 0,
       loading: true,
     };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState(this.tabState(nextProps), () => {
-      GraphqlRest.handleQueries(
-        this.prepareTabData(this.state.currentPage)
-      );
-    });
   }
 
   tabState(props) {
@@ -64,7 +79,7 @@ export default class PersonalCenter extends React.Component {
     };
   }
 
-  componentDidMount() {
+  init() {
     GraphqlRest.handleQueries(
       this.prepareUser(),
       this.prepareTabData()
@@ -73,6 +88,9 @@ export default class PersonalCenter extends React.Component {
 
   prepareUser() {
     const query = `
+    me {
+      id
+    }
     user(id: ${encodeField(this.props.params.id)}) {
       id
       displayName
@@ -102,6 +120,7 @@ export default class PersonalCenter extends React.Component {
       this.setState({
         user: data.user,
         loading: false,
+        myId: data.me.id,
       });
     };
     return {
@@ -287,7 +306,7 @@ export default class PersonalCenter extends React.Component {
             <div className="tip">赞同</div>
           </div>
         </div>
-        { user.id !== this.props.params.id &&
+        { user.id !== this.state.myId &&
           <button onClick={this.handleFollow} className={`btn ${user.followed ? 'btn-info' : 'btn-primary'}`}>
             {user.followed ? '取消关注' : '关注'}
           </button>
