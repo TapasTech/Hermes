@@ -211,7 +211,7 @@ export default class Answer extends React.Component {
               <div className="btn btn-info postIt" onClick={this.handlePost}>发布</div>
               {/*
               <label className="anonymous">
-                <input type="checkbox" value={anonymous} onChange={this.handleAnonymousChange} />
+                <input type="checkbox" value={anonymous || ''} onChange={this.handleAnonymousChange} />
                 <span className="tip">匿名发布</span>
               </label>
               */}

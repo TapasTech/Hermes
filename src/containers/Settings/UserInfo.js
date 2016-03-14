@@ -57,20 +57,20 @@ export default class TabUserInfo extends React.Component {
         {loading && <Loader />}
         <div className="form-group">
           <label className={style.required}>昵称：</label>
-          <input type="text" className="form-control" value={displayName} onChange={this.handleValueChange.bind(this, 'displayName')} />
+          <input type="text" className="form-control" value={displayName || ''} onChange={this.handleValueChange.bind(this, 'displayName')} />
         </div>
         <div className="form-group">
           <label className={style.required}>性别：</label>
-          <input type="text" className="form-control" value={gender} onChange={this.handleValueChange.bind(this, 'gender')} />
+          <input type="text" className="form-control" value={gender || ''} onChange={this.handleValueChange.bind(this, 'gender')} />
         </div>
         <div className="form-group">
           <label>签名：</label>
-          <textarea className="form-control" placeholder="请输入签名" onChange={this.handleValueChange.bind(this, 'description')} value={description} />
+          <textarea className="form-control" placeholder="请输入签名" value={description || ''} onChange={this.handleValueChange.bind(this, 'description')} />
         </div>
         <hr />
         <div className="form-group">
           <label>城市：</label>
-          <input type="text" className="form-control" placeholder="请输入城市" value={location} onChange={this.handleValueChange.bind(this, 'location')} />
+          <input type="text" className="form-control" placeholder="请输入城市" value={location || ''} onChange={this.handleValueChange.bind(this, 'location')} />
         </div>
         <div className="form-group">
           <label>行业：</label>
@@ -78,15 +78,15 @@ export default class TabUserInfo extends React.Component {
         </div>
         <div className="form-group">
           <label>公司：</label>
-          <input type="text" className="form-control" placeholder="请输入公司" value={employment} onChange={this.handleValueChange.bind(this, 'employment')} />
+          <input type="text" className="form-control" placeholder="请输入公司" value={employment || ''} onChange={this.handleValueChange.bind(this, 'employment')} />
         </div>
         <div className="form-group">
           <label>职位：</label>
-          <input type="text" className="form-control" placeholder="请输入职位" value={position} onChange={this.handleValueChange.bind(this, 'position')} />
+          <input type="text" className="form-control" placeholder="请输入职位" value={position || ''} onChange={this.handleValueChange.bind(this, 'position')} />
         </div>
         <div className="form-group">
           <label>教育：</label>
-          <input type="text" className="form-control" placeholder="请输入教育经历" value={education} onChange={this.handleValueChange.bind(this, 'education')} />
+          <input type="text" className="form-control" placeholder="请输入教育经历" value={education || ''} onChange={this.handleValueChange.bind(this, 'education')} />
         </div>
         <div className={style.buttons}>
           <button className="btn btn-primary mr" onClick={this.handleUpdate}>保存</button>

@@ -77,7 +77,7 @@ export default class Account extends React.Component {
                 && <input
                 className="form-group form-control"
                 type="texts"
-                value={displayName}
+                value={displayName || ''}
                 onChange={this.handleFormChange.bind(this, 'displayName')}
                 placeholder="用户名" />
             }
@@ -90,7 +90,7 @@ export default class Account extends React.Component {
             <input
               className="form-group form-control"
               type="password"
-              value={password}
+              value={password || ''}
               onChange={this.handleFormChange.bind(this, 'password')}
               placeholder="密码" />
             <button type="submit" className="btn btn-primary">{login ? '登录' : '注册'}</button>

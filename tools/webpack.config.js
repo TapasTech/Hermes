@@ -10,7 +10,7 @@ const imageName = `images/[name]${isProd ? '.[hash:8]' : ''}.[ext]`;
 const fontName = `fonts/[name]${isProd ? '.[hash:8]' : ''}.[ext]`;
 
 const babelRC = {
-  presets:  ['react', 'es2015', 'stage-0'],
+  presets:  ['react', 'es2015-webpack2', 'stage-0'],
   plugins: ['transform-runtime'],
   env: {
     development: {

@@ -228,7 +228,7 @@ export default class Question extends React.Component {
             <input
               type="text"
               className={styles.title}
-              value={title}
+              value={title || ''}
               onChange={this.handleTitleChange}
               placeholder="请输入标题" />
             <Editor content={content} onChange={this.handleContentChange} />
@@ -246,7 +246,7 @@ export default class Question extends React.Component {
               <div className="submit-options">
                 {/*
                 <label className="anonymous">
-                  <input type="checkbox" value={anonymous} onChange={this.handleAnonymousChange} />
+                  <input type="checkbox" value={anonymous || ''} onChange={this.handleAnonymousChange} />
                   <span className="tip">匿名发布</span>
                 </label>
                 */}
