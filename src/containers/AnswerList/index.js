@@ -6,6 +6,7 @@ import { GraphqlRest } from '#/utils';
 import Store from '#/store';
 import AppDispatcher from '#/dispatcher';
 
+import trophy from '#/assets/fonts/trophy-o.svg';
 import styles from './style.less';
 
 export default class AnswerList extends React.Component {
@@ -65,9 +66,14 @@ export default class AnswerList extends React.Component {
 
   renderBestAnalysts() {
     return (
-      <Link className="bestAnalysts panel" to="/rank">
-        <div className="top">全球分析师</div>
-        <div className="bottom">排行榜</div>
+      <Link className={`panel clearfix ${styles.bestAnalysts}`} to="/rank">
+        <div className="pull-left">
+          <div className={styles.bestAnalystsTop}>全球数据分析师</div>
+          <div className={styles.bestAnalystsBottom}>排行榜</div>
+        </div>
+        <div className="pull-right">
+          <img src={trophy} />
+        </div>
       </Link>
     );
   }

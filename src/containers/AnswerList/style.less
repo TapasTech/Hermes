@@ -1,22 +1,10 @@
+@import '../../styles/variables';
+
 :local(.main) {
   margin-right: 20px;
   padding: 20px 20px 0;
   background-color: #fff;
   box-shadow: 0px 0px 2px rgba(153, 153, 153, 0.349019607843137);
-  flex: 1;
-
-  .more,
-  .end {
-    padding: 5px 0;
-    line-height: 26px;
-    text-align: center;
-    color: #a6a6a6;
-    border-top: 1px solid #eee;
-  }
-
-  .more {
-    cursor: pointer;
-  }
 }
 
 :local(.title) {
@@ -48,23 +36,23 @@
   flex: 1;
 }
 
-.bestAnalysts {
-  width: 100%;
-  display: inline-block;
-  color: #75aa30;
-  box-sizing: border-box;
-  background: url('../../assets/trophy.svg') #fff no-repeat right center;
-  background-size: contain;
-
-  .top {
-    display: inline-block;
-    font-size: 1.8rem;
-    line-height: 30px;
-    border-bottom: 2px solid #75aa30;
+:local(.bestAnalysts) {
+  display: block;
+  color: @brand-feature;
+  &:not(:hover) {
+    color: darken(@brand-feature, 12%);
   }
-
-  .bottom {
-    margin-top: 5px;
-    font-size: 2.6rem;
+  img {
+    height: 90px;
   }
+}
+
+:local(.bestAnalystsTop) {
+  margin-top: .5em;
+  border-bottom: 2px solid currentColor;
+  font-size: 110%;
+}
+
+:local(.bestAnalystsBottom) {
+  font-size: 200%;
 }

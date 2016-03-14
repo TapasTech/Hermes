@@ -41,7 +41,7 @@ function request(method, query) {
   .then(res => {
     return res.json()
     .then(result => {
-      if (res.status > 300 || result.errors) {
+      if (res.status > 300 || !result.data && result.errors) {
         throw {
           status: res.status,
           data: result,
@@ -51,9 +51,11 @@ function request(method, query) {
     });
   })
   .catch(err => {
-    let content = '网络错误！';
+    let content = '未知错误！';
     if (err.status === 500) {
       content = '服务器错误！';
+    } else if (!err.status) {
+      content = '网络错误！';
     }
     Store.emit('EVT_MSG', {
       type: 'error',

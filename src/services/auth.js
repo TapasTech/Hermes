@@ -64,10 +64,7 @@ function prepareUserInfo() {
       });
     } else {
       // Token is invalid
-      AppDispatcher.dispatch({
-        type: 'USER_LOGOUT',
-        data: {},
-      });
+      clearUserInfo();
     }
   };
   return {
@@ -76,10 +73,19 @@ function prepareUserInfo() {
   };
 }
 
+function clearUserInfo() {
+  AppDispatcher.dispatch({
+    type: 'USER_LOGOUT',
+    data: {},
+  });
+}
+
 export function getUserInfo() {
   return TOKEN && GraphqlRest.handleQueries(
     prepareUserInfo()
-  );
+  ).catch(err => {
+    clearUserInfo();
+  });
 };
 
 export function logIn(email, password) {
