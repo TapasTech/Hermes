@@ -31,8 +31,8 @@ export default class Reference extends React.Component {
     const { title, url } = this.state;
     return (
       <div>
-        <input placeholder="请输入标题" value={title} onChange={this.handleChange.bind(this, 'title')} />
-        <input placeholder="请输入URL" value={url} onChange={this.handleChange.bind(this,'url')} />
+        <input placeholder="请输入标题" value={title || ''} onChange={this.handleChange.bind(this, 'title')} />
+        <input placeholder="请输入URL" value={url || ''} onChange={this.handleChange.bind(this,'url')} />
       </div>
     );
   }
@@ -68,9 +68,9 @@ export default class Reference extends React.Component {
             </div>
             <div className="modal-body">
               <div className="label">标题:</div>
-              <input className="form-control" placeholder="请输入标题" value={title} onChange={this.handleChange.bind(this, key, 'title')} />
+              <input className="form-control" placeholder="请输入标题" value={title || ''} onChange={this.handleChange.bind(this, key, 'title')} />
               <div className="label">URL:</div>
-              <input className="form-control" placeholder="请输入URL" value={url} onChange={this.handleChange.bind(this, key, 'url')} />
+              <input className="form-control" placeholder="请输入URL" value={url || ''} onChange={this.handleChange.bind(this, key, 'url')} />
             </div>
             <div className="modal-footer">
               <button className="btn btn-primary" onClick={this.handleConfirm.bind(this, key)}>确认</button>

@@ -97,7 +97,7 @@ export default class Header extends React.Component {
             <input
               type="text"
               className="form-control mr"
-              value={query}
+              value={query || ''}
               onChange={this.handleSearchInput}
               placeholder="搜索问题"
             />
