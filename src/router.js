@@ -32,6 +32,10 @@ export default class Root extends React.Component {
             <IndexRoute />
             <Route path=":tab" />
           </Route>
+          <Route path="race">
+            <IndexRoute component={Pages.Race} />
+            <Route path=":id" component={Pages.RaceDetail} />
+          </Route>
         </Route>
       </Router>
     );

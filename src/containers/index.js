@@ -9,17 +9,21 @@ import Question from './Edit/Question';
 import Answer from './Edit/Answer';
 import Search from './Search';
 import Settings from './Settings';
+import Race from './Race';
+import RaceDetail from './RaceDetail';
 
 export default {
   Account,
+  AnalystRank,
+  Answer,
   AnswerList,
   Base,
   Detail,
   Discovery,
   PersonalCenter,
   Question,
-  Answer,
+  Race,
+  RaceDetail,
   Search,
-  AnalystRank,
   Settings,
 };
