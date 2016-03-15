@@ -113,7 +113,7 @@ export default class Header extends React.Component {
           }{!user.id &&
             <div className="navtop-user pull-right">
               <Link className="navtop-item" to="/account?sign_up=1">注册</Link>
-              <span className="divider"></span>
+              |
               <Link className="navtop-item" to="/account">登录</Link>
             </div>
           }
