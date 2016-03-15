@@ -137,7 +137,7 @@ export default class Discovery extends React.Component {
     return (
       <div className="container">
         {loading && <Loader full={true} />}
-        <div className="main">
+        <div className="main main-left">
           <div className={styles.listArea}>
             <div className={styles.header}>最新问题</div>
             <div className={styles.domains}>
@@ -149,7 +149,7 @@ export default class Discovery extends React.Component {
             }
           </div>
         </div>
-        <div className="sidebar">
+        <div className="side-right">
           <HotTopics />
         </div>
       </div>

@@ -223,7 +223,7 @@ export default class Question extends React.Component {
     return (
       <div className="container ask">
         {loading && <Loader full={true} />}
-        <div className="main">
+        <div className="main main-left">
           <div className={styles.edit}>
             <input
               type="text"
@@ -255,7 +255,7 @@ export default class Question extends React.Component {
             </div>
           </div>
         </div>
-        <div className="sidebar">
+        <div className="side-right">
           <div className={styles.domain}>
             <div>选择问题领域</div>
             <div className="domain-list">

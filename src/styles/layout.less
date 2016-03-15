@@ -9,25 +9,33 @@
     float: left;
   }
 
-  // 单栏占满，内容需wrap一层
-  .full {
-    width: 100%;
-  }
-
-  // 两栏布局左侧为主，内容需wrap一层
+  // 多栏布局主内容区，内容需wrap一层
   .main {
     width: 100%;
-    > * {
+    &.main-left > * {
       margin-right: @layout-right-width + @gap;
+    }
+    &.main-right > * {
+      margin-left: @layout-left-width + @gap;
     }
   }
 
-  // 两栏布局右侧边栏
-  .sidebar {
-    width: @layout-right-width;
-    margin-left: -@layout-right-width;
+  .side-left,
+  .side-right {
     > * {
       margin-bottom: @gap;
     }
+  }
+
+  // 右侧边栏
+  .side-right {
+    width: @layout-right-width;
+    margin-left: -@layout-right-width;
+  }
+
+  // 左侧边栏
+  .side-left {
+    width: @layout-left-width;
+    margin-left: -100%;
   }
 }

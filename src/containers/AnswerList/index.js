@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 
 import { AnswerCard, HotTopics, NewestDataSets, Loader, LoadMore } from '#/components';
-import { GraphqlRest } from '#/utils';
+import { GQL } from '#/utils';
 
 import trophy from '#/assets/fonts/trophy-o.svg';
 import './style.less';
@@ -30,10 +30,10 @@ export default class AnswerList extends React.Component {
     return (
       <div className="container">
         {this.state.loading && <Loader full={true} />}
-        <div className="main">
+        <div className="main main-left">
           { this.state.data ? this.renderQuestionList() : <div>loading...</div> }
         </div>
-        <div className="sidebar">
+        <div className="side-right">
           { this.renderBestAnalysts() }
           <HotTopics />
           <NewestDataSets />
@@ -43,7 +43,7 @@ export default class AnswerList extends React.Component {
   }
 
   loadData() {
-    GraphqlRest.handleQueries(
+    GQL.handleQueries(
       this.prepareHotAnswers()
     );
   }
@@ -82,7 +82,7 @@ export default class AnswerList extends React.Component {
   }
 
   handleMoreAnwers = () => {
-    GraphqlRest.handleQueries(
+    GQL.handleQueries(
       this.prepareHotAnswers(this.state.currentPage + 1)
     );
   }

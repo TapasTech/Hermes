@@ -423,12 +423,12 @@ export default class PersonalCenter extends React.Component {
 
   render() {
     return (
-      <div className={`container ${styles.container}`}>
+      <div className="container">
         {this.state.loading && <Loader full={true} />}
-        <div className="main">
+        <div className="main main-right">
           { this.renderStream() }
         </div>
-        <div className="sidebar">
+        <div className="side-left">
           { this.renderInfo() }
         </div>
       </div>

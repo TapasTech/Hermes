@@ -555,11 +555,11 @@ export default class Detail extends React.Component {
     const { id, followed, topics, answers, followersCount, followers } = this.state.question;
     return (
       <div className="container">
-        <div className="main">
+        <div className="main main-left">
           { this.renderTopic() }
           { (answers && answers.data.length) ? this.renderAnswers() : <div>尚未有人回答过这个问题</div> }
         </div>
-        <div className="sidebar">
+        <div className="side-right">
           <div className="watch">
             <div className="operate">
               <div className={`btn mr-sm ${followed ? 'btn-info' : 'btn-primary'}`} onClick={this.toggleFollowStatus}>

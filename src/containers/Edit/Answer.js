@@ -190,7 +190,7 @@ export default class Answer extends React.Component {
     return (
       <div className="container reply">
         {loading && <Loader full={true} />}
-        <div className="main">
+        <div className="main main-left">
           <div className={styles.edit}>
             <div className={styles.title}>{question.title}</div>
             <Editor content={content} onChange={this.handleContentChange} />
@@ -201,7 +201,7 @@ export default class Answer extends React.Component {
             />
           </div>
         </div>
-        <div className="sidebar">
+        <div className="side-right">
           <div className={styles.submit}>
             <div className={styles.author}>
               <Avatar name={user.displayName} url={user.avatar} />

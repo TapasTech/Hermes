@@ -46,7 +46,7 @@ export default class Settings extends React.Component {
     return (
       <div className="container">
         {loading && <Loader full={true} />}
-        <div className="full">
+        <div className="main">
           <div className="panel">
             <Tabs tabs={tabs} active={index}>
               {Tab && me && <Tab me={me} onUpdate={this.onUpdate} onCancel={this.onCancel} />}
