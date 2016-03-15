@@ -15,17 +15,19 @@ export default class Avatar extends React.Component {
   render() {
     const { name, url, size, className } = this.props;
 
-    let cls = styles.avatar;
+    let cls = 'avatar';
     if (className) cls += ' ' + className;
     if (['large', 'medium'].includes(size)) cls += ' ' + size;
     if (url) {
       return (
         <div className={cls} style={{backgroundImage: `url(${url})`}}></div>
       );
-    } else {
+    } else if (name) {
       return (
         <div className={cls} style={{backgroundColor: hashColor(name)}}>{name && name.slice(0, 4)}</div>
       );
+    } else {
+      return null;
     }
   }
 }

@@ -13,11 +13,11 @@ export default class Answer extends React.Component {
     const { answerContent, showFull } = this.props;
     const divEl = document.createElement('div');
     divEl.innerHTML = this.props.answerContent;
-    const imgEL = divEl.getElementsByTagName('img')[0];
+    const imgEl = divEl.getElementsByTagName('img')[0];
     this.state = {
       full: showFull ? true : false,
       shortAnswer: divEl.textContent.slice(0, 140),
-      pic: imgEL ? imgEL.src : undefined
+      pic: imgEl ? imgEl.src : undefined
     };
   }
 
@@ -36,21 +36,21 @@ export default class Answer extends React.Component {
   render() {
     const { shortAnswer, pic }  = this.state;
     return (
-      <div className={styles.answer}>
-        <div className={styles.content}>
-          {
-            this.state.full
-              ?  <div>
-                <div className="long" dangerouslySetInnerHTML={{__html: this.props.answerContent}}></div>
-                <div className="hide" onClick={::this.handleHideFull}>收起回答</div>
-              </div>
-              : <div className="short" onClick={::this.handleShowFull}>
-                { shortAnswer }<span className="show">...显示全部</span>
-              </div>
-          }
+      <div className="answer clearfix">
+        <div className="answer-content">
+            {
+              this.state.full
+                ?  <div>
+                  <div className="answer-long" dangerouslySetInnerHTML={{__html: this.props.answerContent}}></div>
+                  <div className="answer-hide mr" onClick={::this.handleHideFull}>收起回答</div>
+                </div>
+                : <div className="answer-short" onClick={::this.handleShowFull}>
+                  { shortAnswer }<span className="answer-show">...显示全部</span>
+                </div>
+            }
         </div>
         {
-          pic && !this.state.full && <div className="pic" style={{backgroundImage: `url(${pic})`}}></div>
+          pic && !this.state.full && <div className="answer-pic" style={{backgroundImage: `url(${pic})`}}></div>
         }
       </div>
     );

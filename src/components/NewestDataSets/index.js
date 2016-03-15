@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 
 import { GraphqlRest, formatter } from '#/utils';
-import styles from './style.less';
+import './style.less';
 
 export default class NewestDataSets extends React.Component {
   constructor(props) {

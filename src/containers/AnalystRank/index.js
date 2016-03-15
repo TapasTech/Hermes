@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
+import Store from '#/store';
 import { Avatar, LoadMore } from '#/components';
 import { GraphqlRest, encodeField } from '#/utils';
 
@@ -17,6 +18,7 @@ export default class AnalystRank extends React.Component {
       data: [],
       currentPage: 1,
       totalPages: 0,
+      user: Store.user.index().data
     };
   }
 
@@ -129,9 +131,11 @@ export default class AnalystRank extends React.Component {
         </div>
         <div className="right-part">
           {
-            followed
-              ? <div className="btn ghost" onClick={this.handleFollow.bind(this, false, id)}>取消关注</div>
-              : <div className="btn primary" onClick={this.handleFollow.bind(this, true, id)}>关注</div>
+            id === this.state.user.id
+            ? <div className="btn btn-disabled">Me</div>
+            : followed
+              ? <div className="btn btn-default" onClick={this.handleFollow.bind(this, false, id)}>取消关注</div>
+              : <div className="btn btn-primary" onClick={this.handleFollow.bind(this, true, id)}>关注</div>
           }
         </div>
       </div>

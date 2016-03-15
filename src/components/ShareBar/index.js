@@ -22,24 +22,26 @@ export default class ShareBar extends React.Component {
 
   render() {
     const { url, title, className } = this.props;
-    let clx = styles.shareTip;
+    let clx = 'shareBar';
     className && (clx = `${clx} ${className}`);
 
     return (
       <div className={clx}>
         <a
-          className="weibo"
+          className="shareBar-item weibo"
           target="_blank"
           href={`http://v.t.sina.com.cn/share/share.php?${this.objectToParams({url: url, title: title})}`}>
-          <span className="icon icon-weibo"></span>
-          分享到微博
-        </a>
-        <div className="weixin">
-          <div className="tip">
-            <span className="icon icon-weixin"></span>
-            微信扫一扫
+          <div className="shareBar-content">
+            <span className="icon icon-weibo"></span>
+            <span className="text-gray">分享到微博</span>
           </div>
-          <div className="qrcode">
+        </a>
+        <div className="shareBar-item">
+          <div className="shareBar-content">
+            <span className="icon icon-weixin"></span>
+            <span className="text-gray">微信扫一扫</span>
+          </div>
+          <div className="shareBar-qrcode">
             <QRCode value={url} size={100} />
           </div>
         </div>

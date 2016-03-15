@@ -3,7 +3,7 @@ import React from 'react';
 import { Comment } from '#/components';
 import {GraphqlRest, encodeField} from '#/utils';
 
-import styles from './style.less';
+import './style.less';
 
 export default class CommentList extends React.Component {
   static propTypes = {
@@ -117,15 +117,15 @@ export default class CommentList extends React.Component {
     const { currentPage, totalPages, comment, data } = this.state;
     const clx = comment ? "btn btn-primary" : "btn btn-disabled";
     return (
-      <div className={styles.commentList}>
+      <div className="commentList">
         {data.map((item, index) => (
           <Comment key={index} data={item} onComment={this.handleComment} />
         ))}
         {currentPage < totalPages &&
-          <div className="option" onClick={this.handleShowMore}>显示更多</div>
+          <div className="commentList-option text-gray" onClick={this.handleShowMore}>显示更多</div>
         }
-        <div className="reply-area">
-          <textarea className="reply-input" value={comment} onChange={this.handleInput} />
+        <div className="commentList-reply">
+          <textarea className="commentList-reply-input" value={comment} onChange={this.handleInput} />
           <div className={clx} onClick={this.handleInputSubmit}>回复</div>
         </div>
       </div>

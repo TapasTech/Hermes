@@ -1,38 +1,39 @@
-:local(.answer) {
+@import '../../styles/variables.less';
+
+.answer {
   display: flex;
   margin-bottom: 5px;
 
-  :local(.content) {
+  &-content {
     flex: 1;
     line-height: 1.8;
     padding-right: 15px;
   }
 
-  .short {
+  &-short {
     display: inline-block;
     cursor: pointer;
   }
 
-  .long {
+  &-long {
 
     img {
       width: 100%;
     }
   }
 
-  .show {
+  &-show {
     display: inline-block;
-    color: #546DA5;
+    color: @brand-primary;
   }
 
-  .hide {
+  &-hide {
     float: right;
-    margin-right: 20px;
     cursor: pointer;
-    color: #546DA5;
+    color: @brand-primary;
   }
 
-  .pic {
+  &-pic {
     width: 200px;
     height: 120px;
     background-position: center top;

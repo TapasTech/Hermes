@@ -3,7 +3,8 @@ import { Link } from 'react-router';
 
 import { Avatar } from '#/components';
 import {GraphqlRest, encodeField, formatter} from '#/utils';
-import styles from './style.less';
+
+import './style.less';
 
 export default class Comment extends React.Component {
 
@@ -98,22 +99,20 @@ export default class Comment extends React.Component {
     const clx = comment ? "btn btn-primary" : "btn btn-disabled";
 
     return (
-      <div className={styles.optionArea}>
-        <div className={styles.options}>
-          <div className="info-area">
-            <div>{formatter.time(createdAt)}</div>
-            <div className="option-btns">
-              <div className="reply options" onClick={::this.handleShowInput}>回复</div>
-              <div className="like options" onClick={this.handleUpVote}>赞</div>
-              <div className="report options">举报</div>
-            </div>
+      <div>
+        <div className="text-gray clearfix">
+          <div className="pull-left">{formatter.time(createdAt)}</div>
+          <div className="comment-options pull-left">
+            <div className="comment-option pull-left reply" onClick={::this.handleShowInput}>回复</div>
+            <div className="comment-option pull-left like" onClick={this.handleUpVote}>赞</div>
+            <div className="comment-option pull-left report">举报</div>
           </div>
-          <div className="count">{upVotesCount} 赞</div>
+          <div className="pull-right">{upVotesCount} 赞</div>
         </div>
         {
           this.state.showReply
-            && <div className="reply-area">
-              <textarea className="reply-input" value={comment} onChange={::this.handleInput} />
+            && <div className="comment-reply">
+              <textarea className="comment-reply-input" value={comment} onChange={::this.handleInput} />
               <div className={clx} onClick={this.handleInputSubmit}>回复</div>
             </div>
         }
@@ -124,17 +123,19 @@ export default class Comment extends React.Component {
   render() {
     const { content, createdAt, replyTo, user } = this.props.data;
     return (
-      <div className={styles.detail}>
-        <div className="avatar">
-          <Avatar name={user.displayName} />
-        </div>
-        <div className={styles.main}>
-          <div className={styles.title}>
-            <Link className="from" to={`/person/${user.id}`}>{user.displayName}</Link>
-            { replyTo && <div className="to"><span className="tip">回复</span>{replyTo.displayName}</div>}
+      <div className="comment clearfix">
+        <div className="comment-main pull-left">
+          <div>
+            <div className="comment-header clearfix">
+              <Link className="comment-from pull-left mr-sm" to={`/user/${user.id}`}>{user.displayName}</Link>
+              { replyTo && <div className="comment-to pull-left"><span className="text-gray mr-sm">回复</span>{replyTo.displayName}</div>}
+            </div>
+            <div className="comment-content">{content}</div>
+            { content ? this.renderOptionArea() : <div>loading...</div> }
           </div>
-          <div className={styles.content}>{content}</div>
-          { content ? this.renderOptionArea() : <div>loading...</div> }
+        </div>
+        <div className="comment-avatar pull-left">
+          <Avatar name={user.displayName} />
         </div>
       </div>
     );

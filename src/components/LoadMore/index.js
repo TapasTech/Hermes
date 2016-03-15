@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './style.less';
+import './style.less';
 
 export default class LoadMore extends React.Component {
   static propTypes = {
@@ -14,11 +14,11 @@ export default class LoadMore extends React.Component {
 
   render() {
     return (
-      <div className={styles.wrap}>
+      <div className="loadMore">
         {
           this.props.condition
-            ? <div className={styles.more} onClick={this.props.onLoadMore}>点击加载更多</div>
-            : <div className={styles.end}>已到结尾</div>
+            ? <div className="loadMore-more" onClick={this.props.onLoadMore}>点击加载更多</div>
+            : <div className="loadMore-end">已到结尾</div>
         }
       </div>
     );

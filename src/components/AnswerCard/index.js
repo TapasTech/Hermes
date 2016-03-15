@@ -5,7 +5,7 @@ import { Answer, CommentList, ShareBar, PokeButton } from '#/components';
 import DataSources from '../DataSources';
 import {GraphqlRest, encodeField} from '#/utils';
 
-import styles from './style.less';
+import './style.less';
 
 export default class AnswerCard extends React.Component {
   static propTypes = {
@@ -111,14 +111,14 @@ export default class AnswerCard extends React.Component {
     const { id, question } = this.props.answer;
     const { upVotesCount } = this.state;
     return (
-      <div className={styles.cardOption}>
-        <div className="other">
+      <div className="answerCard-option">
+        <div className="options clearfix">
           <PokeButton count={upVotesCount} onClick={this.handleUpVote} />
-          <div className="comment" onClick={::this.handleShowComment}>
+          <div className="answerCard-comment text-gray" onClick={::this.handleShowComment}>
             <span>评论</span>
             <span className="count">{ this.state.commentsCount }</span>
           </div>
-          <div className="share">
+          <div className="answerCard-share text-gray">
             <span onClick={::this.handleShowShare}>分享</span>
             { this.state.showShare && <ShareBar className="bar" url={`/question/${question.id}`} title={question.title} /> }
           </div>
@@ -133,9 +133,9 @@ export default class AnswerCard extends React.Component {
   render() {
     const { answer } = this.props;
     return (
-      <div className={styles.topicCard}>
+      <div className="answerCard">
         <Link className="title" to={`/question/${answer.question.id}`}>{answer.question.title}</Link>
-        <div className="author">
+        <div className="author text-gray">
           <Link className="link" to={`/user/${answer.user.id}`}>{answer.user.displayName}</Link>
           <span>的答案：</span>
         </div>

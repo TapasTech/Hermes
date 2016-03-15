@@ -46,13 +46,15 @@ export default class DataSources extends React.Component {
     const {dataSets, dataReports} = this.props;
     const hasData = dataSets && dataSets.data && dataSets.data.length || dataReports && dataReports.data && dataReports.data.length;
     return (
-      hasData ? <div className={styles.data}>
-        <div className="text-warning">相关数据</div>
-        <ul className={styles.list}>
-          {this.renderSet(dataSets)}
-          {this.renderSet(dataReports)}
-        </ul>
-      </div> : <div />
+      hasData
+        ? <div className={styles.data}>
+          <div className="text-warning">相关数据</div>
+          <ul className={styles.list}>
+            {this.renderSet(dataSets)}
+            {this.renderSet(dataReports)}
+          </ul>
+        </div>
+        : null
     );
   }
 }

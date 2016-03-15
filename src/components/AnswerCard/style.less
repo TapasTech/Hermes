@@ -1,52 +1,47 @@
-:local(.topicCard) {
-  flex: 1;
+@import '../../styles/variables.less';
 
-  .tip {
-    color: #a6a6a6;
-  }
+.answerCard {
 
   .title {
     margin-bottom: 5px;
     font-weight: bold;
-    line-height: 30px;
+    line-height: 1.8;
     color: #404040;
   }
 
   .author {
-    color: #a6a6a6;
     margin-bottom: 5px;
 
     .link {
-      color: #546DA5;
+      margin-right: 5px;
+      color: @brand-primary;
     }
   }
-}
 
-:local(.cardOption) {
-  .other {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
+  &-option {
+
+    .options > * {
+      float: left;
+      line-height: 30px;
+    }
   }
 
-  .comment,
-  .share {
+  &-comment,
+  &-share {
     margin-left: 15px;
-    color: #999999;
     cursor: pointer;
   }
 
-  .comment .count {
+  &-comment .count {
     display: inline-block;
     margin-left: 5px;
     padding: 0 5px;
-    line-height: 26px;
     text-align: center;
-    background-color: rgba(242, 242, 242, 1);
-    border-radius: 3px;
+    background-color: @brand-info;
+    border-radius: @border-radius;
   }
 
-  .share {
+  &-share {
     position: relative;
 
     .bar {

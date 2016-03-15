@@ -1,88 +1,56 @@
-:local(.detail) {
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
+@import '../../styles/variables.less';
 
-  .others {
-    display: none;
+.comment {
+
+  &-avatar {
+    margin-left: -100%;
+    width: 40px;
+    padding-top: @gap;
   }
 
-  &:hover .others {
-    display: flex;
-  }
-
-  .avatar {
-    width: auto;
-    padding-top: 10px;
-  }
-
-  :local(.main) {
+  &-main {
+    width: 100%;
     padding: 10px;
-    flex: 1;
 
-    :local(.content) {
-      line-height: 1.5;
-    }
-
-    :local(.title) {
-      font-weight: bold;
-      display: flex;
-      margin-bottom: 5px;
-    }
-
-    .from {
-      margin-right: 10px;
-      color: #546DA5;
-    }
-
-    .tip {
-      font-weight: normal;
-      margin-right: 10px;
+    > div {
+      margin-left: 50px;
     }
   }
-}
 
-:local(.detail) {
-  .option-btns {
+  &-header {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  &-from {
+    color: @brand-primary;
+  }
+
+  &-to .text-gray {
+    font-weight: normal;
+  }
+
+  &-content {
+    line-height: 1.5;
+  }
+
+  &-options {
     display: none;
-    justify-content: center;
-    align-items: center;
   }
 
-  &:hover .option-btns {
-    display: flex;
-  }
-}
-
-:local(.optionArea) {
-
-  :local(.options) {
-    display: flex;
-    margin-top: 5px;
-    color: #999;
-    align-items: center;
-
-    .info-area {
-      flex: 1;
-      display: flex;
-      align-items: center;
-    }
-
-    .options {
-      margin-left: 10px;
-      cursor: pointer;
-    }
-
-    .count {
-      width: auto;
-    }
+  &:hover &-options {
+    display: inline-block;
   }
 
-  .reply-area {
-    margin-top: 10px;
+  &-option {
+    margin-left: 5px;
+  }
+
+  &-reply {
+    margin-top: @gap;
     padding-right: 20px;
 
-    .reply-input {
+    &-input {
       width: 100%;
       padding: 5px 8px;
       line-height: 1.5;
@@ -92,7 +60,7 @@
 
     .btn {
       width: 60px;
-      margin-top: 10px;
+      margin-top: @gap;
     }
   }
 }

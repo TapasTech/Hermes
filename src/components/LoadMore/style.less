@@ -1,19 +1,20 @@
-:local(.wrap) {
+.loadMore {
+
   .panel &:last-child {
     margin-bottom: -10px;
   }
-}
 
-:local(.more),
-:local(.end) {
-  margin-top: 10px;
-  padding: 5px 0;
-  line-height: 26px;
-  text-align: center;
-  color: #a6a6a6;
-  border-top: 1px solid #eee;
-}
+  &-more,
+  &-end {
+    margin-top: 10px;
+    padding: 5px 0;
+    line-height: 26px;
+    text-align: center;
+    color: #a6a6a6;
+    border-top: 1px solid #eee;
+  }
 
-:local(.more) {
-  cursor: pointer;
+  &-more {
+    cursor: pointer;
+  }
 }

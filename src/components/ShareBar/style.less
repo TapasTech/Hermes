@@ -1,4 +1,4 @@
-:local(.shareTip) {
+.shareBar {
   width: 150px;
   background-color: #fff;
   border: 1px solid #eee;
@@ -9,51 +9,49 @@
   align-items: center;
   z-index: 10;
 
-  .weibo {
+  &-item {
     width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 36px;
-    color: #999;
+    text-align: center;
     cursor: pointer;
+
+    &.weibo {
+      height: 36px;
+      border-bottom: 1px solid #eee;
+    }
   }
 
-  .icon {
-    width: 30px;
-    height: 20px;
-    margin-right: 10px;
+  &-content {
     display: inline-block;
-    background-position: center;
-    background-size: auto 100%;
-    background-repeat: no-repeat;
 
-    &.icon-weibo {
-      background-image: url('../../assets/weibo.svg');
+    .text-gray {
+      float: left;
+      display: inline-block;
+      line-height: 36px;
     }
 
-    &.icon-weixin {
-      background-image: url('../../assets/weixin.svg');
+    .icon {
+      float: left;
+      width: 30px;
+      height: 20px;
+      margin: 8px 0;
+      line-height: 20px;
+      margin-right: 10px;
+      display: inline-block;
+      background-position: center;
+      background-size: auto 100%;
+      background-repeat: no-repeat;
+
+      &.icon-weibo {
+        background-image: url('../../assets/weibo.svg');
+      }
+
+      &.icon-weixin {
+        background-image: url('../../assets/weixin.svg');
+      }
     }
   }
 
-  .weixin {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    border-top: 1px solid #eee;
-  }
-
-  .tip {
-    height: 36px;
-    margin-bottom: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .qrcode {
+  &-qrcode {
     width: 100%;
     display: inline-block;
     text-align: center;
