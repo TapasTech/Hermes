@@ -91,7 +91,35 @@ function handleGraphQL(type, queries) {
   ));
 }
 
+const mergeQueries = {
+  queries: [],
+  timer: null,
+  fulfillers: [],
+  start: function () {
+    const {queries, fulfillers} = mergeQueries;
+    mergeQueries.queries = [];
+    mergeQueries.fulfillers = [];
+    mergeQueries.timer = null;
+    handleGraphQL('query', queries)
+    .then(res => {
+      fulfillers.forEach(fulfiller => fulfiller.resolve(res));
+    }, res => {
+      fulfillers.forEach(fulfiller => fulfiller.reject(res));
+    });
+  },
+  append: function (queries, resolve, reject) {
+    mergeQueries.queries = mergeQueries.queries.concat(queries);
+    mergeQueries.fulfillers.push({resolve, reject});
+    if (!mergeQueries.timer) {
+      mergeQueries.timer = Promise.resolve().then(mergeQueries.start);
+      //mergeQueries.timer = setTimeout(mergeQueries.start, 200);
+    }
+  },
+};
 export function handleQueries(...queries) {
+  return new Promise((resolve, reject) => {
+    mergeQueries.append(queries, resolve, reject);
+  });
   return handleGraphQL('query', queries);
 }
 

@@ -13,24 +13,30 @@ export default class NewestDataSets extends React.Component {
   }
 
   componentDidMount() {
-    const query = `
-      query {
-        dataSets(page: 1, count: 10) {
-          data {
-            id
-            title
-            url
-          }
-        }
-      }
-    `;
+    GraphqlRest.handleQueries(
+      this.prepareData()
+    );
+  }
 
-    GraphqlRest.post(query).then(res => {
-      const { data } = res.dataSets
+  prepareData() {
+    const query = `
+    latestDataSets: dataSets(page: 1, count: 10) {
+      data {
+        id
+        title
+        url
+      }
+    }
+    `;
+    const callback = data => {
       this.setState({
-        dataSets: data
-      })
-    })
+        dataSets: data.latestDataSets.data,
+      });
+    };
+    return {
+      query,
+      callback,
+    };
   }
 
   render() {

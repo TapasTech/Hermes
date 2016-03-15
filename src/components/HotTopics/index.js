@@ -13,31 +13,36 @@ export default class HotTopics extends React.Component {
     };
   }
 
-  //topics
   componentDidMount() {
+    GraphqlRest.handleQueries(
+      this.prepareTopics()
+    );
+  }
+
+  prepareTopics() {
     const query = `
-      query {
-        topics(page: 1, count: 5) {
+    hotTopics: topics(page: 1, count: 5) {
+      data {
+        id
+        name
+        questions(page: 1, count: 1) {
           data {
             id
-            name
-            questions(page: 1, count: 1) {
-              data {
-                id
-                title
-              }
-            }
+            title
           }
         }
       }
+    }
     `;
-
-    GraphqlRest.post(query).then(res => {
-      const { data } = res.topics;
+    const callback = data => {
       this.setState({
-        hotTopics: data
+        hotTopics: data.hotTopics.data,
       });
-    });
+    }
+    return {
+      query,
+      callback,
+    };
   }
 
   renderHotTopic(topic, key) {
