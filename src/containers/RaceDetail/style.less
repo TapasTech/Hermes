@@ -1,5 +1,7 @@
 @import '../../styles/variables';
 
+@race-color: rgb(135,180,71);
+
 :local(.navMenu) {
   margin: 0 -15px -15px;
   border-top: 1px solid @border-color;
@@ -10,9 +12,19 @@
       height: 100%;
       padding: 10px 15px;
     }
-    &:hover,
     &.active {
-      background: lighten(@brand-feature, 30%);
+      a {
+        color: white;
+      }
+      background: @race-color;
+    }
+    &:hover {
+      &:not(.active) {
+        a {
+          color: @race-color;
+        }
+        background: lighten(@race-color, 35%);
+      }
     }
   }
 }
@@ -36,7 +48,7 @@
   > div {
     width: 0;
     height: 100%;
-    background: @brand-feature;
+    background: @race-color;
     border-radius: @border-radius;
   }
 }
