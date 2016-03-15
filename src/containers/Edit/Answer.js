@@ -2,7 +2,7 @@ import React from 'react';
 import {browserHistory} from 'react-router';
 
 import { Avatar, Loader } from '#/components';
-import {GraphqlRest, encodeField} from '#/utils';
+import {GQL, encodeField} from '#/utils';
 import Store from '#/store';
 import Reference from './Reference';
 import Editor from './Editor';
@@ -26,7 +26,7 @@ export default class Answer extends React.Component {
   }
 
   componentDidMount() {
-    GraphqlRest.handleQueries(
+    GQL.handleQueries(
       this.prepareData()
     ).then(() => {
       this.setState({
@@ -53,7 +53,7 @@ export default class Answer extends React.Component {
 
   prepareQuestion() {
     const qid = this.props.params.id;
-    const query = `
+    const query = GQL.template`
     question(id: ${encodeField(qid)}) {
       title
     }
@@ -71,7 +71,7 @@ export default class Answer extends React.Component {
 
   prepareAnswer() {
     const ansId = this.props.params.ansId;
-    const query = `
+    const query = GQL.template`
     answer(id: ${encodeField(ansId)}) {
       content
       dataSets {
@@ -159,18 +159,18 @@ export default class Answer extends React.Component {
       dataReports.map(dataReport => dataReport.id)
     );
     const mutations = [
-      ... dataSetsDiff.add.map((id, i) => `dataset_add_${i}: addDataSet(id: ${encodeField(id)}) {id}`),
-      ... dataSetsDiff.remove.map((id, i) => `dataset_remove_${i}: removeDataSet(id: ${encodeField(id)}) {id}`),
-      ... dataReportsDiff.add.map((id, i) => `datareport_add_${i}: addDataReport(id: ${encodeField(id)}) {id}`),
-      ... dataReportsDiff.remove.map((id, i) => `datareport_remove_${i}: removeDataReport(id: ${encodeField(id)}) {id}`),
+      ... dataSetsDiff.add.map((id, i) => GQL.template`dataset_add_${i}: addDataSet(id: ${encodeField(id)}) {id}`),
+      ... dataSetsDiff.remove.map((id, i) => GQL.template`dataset_remove_${i}: removeDataSet(id: ${encodeField(id)}) {id}`),
+      ... dataReportsDiff.add.map((id, i) => GQL.template`datareport_add_${i}: addDataReport(id: ${encodeField(id)}) {id}`),
+      ... dataReportsDiff.remove.map((id, i) => GQL.template`datareport_remove_${i}: removeDataReport(id: ${encodeField(id)}) {id}`),
     ];
-    ansId && mutations.push(`update(content: ${encodeField(content)}) {id}`);
-    const mutation = mutations.length ? `mutation { ${mutations.join(' ')} }` : 'id';
-    const query = ansId ? `query updateAnswer {
+    ansId && mutations.push(GQL.template`update(content: ${encodeField(content)}) {id}`);
+    const mutation = mutations.length ? GQL.template`mutation { ${mutations.join(' ')} }` : 'id';
+    const query = ansId ? GQL.template`query updateAnswer {
       answer(id: ${encodeField(ansId)}) {
         ${mutation}
       }
-    }` : `query createAnswer {
+    }` : GQL.template`query createAnswer {
       question(id: ${encodeField(qid)}) {
         mutation {
           createAnswer(content: ${encodeField(content)}) {
@@ -179,7 +179,7 @@ export default class Answer extends React.Component {
         }
       }
     }`;
-    GraphqlRest.post(query).then(data => {
+    GQL.post(query).then(data => {
       browserHistory.push(`/question/${qid}`);
     });
   }

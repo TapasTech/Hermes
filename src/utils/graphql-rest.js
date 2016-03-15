@@ -85,7 +85,7 @@ function handleGraphQL(type, queries) {
     return res;
   }, {queries: [], callbacks: [], fragments: []});
   if (!queryData.queries.length) return Promise.resolve();
-  const query = `${type} { ${queryData.queries.join(' ')} } ${queryData.fragments.join(' ')}`;
+  const query = template`${type} { ${queryData.queries.join(' ')} } ${queryData.fragments.join(' ')}`;
   return post(query).then(data => (
     Promise.all(queryData.callbacks.map(callback => callback(data)))
   ));
@@ -125,4 +125,19 @@ export function handleQueries(...queries) {
 
 export function handleMutations(...queries) {
   return handleGraphQL('mutation', queries);
+}
+
+function clearPiece(piece) {
+  return piece
+  .replace(/\s*([^\w\s]+)\s*/g, '$1')
+  .replace(/\s+/g, ' ');
+}
+
+export function template(pieces, ...values) {
+  const res = values.reduce((res, value, i) => {
+    res += value == null ? '' : value;
+    res += clearPiece(pieces[i + 1]);
+    return res;
+  }, clearPiece(pieces[0]));
+  return res.trim();
 }

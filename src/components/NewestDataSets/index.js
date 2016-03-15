@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import { GraphqlRest, formatter } from '#/utils';
+import { GQL, formatter } from '#/utils';
 import './style.less';
 
 export default class NewestDataSets extends React.Component {
@@ -13,13 +13,13 @@ export default class NewestDataSets extends React.Component {
   }
 
   componentDidMount() {
-    GraphqlRest.handleQueries(
+    GQL.handleQueries(
       this.prepareData()
     );
   }
 
   prepareData() {
-    const query = `
+    const query = GQL.template`
     latestDataSets: dataSets(page: 1, count: 10) {
       data {
         id

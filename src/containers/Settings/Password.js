@@ -1,7 +1,7 @@
 import React from 'react';
 import {browserHistory} from 'react-router';
 
-import {GraphqlRest, encodeField} from '#/utils';
+import {GQL, encodeField} from '#/utils';
 import Store from '#/store';
 import AppDispatcher from '#/dispatcher';
 
@@ -12,7 +12,7 @@ export default class TabPassword extends React.Component {
 
   prepareUpdate() {
     const {oldPwd, newPwd, confirmPwd} = this.state;
-    const query = `
+    const query = GQL.template`
     me {
       mutation {
         updatePassword(oldPassword: ${encodeField(oldPwd)}, password: ${encodeField(newPwd)}) {id}
@@ -39,7 +39,7 @@ export default class TabPassword extends React.Component {
     const {oldPwd, newPwd, confirmPwd} = this.state;
     const invalid = !oldPwd || !newPwd || !confirmPwd || newPwd !== confirmPwd;
     if (invalid) return;
-    GraphqlRest.handleQueries(
+    GQL.handleQueries(
       this.prepareUpdate()
     );
   }

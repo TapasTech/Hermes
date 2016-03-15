@@ -2,7 +2,7 @@ import React from 'react';
 import {Link, browserHistory} from 'react-router';
 
 import {Tabs, Loader} from '#/components';
-import {GraphqlRest, encodeField} from '#/utils';
+import {GQL, encodeField} from '#/utils';
 import UserInfo from './UserInfo';
 import Avatar from './Avatar';
 import Password from './Password';
@@ -15,13 +15,13 @@ export default class Settings extends React.Component {
   }
 
   componentDidMount() {
-    GraphqlRest.handleQueries(
+    GQL.handleQueries(
       this.prepareData()
     );
   }
 
   onUpdate = update => {
-    return GraphqlRest.handleQueries(
+    return GQL.handleQueries(
       this.prepareUpdate(update)
     );
   }
@@ -58,7 +58,7 @@ export default class Settings extends React.Component {
   }
 
   prepareData() {
-    const query = `
+    const query = GQL.template`
     me {
       id
       ...fragUserInfo
@@ -97,7 +97,8 @@ export default class Settings extends React.Component {
     };
     if (notEmpty([displayName, gender, description, email, avatar])) {
       queries.push(
-        `mutation { update(
+        GQL.template`
+        mutation { update(
           displayName: ${encodeField(fallback(displayName, 'displayName'))},
           description: ${encodeField(fallback(description, 'description'))},
           gender: ${fallback(gender, 'gender')},
@@ -114,7 +115,8 @@ export default class Settings extends React.Component {
     }
     if (location != null) {
       queries.push(
-        `location {
+        GQL.template`
+        location {
           mutation {
             update(name: ${encodeField(location || '')}) {name}
           }
@@ -124,7 +126,8 @@ export default class Settings extends React.Component {
     }
     if (notEmpty([employment, position])) {
       queries.push(
-        `employment {
+        GQL.template`
+        employment {
           mutation {
             update(employment: ${encodeField(employment || '')}, position: ${encodeField(position || '')}) {employment}
           }
@@ -134,7 +137,8 @@ export default class Settings extends React.Component {
     }
     if (education != null) {
       queries.push(
-        `education {
+        GQL.template`
+        education {
           mutation {
             update(organization: ${encodeField(education || '')}) {organization}
           }
@@ -143,7 +147,7 @@ export default class Settings extends React.Component {
       updated.education = {organization: education};
     }
     if (!queries.length) return;
-    const query = `me { ${queries.join(' ')} }`;
+    const query = GQL.template`me { ${queries.join(' ')} }`;
     const callback = data => {
       this.setState({
         me: {

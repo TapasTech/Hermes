@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Modal } from '#/components';
 
-import {GraphqlRest, encodeField, valueLink} from '#/utils';
+import {GQL, encodeField, valueLink} from '#/utils';
 
 import styles from './style.less';
 
@@ -140,7 +140,7 @@ export default class Reference extends React.Component {
   }
 
   createDataSet(title, url) {
-    const data = `
+    const data = GQL.template`
     mutation createDataSet {
       dataset: createDataSet(title: ${encodeField(title)}, url: ${encodeField(url)}) {
         id
@@ -149,11 +149,11 @@ export default class Reference extends React.Component {
       }
     }
     `;
-    return GraphqlRest.post(data).then(data => data.dataset);
+    return GQL.post(data).then(data => data.dataset);
   }
 
   createDataReport(title, url) {
-    const data = `
+    const data = GQL.template`
     mutation createDataReport {
       dataset: createDataReport(title: ${encodeField(title)}, url: ${encodeField(url)}) {
         id
@@ -162,6 +162,6 @@ export default class Reference extends React.Component {
       }
     }
     `;
-    return GraphqlRest.post(data).then(data => data.dataset);
+    return GQL.post(data).then(data => data.dataset);
   }
 }

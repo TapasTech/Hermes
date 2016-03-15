@@ -2,7 +2,7 @@ import React from 'react';
 import {browserHistory} from 'react-router';
 
 import { Avatar, Loader } from '#/components';
-import {GraphqlRest, encodeField} from '#/utils';
+import {GQL, encodeField} from '#/utils';
 import Store from '#/store';
 import Reference from './Reference';
 import Editor from './Editor';
@@ -26,7 +26,7 @@ export default class Question extends React.Component {
   }
 
   componentDidMount() {
-    GraphqlRest.handleQueries(
+    GQL.handleQueries(
       this.prepareTopics(),
       this.prepareData()
     ).then(() => {
@@ -48,7 +48,7 @@ export default class Question extends React.Component {
   }
 
   prepareTopics() {
-    const query = `
+    const query = GQL.template`
     topics {
       data {
         id
@@ -86,7 +86,7 @@ export default class Question extends React.Component {
       });
       return;
     }
-    const query = `
+    const query = GQL.template`
     question(id: ${encodeField(qid)}) {
       title
       content
@@ -191,27 +191,27 @@ export default class Question extends React.Component {
       dataReports.map(dataReport => dataReport.id)
     );
     const mutations = [
-      ... topicsDiff.add.map((id, i) => `topic_add_${i}: addTopic(id: ${encodeField(id)}) {id}`),
-      ... topicsDiff.remove.map((id, i) => `topic_remove_${i}: removeTopic(id: ${encodeField(id)}) {id}`),
-      ... dataSetsDiff.add.map((id, i) => `dataset_add_${i}: addDataSet(id: ${encodeField(id)}) {id}`),
-      ... dataSetsDiff.remove.map((id, i) => `dataset_remove_${i}: removeDataSet(id: ${encodeField(id)}) {id}`),
-      ... dataReportsDiff.add.map((id, i) => `datareport_add_${i}: addDataReport(id: ${encodeField(id)}) {id}`),
-      ... dataReportsDiff.remove.map((id, i) => `datareport_remove_${i}: removeDataReport(id: ${encodeField(id)}) {id}`),
+      ... topicsDiff.add.map((id, i) => GQL.template`topic_add_${i}: addTopic(id: ${encodeField(id)}) {id}`),
+      ... topicsDiff.remove.map((id, i) => GQL.template`topic_remove_${i}: removeTopic(id: ${encodeField(id)}) {id}`),
+      ... dataSetsDiff.add.map((id, i) => GQL.template`dataset_add_${i}: addDataSet(id: ${encodeField(id)}) {id}`),
+      ... dataSetsDiff.remove.map((id, i) => GQL.template`dataset_remove_${i}: removeDataSet(id: ${encodeField(id)}) {id}`),
+      ... dataReportsDiff.add.map((id, i) => GQL.template`datareport_add_${i}: addDataReport(id: ${encodeField(id)}) {id}`),
+      ... dataReportsDiff.remove.map((id, i) => GQL.template`datareport_remove_${i}: removeDataReport(id: ${encodeField(id)}) {id}`),
     ];
-    qid && mutations.push(`update(title: ${encodeField(title)}, content: ${encodeField(content)}) {id}`);
-    const mutation = mutations.length ? `mutation { ${mutations.join(' ')} }` : '';
-    const query = qid ? `query updateQuestion {
+    qid && mutations.push(GQL.template`update(title: ${encodeField(title)}, content: ${encodeField(content)}) {id}`);
+    const mutation = mutations.length ? GQL.template`mutation { ${mutations.join(' ')} }` : '';
+    const query = qid ? GQL.template`query updateQuestion {
       question(id: ${encodeField(qid)}) {
         id
         ${mutation}
       }
-    }` : `mutation createQuestion {
+    }` : GQL.template`mutation createQuestion {
       question: createQuestion(title: ${encodeField(title)}, content: ${encodeField(content)}) {
         id
         ${mutation}
       }
     }`;
-    GraphqlRest.post(query).then(data => {
+    GQL.post(query).then(data => {
       const qid = data.question.id;
       browserHistory.push(`/question/${qid}`);
     });

@@ -1,11 +1,12 @@
 import React from 'react';
 
 import {Loader} from '#/components';
+import {GQL} from '#/utils';
 import Store from '#/store';
 import style from './style.less';
 
 export default class TabUserInfo extends React.Component {
-  static fragments = `
+  static fragments = GQL.template`
   fragment fragUserInfo on User {
     email
     avatar

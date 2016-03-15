@@ -1,19 +1,19 @@
-import {GraphqlRest} from '#/utils';
+import {GQL} from '#/utils';
 import Store from '#/store';
 import AppDispatcher from '#/dispatcher';
 
 const TOKEN_KEY = '__AUTH';
 
 let TOKEN = localStorage.getItem(TOKEN_KEY);
-GraphqlRest.config({auth: TOKEN});
+GQL.config({auth: TOKEN});
 
 export function setToken(token) {
   TOKEN = token;
-  GraphqlRest.config({auth: token});
+  GQL.config({auth: token});
   token ? localStorage.setItem(TOKEN_KEY, token) : localStorage.removeItem(TOKEN_KEY);
 };
 
-const userFields = `
+const userFields = GQL.template`
 id
 email
 displayName
@@ -23,7 +23,7 @@ avatar
 `;
 
 function prepareLogIn(email, password) {
-  const query = `
+  const query = GQL.template`
   logIn: createAuthToken(email: "${email}", password: "${password}") {
     authToken
     user {
@@ -48,14 +48,14 @@ function prepareLogIn(email, password) {
 }
 
 function prepareSignUp(displayName, email, password) {
-  const query = `createUser(displayName: "${displayName}", email: "${email}", password: "${password}") {id}`;
+  const query = GQL.template`createUser(displayName: "${displayName}", email: "${email}", password: "${password}") {id}`;
   return {
     query,
   };
 }
 
 function prepareUserInfo() {
-  const query = `me { ${userFields} }`;
+  const query = GQL.template`me { ${userFields} }`;
   const callback = data => {
     if (data.me) {
       AppDispatcher.dispatch({
@@ -81,7 +81,7 @@ function clearUserInfo() {
 }
 
 export function getUserInfo() {
-  return TOKEN && GraphqlRest.handleQueries(
+  return TOKEN && GQL.handleQueries(
     prepareUserInfo()
   ).catch(err => {
     clearUserInfo();
@@ -89,13 +89,13 @@ export function getUserInfo() {
 };
 
 export function logIn(email, password) {
-  return GraphqlRest.handleMutations(
+  return GQL.handleMutations(
     prepareLogIn(email, password)
   );
 };
 
 export function signUp(displayName, email, password) {
-  return GraphqlRest.handleMutations(
+  return GQL.handleMutations(
     prepareSignUp(displayName, email, password),
     prepareLogIn(email, password)
   );

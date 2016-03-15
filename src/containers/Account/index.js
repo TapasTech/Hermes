@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, browserHistory } from 'react-router';
 
-import { GraphqlRest } from '#/utils';
 import * as auth from '#/services/auth';
 import AppDispatcher from '#/dispatcher';
 

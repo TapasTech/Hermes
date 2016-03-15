@@ -2,14 +2,14 @@ import React from 'react';
 
 import {Avatar} from '#/components';
 import {upload, getUrl} from '#/services/uploader';
-import {GraphqlRest, encodeField} from '#/utils';
+import {GQL, encodeField} from '#/utils';
 import Store from '#/store';
 import AppDispatcher from '#/dispatcher';
 
 import style from './style.less';
 
 export default class TabAvatar extends React.Component {
-  static fragments = `
+  static fragments = GQL.template`
   fragment fragUserAvatar on User {
     displayName
     avatar

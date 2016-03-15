@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 import Store from '#/store';
 import { Avatar, LoadMore } from '#/components';
-import { GraphqlRest, encodeField } from '#/utils';
+import { GQL, encodeField } from '#/utils';
 
 import styles from './style.less';
 
@@ -23,7 +23,7 @@ export default class AnalystRank extends React.Component {
   }
 
   prepareAnalysts(page = 1) {
-    const query = `
+    const query = GQL.template`
       bestAnalysts(page: ${page}) {
         data {
           id
@@ -58,13 +58,13 @@ export default class AnalystRank extends React.Component {
   }
 
   handleLoadMore() {
-    GraphqlRest.handleQueries(
+    GQL.handleQueries(
       this.prepareAnalysts(this.state.currentPage + 1)
     );
   }
 
   followMutation(status, id) {
-    const query = `
+    const query = GQL.template`
       user(id: ${id}) {
         mutation {
           status: ${status} {
@@ -94,13 +94,13 @@ export default class AnalystRank extends React.Component {
   handleFollow(follow, userId) {
     const status = follow ? `follow` : 'unfollow';
 
-    GraphqlRest.handleQueries(
+    GQL.handleQueries(
       this.followMutation(status, userId)
     );
   }
 
   componentDidMount() {
-    GraphqlRest.handleQueries(
+    GQL.handleQueries(
       this.prepareAnalysts()
     );
   }

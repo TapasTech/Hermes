@@ -49,7 +49,7 @@ export default class AnswerList extends React.Component {
   }
 
   prepareHotAnswers(page = 1) {
-    const query = `
+    const query = GQL.template`
     hotAnswers(page: ${page}, count: 5) {
       data {
         ...fragAnswer

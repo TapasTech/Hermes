@@ -2,10 +2,10 @@ import React from 'react';
 import {Link, browserHistory} from 'react-router';
 
 import { AnswerCard, Avatar, TopicCard, Loader, LoadMore, Tabs } from '#/components';
-import {GraphqlRest, encodeField, formatter} from '#/utils';
+import {GQL, encodeField, formatter} from '#/utils';
 import styles from './style.less';
 
-const fragQuestion = `
+const fragQuestion = GQL.template`
 fragment fragQuestion on Question {
 id
 title
@@ -39,7 +39,7 @@ export default class PersonalCenter extends React.Component {
       }, () => this.init());
     } else {
       this.setState(this.tabState(nextProps), () => {
-        GraphqlRest.handleQueries(
+        GQL.handleQueries(
           this.prepareTabData(this.state.currentPage)
         );
       });
@@ -80,14 +80,14 @@ export default class PersonalCenter extends React.Component {
   }
 
   init() {
-    GraphqlRest.handleQueries(
+    GQL.handleQueries(
       this.prepareUser(),
       this.prepareTabData()
     );
   }
 
   prepareUser() {
-    const query = `
+    const query = GQL.template`
     me {
       id
     }
@@ -130,7 +130,7 @@ export default class PersonalCenter extends React.Component {
   }
 
   prepareActivities = (page = 1) => {
-    const query = `
+    const query = GQL.template`
     userActivities: user(id: ${encodeField(this.props.params.id)}) {
       activities(page: ${page}) {
         data {
@@ -173,7 +173,7 @@ export default class PersonalCenter extends React.Component {
   }
 
   prepareAnswers = (page = 1) => {
-    const query = `
+    const query = GQL.template`
     userAnswers: user(id: ${encodeField(this.props.params.id)}) {
       answers(page: ${page}) {
         data {
@@ -206,7 +206,7 @@ export default class PersonalCenter extends React.Component {
   }
 
   prepareQuestions = (page = 1) => {
-    const query = `
+    const query = GQL.template`
     userQuestions: user(id: ${encodeField(this.props.params.id)}) {
       questions(page: ${page}) {
         data {
@@ -247,14 +247,14 @@ export default class PersonalCenter extends React.Component {
   }
 
   loadMore = () => {
-    GraphqlRest.handleQueries(
+    GQL.handleQueries(
       this.prepareTabData(this.state.currentPage + 1)
     );
   }
 
   prepareFollow() {
     const verb = this.state.user.followed ? 'unfollow' : 'follow';
-    const query = `
+    const query = GQL.template`
     userFollow: user(id: ${encodeField(this.props.params.id)}) {
       mutation {
         action: ${verb} {
@@ -279,7 +279,7 @@ export default class PersonalCenter extends React.Component {
   }
 
   handleFollow = () => {
-    GraphqlRest.handleQueries(
+    GQL.handleQueries(
       this.prepareFollow()
     );
   }
