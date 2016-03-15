@@ -19,6 +19,37 @@ export default class AnswerList extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.loadData();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({loading: true});
+    this.loadData();
+  }
+
+  render() {
+    return (
+      <div className="container">
+        {this.state.loading && <Loader full={true} />}
+        <div className="main">
+          { this.state.data ? this.renderQuestionList() : <div>loading...</div> }
+        </div>
+        <div className="sidebar">
+          { this.renderBestAnalysts() }
+          <HotTopics />
+          <NewestDataSets />
+        </div>
+      </div>
+    );
+  }
+
+  loadData() {
+    GraphqlRest.handleQueries(
+      this.prepareHotAnswers()
+    );
+  }
+
   prepareHotAnswers(page = 1) {
     const query = `
     hotAnswers(page: ${page}, count: 5) {
@@ -55,12 +86,6 @@ export default class AnswerList extends React.Component {
   handleMoreAnwers = () => {
     GraphqlRest.handleQueries(
       this.prepareHotAnswers(this.state.currentPage + 1)
-    );
-  }
-
-  componentDidMount() {
-    GraphqlRest.handleQueries(
-      this.prepareHotAnswers()
     );
   }
 
@@ -105,22 +130,6 @@ export default class AnswerList extends React.Component {
           })
         }
         <LoadMore condition={currentPage < totalPages} onLoadMore={this.handleMoreAnwers} />
-      </div>
-    );
-  }
-
-  render() {
-    return (
-      <div className="container">
-        {this.state.loading && <Loader full={true} />}
-        <div className="main">
-          { this.state.data ? this.renderQuestionList() : <div>loading...</div> }
-        </div>
-        <div className="sidebar">
-          { this.renderBestAnalysts() }
-          <HotTopics />
-          <NewestDataSets />
-        </div>
       </div>
     );
   }
