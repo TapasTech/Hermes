@@ -2,22 +2,22 @@ sudo: false
 language: node_js
 cache:
   directories:
-    - node_modules
+  - node_modules
 notifications:
   email: false
 node_js:
-- "4"
-env:
-  global:
-  - GH_REF: github.com/TapasTech/Hermes.git
-  - secure: BIlsmb0PPKa3yi9S7Pbp8modd/aHCqgn23twqzJeREYmIrJ9CZ+X/IATWLDYmluRjrp9fJM20dIzsdySvl61Q6pJzwWbuSBQ4Itjfs1PXJJL2nEoEaDUEGTRNQmAVs8dn0vd3496NMppxryK7PKzn9CGyfIPkZy3UtRnD6u8zJNyLckHuUCVu8K91eZvvSMJUD0jVxhrQuttqgIDrlX42bgXKDNnjmOo0kO+8kk85kftf5LJSFzwV4/Zr/HwtWCk12eLJ7UPdtQ+fJS1aHk4kSZNNcyQrrKSAjzeq3esIX0z13PWoBIz7v1s7ZXVexuAgqDa9An4Tx1LSk4imYwreGERYBc4ITKuN7vsHaTPxza3x+tr6boFaz8dYyhJC8HZ/eAM9Jv9FEfUcKaQvbTnUPPlX2uAHafXMufroXPAPKsKY/Ymgl3S/yVUVWbBb822cPcQ2rG9qRfnVIZNETlMRuYqeQh5vkVejxd5Ohpk7xhUA/DHeoEgWnqGnxfgr2j7wcb5fJIPFD2Tjpkez3ZsxvsH99kejoJwNg5AjMRYEsMBp9dTZ/BPonhmOGBWr/MLVbYgKd2TAoPGl9qacA3/CAnzVgCdRg1PRAj6XDaUHh9iJ/t3+7GDxJ14XrCC6RZNTxJYG6IdQzt5XEu/RIzfnhAZjN8E+umPtn4OgcDv3xs=
-
+- '4'
 before_install:
-  - npm i -g npm@^2.0.0
+- npm i -g npm@^2.0.0
 before_script:
-  - npm prune
-script: bash ./bin/deploy.sh
-
+- npm prune
+script:
+- npm run predeploy
+- npm run deploy
 branches:
   only:
-    - master
+  - master
+env:
+  global:
+  - secure: nxFMAmtsbhopq/wMPCXZRfz7jUFrFRa/Q1rscdk2ilgYpgHBYXThpeoAe6/E0Kgze1Qyyzbosylmp0FYYf6SDg77vP2VzNjj+iq183CrqljuqsP2clGTEsd0DLvjSxfhH2zkEtAQQMk61mlHUTPsmgXGyo7EO0NPEaa21LWA7V/lEyFqvinmU4ch1LPZx8UIjbzfFrKuakeO912nic3mTSc1nLjKBn23FAstHB0La/HQRtE05lacBfO8/5k2zEbt4bCP3UvQOjEnSfnAwQ6AXPF5u+Yv4tybEt8P7ZW4jOorV7JmGpUX8Ruu3T7Zh1ktdKcbEIdLdXgNxl4eG1+83Z7cXW45L5iTdn9br90Jrjk1jl3oCNjZ5ZzPQHhEMPCAGggBhaOIQ2Ms2hHHiabA4yXqlpzrARl7B0ld86V3uHhQ/6yNECOFPQUfoZpn6Xvoj9Eb2c5er8dwrN+EXvRZ7ig1KKu4B9Dd/MoT70kM4dNijEYcVi1XHDzJ54kpbCXhrLB3t166i7zZxGLQUo12E2cAxySfBtLeqOKib0bDo44PpeUZsaV2SSg3Rem+Mn+liHa+v+8PkItwWhhbNsjGif7hWKRhE3HOkyYeIo5eMTBnnT4r6G9ytOu87PXUrXygpEnRFoVfl7HjGtkD9mKfi/JWkpFDhlHA6sX2ji3GmWU=
+  - secure: LBDjyxHHEIi6BhYq+V5su7s8k03QkoGb3/THqbpfFOZJHVjxTXDpGVofzXu4WIPV7Ex2XIuu3WnltuA0KRXAoQi4nXFf2w6x+XSMhyI95D704j4oquk+HumO300QIn42NDZ7t2ErLkj7q3OGFyX5GJWrNEr8U4Hx55ELiqNi384RpoSCK5fuj4zw6xUH0xElP41cvbWNVz4AIomyc6iDPzQyUyzrC7gHFqpL0adB9h3PeILRFZMTLP3PDsv2X3nkIERn7EzLE4Q1+1lJdZm+NvsYdqNnZbAsMGEb87OcZ7JSCHrN4G+pBwQAnOzjyDh6mgIXiaOWR6DzI3OOxuC6zoICLpIoPtd/RQ3vCUYQPX4kRa6Q9ZAh4VabQTg6v6Cv+hK0hLDgzTwe5klwXJM51OQz27jZ/x2af9HuThH9WsK+dmkGwLdejrNkeH1RUS7sKqd1V//DgE0LUC8at3kPZKrylfYf9k2bFZXS7i/2Sq7/h8jty2488xxucgc4QybVaOzsv1Us/yKZmJi28Edg24om5lsNsuvmXmhQaFOfAlsmK4xNhX58FDdln5ZsH9cXhwSeaXqEj60zSHhtENcMZe+hjapTt4g5rmsMvsNFAqcaTfPzqolwfrI4wxPKJau8Nbf2HP5o3xIP/tx8UuDQSB1Dli0TrM++m0eVwNERHBo=

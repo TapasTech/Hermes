@@ -1,9 +1,8 @@
 const fs = require('fs');
 const qiniu = require('qiniu');
-const config = require('../config');
 
-qiniu.conf.ACCESS_KEY = config.qiniu.ACCESS_KEY;
-qiniu.conf.SECRET_KEY = config.qiniu.SECRET_KEY;
+qiniu.conf.ACCESS_KEY = process.env.ACCESS_KEY;
+qiniu.conf.SECRET_KEY = process.env.SECRET_KEY;
 
 function putToken(bucket) {
   var saveKey = 'hermes/images/$(etag)';
