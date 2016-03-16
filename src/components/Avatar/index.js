@@ -24,7 +24,7 @@ export default class Avatar extends React.Component {
       );
     } else if (name) {
       return (
-        <div className={cls} style={{backgroundColor: hashColor(name)}}>{name && name.slice(0, 4)}</div>
+        <div className={cls} style={{backgroundColor: hashColor(name)}}>{name && name.slice(0, 3)}</div>
       );
     } else {
       return null;
