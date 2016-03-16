@@ -91,36 +91,42 @@ function handleGraphQL(type, queries) {
   ));
 }
 
-const mergeQueries = {
-  queries: [],
-  timer: null,
-  fulfillers: [],
-  start: function () {
-    const {queries, fulfillers} = mergeQueries;
-    mergeQueries.queries = [];
-    mergeQueries.fulfillers = [];
-    mergeQueries.timer = null;
+const mergeQueries = function () {
+  let _queries = [];
+  let _fulfillers = [];
+  let timer;
+  return {
+    append,
+  };
+
+  function start() {
+    const queries = _queries;
+    const fulfillers = _fulfillers;
+    _queries = [];
+    _fulfillers = [];
+    timer = null;
     handleGraphQL('query', queries)
     .then(res => {
       fulfillers.forEach(fulfiller => fulfiller.resolve(res));
     }, res => {
       fulfillers.forEach(fulfiller => fulfiller.reject(res));
     });
-  },
-  append: function (queries, resolve, reject) {
-    mergeQueries.queries = mergeQueries.queries.concat(queries);
-    mergeQueries.fulfillers.push({resolve, reject});
-    if (!mergeQueries.timer) {
-      mergeQueries.timer = Promise.resolve().then(mergeQueries.start);
-      //mergeQueries.timer = setTimeout(mergeQueries.start, 200);
+  }
+  function append(queries, resolve, reject) {
+    _queries = _queries.concat(queries);
+    _fulfillers.push({resolve, reject});
+    if (!timer) {
+      timer = Promise.resolve().then(start);
+      //timer = setTimeout(start, 200);
     }
-  },
-};
+  }
+}();
+
 export function handleQueries(...queries) {
   return new Promise((resolve, reject) => {
     mergeQueries.append(queries, resolve, reject);
   });
-  return handleGraphQL('query', queries);
+  //return handleGraphQL('query', queries);
 }
 
 export function handleMutations(...queries) {

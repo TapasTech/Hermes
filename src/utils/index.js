@@ -1,5 +1,5 @@
-export * as GraphqlRest from './graphql-rest';
-export * as GQL from './graphql-rest';
+export * as GraphqlRest from './graphql';
+export * as GQL from './graphql';
 export * as formatter from './formatter';
 
 export function encodeField(field) {
