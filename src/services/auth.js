@@ -81,11 +81,15 @@ function clearUserInfo() {
 }
 
 export function getUserInfo() {
-  return TOKEN && GQL.handleQueries(
-    prepareUserInfo()
-  ).catch(err => {
+  if (TOKEN) {
+    GQL.handleQueries(
+      prepareUserInfo()
+    ).catch(err => {
+      clearUserInfo();
+    });
+  } else {
     clearUserInfo();
-  });
+  }
 };
 
 export function logIn(email, password) {
@@ -99,4 +103,12 @@ export function signUp(displayName, email, password) {
     prepareSignUp(displayName, email, password),
     prepareLogIn(email, password)
   );
+};
+
+export function requireAuth(nextState, replace) {
+  if (!Store.user.index().data.id) {
+    replace({
+      pathname: '/account',
+    });
+  }
 };

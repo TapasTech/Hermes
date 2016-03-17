@@ -215,7 +215,6 @@ export default class Question extends React.Component {
 
   render() {
     const { user, title, content, anonymous, topics, dataSets, dataReports, loading } = this.state;
-
     return (
       <div className="container ask">
         {loading && <Loader full={true} />}

@@ -1,6 +1,8 @@
-let _store = {
+const _store = {
   user: {
-    data: {}
+    data: {
+      id: -1,
+    },
   }
 };
 

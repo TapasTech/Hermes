@@ -1,5 +1,6 @@
 import React from 'react';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+import {requireAuth} from '#/services/auth';
 
 import Pages from './containers';
 
@@ -17,11 +18,11 @@ export default class Root extends React.Component {
           </Route>
           <Route path="search" component={Pages.Search} />
           <Route path="question">
-            <Route path="_new" component={Pages.Question} />
+            <Route path="_new" component={Pages.Question} onEnter={requireAuth} />
             <Route path=":id" component={Pages.QuestionDetail} />
-            <Route path=":id/edit" component={Pages.Question} />
-            <Route path=":id/answer" component={Pages.Answer} />
-            <Route path=":id/answer/:ansId" component={Pages.Answer} />
+            <Route path=":id/edit" component={Pages.Question} onEnter={requireAuth} />
+            <Route path=":id/answer" component={Pages.Answer} onEnter={requireAuth} />
+            <Route path=":id/answer/:ansId" component={Pages.Answer} onEnter={requireAuth} />
           </Route>
           <Route path="user">
             <Route path=":id" component={Pages.PersonalCenter} />
