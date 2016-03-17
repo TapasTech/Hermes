@@ -35,13 +35,7 @@ export default class AnswerCard extends React.Component {
       ...fragDataReports
     }
     upVotesCount
-    comments(page: 1, count: 5) {
-      meta {
-        current_page
-        total_pages
-        total_count
-      }
-    }
+    commentsCount
   } ${DataSources.fragments}`;
 
   constructor(props) {
@@ -50,7 +44,7 @@ export default class AnswerCard extends React.Component {
       showShare: false,
       showComment: false,
       upVotesCount: props.answer.upVotesCount,
-      commentsCount: props.answer.comments.meta.total_count,
+      commentsCount: props.answer.commentsCount
     };
   }
 

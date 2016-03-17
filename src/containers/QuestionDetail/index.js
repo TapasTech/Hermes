@@ -49,28 +49,7 @@ export default class QuestionDetail extends React.Component {
               ...fragDataReports
             }
             upVotesCount
-            comments(page: 1, count: 5) {
-              data {
-                id
-                user {
-                  id
-                  displayName
-                }
-                replyTo {
-                  id
-                  displayName
-                }
-                content
-                upVotesCount
-                createdAt
-                updatedAt
-              }
-              meta {
-                current_page
-                total_pages
-                total_count
-              }
-            }
+            commentsCount
           }
           meta {
             current_page
@@ -148,28 +127,7 @@ export default class QuestionDetail extends React.Component {
                   ...fragDataReports
                 }
                 upVotesCount
-                comments(page: 1, count: 5) {
-                  data {
-                    id
-                    user {
-                      id
-                      displayName
-                    }
-                    replyTo {
-                      id
-                      displayName
-                    }
-                    content
-                    upVotesCount
-                    createdAt
-                    updatedAt
-                  }
-                  meta {
-                    current_page
-                    total_pages
-                    total_count
-                  }
-                }
+                commentsCount
               }
               meta {
                 current_page
@@ -200,13 +158,14 @@ export default class QuestionDetail extends React.Component {
             followed
           }
         }
-      }`;
+      }
+    `;
     const callback = data => {
       const question = data.question.mutation.read;
       this.setState({
         question: question,
         commentPage: question.answers.data.reduce((res, item) => {
-          res[item.id] = 1;
+          res[item.id] = 0;
           return res;
         }, {}),
       });
@@ -257,50 +216,6 @@ export default class QuestionDetail extends React.Component {
     GraphqlRest.handleQueries(
       this.prepareMoreAnswers(this.state.page + 1)
     );
-  }
-
-  prepareMoreComments(answerId, commentPage) {
-    const query = `
-      query {
-        answer(id: ${answerId}) {
-          id
-          comments(page: ${commentPage}, count: 5) {
-            data {
-              id
-              user {
-                id
-                displayName
-              }
-              replyTo {
-                id
-                displayName
-              }
-              content
-              upVotesCount
-              createdAt
-              updatedAt
-            }
-            meta {
-              current_page
-              total_pages
-              total_count
-            }
-          }
-        }
-      }
-    `;
-
-    GraphqlRest.post(query).then(res => {
-      const { id, comments } = res.answer;
-      const { question } = this.state;
-      const newQuestion = Object.assign({}, question);
-      const tmp = newQuestion.answers.data.find(item => item.id === id).comments;
-      tmp.data = tmp.data.concat(comments.data);
-      tmp.meta = comments.meta;
-      this.setState({
-        question: newQuestion
-      });
-    });
   }
 
   // mutations
@@ -409,15 +324,6 @@ export default class QuestionDetail extends React.Component {
     }
   }
 
-  handleMoreComments(answerId) {
-    const { commentPage } = this.state;
-    const newCommentPage = Object.assign({}, commentPage);
-    newCommentPage[answerId] += 1;
-    this.setState({
-      commentPage: newCommentPage
-    }, () => this.prepareMoreComments(answerId, newCommentPage[answerId]));
-  }
-
   prepareFollow(follow) {
     const { id } = this.props.params;
     const verb = follow ? 'follow' : 'unfollow';
@@ -460,6 +366,23 @@ export default class QuestionDetail extends React.Component {
     );
   }
 
+  handleSetCount(id) {
+    const newQuestion = Object.assign({}, this.state.question);
+    const answer = newQuestion.answers.data.find(item => item.id === id);
+    return (total) => {
+      answer.commentsCount = total;
+      this.setState({
+        question: newQuestion
+      })
+    }
+  }
+
+  onSetCount = (total) => {
+    this.setState({
+      commentsCount: total,
+    });
+  }
+
   componentDidMount() {
     GraphqlRest.handleQueries(
       this.prepareDetail()
@@ -486,25 +409,23 @@ export default class QuestionDetail extends React.Component {
     );
   }
 
-  renderOptionArea(comments, answerId) {
-    const { data, meta } = comments;
+  renderOptionArea(answer) {
+    const { id, commentsCount, comments } = answer;
     return (
       <div className={styles.cardOption}>
         <div className="other">
-          <div className="comment" onClick={this.handleShowComment.bind(this, answerId)}>
+          <div className="comment" onClick={this.handleShowComment.bind(this, id)}>
             <span>评论</span>
-            <span className="count">{ meta && meta.total_count }</span>
+            <span className="count">{ commentsCount }</span>
           </div>
           <div className="share">
-            <span onClick={this.handleShowShare.bind(this, answerId)}>分享</span>
-            { this.state.showShare.has(answerId) && <ShareBar key={answerId} className="bar" /> }
+            <span onClick={this.handleShowShare.bind(this, id)}>分享</span>
+            { this.state.showShare.has(id) && <ShareBar key={id} className="bar" /> }
           </div>
         </div>
         {
-          this.state.showComment.has(answerId)
-            && data
-            && data.length
-            && <CommentList answerId={answerId} />
+          this.state.showComment.has(id)
+            && <CommentList answerId={id} onSetCount={this.handleSetCount(id)} />
         }
       </div>
     );
@@ -519,7 +440,7 @@ export default class QuestionDetail extends React.Component {
         {
           list
             && list.map((item, index) => {
-            const { id, content, comments, user, upVotesCount, dataSets, dataReports } = item;
+            const { id, content, commentsCount, user, upVotesCount, dataSets, dataReports } = item;
             return (
               <div key={index} className={styles.answer}>
                 <div className={styles.header}>
@@ -533,7 +454,7 @@ export default class QuestionDetail extends React.Component {
                 <div className={styles.answerContent}>
                   <Answer answerContent={content} showFull={true} />
                   <DataSources dataSets={dataSets} dataReports={dataReports} />
-                  { this.renderOptionArea(comments, id) }
+                  { this.renderOptionArea(item) }
                 </div>
               </div>
             );
