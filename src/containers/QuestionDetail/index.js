@@ -7,7 +7,7 @@ import { GraphqlRest, formatter } from '#/utils';
 
 import styles from './style.less';
 
-export default class Detail extends React.Component {
+export default class QuestionDetail extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -23,61 +23,65 @@ export default class Detail extends React.Component {
   prepareMoreAnswers(page) {
     const { id } = this.props.params;
     const query = `
-      query {
-        question(id: "${id}") {
-          id
-          answers(page: ${page}, count: 10) {
-            data {
+      question(id: "${id}") {
+        id
+        answers(page: ${page}, count: 10) {
+          data {
+            id
+            user {
               id
-              user {
+              displayName
+              description
+            }
+            question {
+              id
+              title
+              topics {
                 id
-                displayName
-                description
-              }
-              question {
-                id
-                title
-                topics {
-                  id
-                  name
-                }
-              }
-              content
-              upVotesCount
-              comments(page: 1, count: 5) {
-                data {
-                  id
-                  user {
-                    id
-                    displayName
-                  }
-                  replyTo {
-                    id
-                    displayName
-                  }
-                  content
-                  upVotesCount
-                  createdAt
-                  updatedAt
-                }
-                meta {
-                  current_page
-                  total_pages
-                  total_count
-                }
+                name
               }
             }
-            meta {
-              current_page
-              total_pages
-              total_count
+            content
+            dataSets {
+              ...fragDataSets
             }
+            dataReports {
+              ...fragDataReports
+            }
+            upVotesCount
+            comments(page: 1, count: 5) {
+              data {
+                id
+                user {
+                  id
+                  displayName
+                }
+                replyTo {
+                  id
+                  displayName
+                }
+                content
+                upVotesCount
+                createdAt
+                updatedAt
+              }
+              meta {
+                current_page
+                total_pages
+                total_count
+              }
+            }
+          }
+          meta {
+            current_page
+            total_pages
+            total_count
           }
         }
       }
     `;
 
-    GraphqlRest.post(query).then(res => {
+    const callback = res => {
       const { id, answers } = res.question;
       const { question } = this.state;
       const newQuestion = Object.assign({}, question);
@@ -89,7 +93,12 @@ export default class Detail extends React.Component {
           question: newQuestion
         });
       }
-    })
+    };
+    return {
+      query,
+      callback,
+      fragments: DataSources.fragments,
+    };
   }
 
   prepareDetail() {
@@ -132,10 +141,10 @@ export default class Detail extends React.Component {
                   }
                 }
                 content
-                dataSets(page: 1, count: 5) {
+                dataSets {
                   ...fragDataSets
                 }
-                dataReports(page: 1, count: 5) {
+                dataReports {
                   ...fragDataReports
                 }
                 upVotesCount
@@ -179,10 +188,10 @@ export default class Detail extends React.Component {
                 }
               }
             }
-            dataSets(page: 1, count: 5) {
+            dataSets {
               ...fragDataSets
             }
-            dataReports(page: 1, count: 5) {
+            dataReports {
               ...fragDataReports
             }
             upVotesCount
@@ -245,9 +254,9 @@ export default class Detail extends React.Component {
   }
 
   handleShowMore() {
-    this.setState({
-      page: this.state.page + 1
-    }, () => this.prepareMoreAnswers(this.state.page));
+    GraphqlRest.handleQueries(
+      this.prepareMoreAnswers(this.state.page + 1)
+    );
   }
 
   prepareMoreComments(answerId, commentPage) {

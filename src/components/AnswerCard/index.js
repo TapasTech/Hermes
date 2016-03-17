@@ -28,10 +28,10 @@ export default class AnswerCard extends React.Component {
       }
     }
     content
-    dataSets(page: 1, count: 5) {
+    dataSets {
       ...fragDataSets
     }
-    dataReports(page: 1, count: 5) {
+    dataReports {
       ...fragDataReports
     }
     upVotesCount

@@ -4,39 +4,25 @@ import styles from './style.less';
 
 export default class DataSources extends React.Component {
   static propTypes = {
-    dataSets: React.PropTypes.object,
-    dataReports: React.PropTypes.object,
+    dataSets: React.PropTypes.array,
+    dataReports: React.PropTypes.array,
   }
 
   static fragments = `
-  fragment fragDataSets on PaginatedDataSet {
-    data {
-      id
-      title
-      url
-    }
-    meta {
-      current_page
-      total_pages
-      total_count
-    }
+  fragment fragDataSets on DataSet {
+    id
+    title
+    url
   }
-  fragment fragDataReports on PaginatedDataReport {
-    data {
-      id
-      title
-      url
-    }
-    meta {
-      current_page
-      total_pages
-      total_count
-    }
+  fragment fragDataReports on DataReport {
+    id
+    title
+    url
   }
   `;
 
   renderSet(set) {
-    const data = set && set.data || [];
+    const data = set || [];
     return data.map((item, index) => (
       <li key={index}><a target="_blank" href={item.url}>{item.title}</a></li>
     ));
@@ -44,7 +30,7 @@ export default class DataSources extends React.Component {
 
   render() {
     const {dataSets, dataReports} = this.props;
-    const hasData = dataSets && dataSets.data && dataSets.data.length || dataReports && dataReports.data && dataReports.data.length;
+    const hasData = dataSets && dataSets.length || dataReports && dataReports.length;
     return (
       hasData
         ? <div className={styles.data}>

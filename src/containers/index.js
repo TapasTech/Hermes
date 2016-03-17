@@ -2,7 +2,7 @@ import Account from './Account';
 import AnalystRank from './AnalystRank';
 import AnswerList from './AnswerList';
 import Base from './Base';
-import Detail from './Detail';
+import QuestionDetail from './QuestionDetail';
 import Discovery from './Discovery';
 import PersonalCenter from './PersonalCenter';
 import Question from './Edit/Question';
@@ -18,7 +18,7 @@ export default {
   Answer,
   AnswerList,
   Base,
-  Detail,
+  QuestionDetail,
   Discovery,
   PersonalCenter,
   Question,
