@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { formatter } from '#/utils';
+
 import { Modal } from '#/components';
 
 import {GQL, encodeField, valueLink} from '#/utils';
@@ -142,7 +144,7 @@ export default class Reference extends React.Component {
   createDataSet(title, url) {
     const data = GQL.template`
     mutation createDataSet {
-      dataset: createDataSet(title: ${encodeField(title)}, url: ${encodeField(url)}) {
+      dataset: createDataSet(title: ${encodeField(title)}, url: ${encodeField(formatter.url(url))}) {
         id
         title
         url
@@ -155,7 +157,7 @@ export default class Reference extends React.Component {
   createDataReport(title, url) {
     const data = GQL.template`
     mutation createDataReport {
-      dataset: createDataReport(title: ${encodeField(title)}, url: ${encodeField(url)}) {
+      dataset: createDataReport(title: ${encodeField(title)}, url: ${encodeField(formatter.url(url))}) {
         id
         title
         url
