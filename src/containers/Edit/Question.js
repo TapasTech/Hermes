@@ -94,18 +94,14 @@ export default class Question extends React.Component {
         id
       }
       dataSets {
-        data {
-          id
-          title
-          url
-        }
+        id
+        title
+        url
       }
       dataReports {
-        data {
-          id
-          title
-          url
-        }
+        id
+        title
+        url
       }
       user {
         id
@@ -127,12 +123,12 @@ export default class Question extends React.Component {
         qid,
         title: question.title,
         content: question.content,
-        dataSets: question.dataSets.data,
-        dataReports: question.dataReports.data,
+        dataSets: question.dataSets,
+        dataReports: question.dataReports,
         original: {
           topics: question.topics.map(item => item.id),
-          dataSets: question.dataSets.data.map(item => item.id),
-          dataReports: question.dataReports.data.map(item => item.id),
+          dataSets: question.dataSets.map(item => item.id),
+          dataReports: question.dataReports.map(item => item.id),
         },
       });
     };

@@ -75,18 +75,14 @@ export default class Answer extends React.Component {
     answer(id: ${encodeField(ansId)}) {
       content
       dataSets {
-        data {
-          id
-          title
-          url
-        }
+        id
+        title
+        url
       }
       dataReports {
-        data {
-          id
-          title
-          url
-        }
+        id
+        title
+        url
       }
       question {
         id
@@ -103,11 +99,11 @@ export default class Answer extends React.Component {
       this.setState({
         question: answer.question,
         content: answer.content,
-        dataSets: answer.dataSets.data,
-        dataReports: answer.dataReports.data,
+        dataSets: answer.dataSets,
+        dataReports: answer.dataReports,
         original: {
-          dataSets: answer.dataSets.data.map(item => item.id),
-          dataReports: answer.dataReports.data.map(item => item.id),
+          dataSets: answer.dataSets.map(item => item.id),
+          dataReports: answer.dataReports.map(item => item.id),
         },
       });
     };
