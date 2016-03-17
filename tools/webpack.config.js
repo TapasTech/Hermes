@@ -1,9 +1,11 @@
 import path from 'path';
+import fs from 'fs';
 import webpack from 'webpack';
 import autoprefixer from 'autoprefixer';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 
+import apm from '../src/template/apm.js';
 import {isProd} from './config';
 
 const imageName = `images/[name]${isProd ? '.[hash:8]' : ''}.[ext]`;
@@ -66,7 +68,12 @@ export default {
   plugins: [
     new webpack.DefinePlugin({ 'process.env': {'NODE_ENV': `"${isProd ? 'production' : 'development'}"`}}),
     new webpack.optimize.CommonsChunkPlugin({ name: 'vendor', filename: `vendor${isProd ? '.[chunkhash:8]' : ''}.js`, minChunks: Infinity }),
-    new HtmlWebpackPlugin({ template: 'src/index.html', inject: 'body' }),
+    new HtmlWebpackPlugin({
+      favicon: './src/assets/favicon.ico',
+      apm: isProd ? apm : '',
+      template: 'src/template/index.ejs',
+      inject: 'body'
+    }),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.NoErrorsPlugin(),
     ... isProd ? [
