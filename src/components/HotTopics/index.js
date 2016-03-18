@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import { GraphqlRest, hashColor } from '#/utils';
+import { GQL, hashColor } from '#/utils';
 
 import './style.less';
 
@@ -14,7 +14,7 @@ export default class HotTopics extends React.Component {
   }
 
   componentDidMount() {
-    GraphqlRest.handleQueries(
+    GQL.handleQueries(
       this.prepareTopics()
     );
   }

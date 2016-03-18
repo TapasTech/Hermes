@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Comment } from '#/components';
-import {GraphqlRest, encodeField} from '#/utils';
+import {GQL, encodeField} from '#/utils';
 
 import './style.less';
 
@@ -23,7 +23,7 @@ export default class CommentList extends React.Component {
   }
 
   componentDidMount() {
-    GraphqlRest.handleQueries(
+    GQL.handleQueries(
       this.prepareData()
     );
   }
@@ -63,7 +63,7 @@ export default class CommentList extends React.Component {
   }
 
   handleShowMore = () => {
-    GraphqlRest.handleQueries(
+    GQL.handleQueries(
       this.prepareData(this.state.currentPage + 1)
     );
   }
@@ -108,7 +108,7 @@ export default class CommentList extends React.Component {
   }
 
   handleComment = (replyToId, content) => {
-    return GraphqlRest.handleQueries(
+    return GQL.handleQueries(
       this.prepareComment(replyToId, content)
     );
   }

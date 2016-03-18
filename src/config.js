@@ -1,6 +1,6 @@
-import { GraphqlRest } from './utils';
+import { GQL } from './utils';
 
-GraphqlRest.config({
+GQL.config({
   headers: {
     'Accept': 'application/json',
     'Content-Type': 'application/json',

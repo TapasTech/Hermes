@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 import { Answer, CommentList, ShareBar, PokeButton } from '#/components';
 import DataSources from '../DataSources';
-import {GraphqlRest, encodeField} from '#/utils';
+import {GQL, encodeField} from '#/utils';
 
 import './style.less';
 
@@ -90,7 +90,7 @@ export default class AnswerCard extends React.Component {
   }
 
   handleUpVote = () => {
-    GraphqlRest.handleQueries(
+    GQL.handleQueries(
       this.prepareUpVote()
     );
   }

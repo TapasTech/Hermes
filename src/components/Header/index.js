@@ -4,7 +4,6 @@ import { Link, browserHistory } from 'react-router';
 import {Icon} from '#/components';
 import Store from '#/store';
 import AppDispatcher from '#/dispatcher';
-import {GraphqlRest} from '#/utils';
 import {getUserInfo} from '#/services/auth';
 import styles from './style.less';
 import Logo from '#/assets/logo.png';

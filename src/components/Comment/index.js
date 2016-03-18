@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 
 import { Avatar } from '#/components';
-import {GraphqlRest, encodeField, formatter} from '#/utils';
+import {GQL, encodeField, formatter} from '#/utils';
 
 import './style.less';
 
@@ -88,7 +88,7 @@ export default class Comment extends React.Component {
   }
 
   handleUpVote = () => {
-    GraphqlRest.handleQueries(
+    GQL.handleQueries(
       this.prepareUpVote()
     );
   }

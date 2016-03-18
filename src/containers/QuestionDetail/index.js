@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 
 import Store from '#/store';
 import { Avatar, Answer, CommentList, ShareBar, PokeButton, Loader, DataSources } from '#/components';
-import { GraphqlRest, formatter } from '#/utils';
+import { GQL, formatter } from '#/utils';
 
 import styles from './style.less';
 
@@ -213,7 +213,7 @@ export default class QuestionDetail extends React.Component {
   }
 
   handleShowMore() {
-    GraphqlRest.handleQueries(
+    GQL.handleQueries(
       this.prepareMoreAnswers(this.state.page + 1)
     );
   }
@@ -244,7 +244,7 @@ export default class QuestionDetail extends React.Component {
     `;
     const query = this.answerMutationRoot(mutation);
 
-    GraphqlRest.post(query(answerId)).then(data => {
+    GQL.post(query(answerId)).then(data => {
       const { id, upVotesCount } = data.answer.mutation.voteUp;
       const { question } = this.state;
       const newQuestion = Object.assign({}, question);
@@ -279,7 +279,7 @@ export default class QuestionDetail extends React.Component {
       `;
       const query = this.answerMutationRoot(mutation);
 
-      return GraphqlRest.post(query(answerId)).then(res => {
+      return GQL.post(query(answerId)).then(res => {
         const { comment } = res.answer.mutation;
 
         const { question } = this.state;
@@ -310,7 +310,7 @@ export default class QuestionDetail extends React.Component {
         }
       `;
 
-      GraphqlRest.post(mutation).then(res => {
+      GQL.post(mutation).then(res => {
         const { id, upVotesCount } = res.comment.mutation.voteUp;
         const { question } = this.state;
         const newQuestion = Object.assign({}, question);
@@ -361,7 +361,7 @@ export default class QuestionDetail extends React.Component {
   }
 
   toggleFollowStatus = () => {
-    GraphqlRest.handleQueries(
+    GQL.handleQueries(
       this.prepareFollow(!this.state.question.followed)
     );
   }
@@ -384,7 +384,7 @@ export default class QuestionDetail extends React.Component {
   }
 
   componentDidMount() {
-    GraphqlRest.handleQueries(
+    GQL.handleQueries(
       this.prepareDetail()
     );
   }

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 
 import { HotTopics, Loader, LoadMore } from '#/components';
-import { GraphqlRest, formatter } from '#/utils';
+import { GQL, formatter } from '#/utils';
 import Questions from './Questions';
 
 import styles from './style.less';
@@ -93,7 +93,7 @@ export default class Discovery extends React.Component {
   }
 
   componentDidMount() {
-    GraphqlRest.handleQueries(
+    GQL.handleQueries(
       this.prepareTopics(1),
       this.prepareQuestions(1)
     );
@@ -109,14 +109,14 @@ export default class Discovery extends React.Component {
         },
         loading: true,
       });
-      GraphqlRest.handleQueries(
+      GQL.handleQueries(
         this.prepareQuestions(1)
       );
     }
   }
 
   handleMoreQuestions = () => {
-    GraphqlRest.handleQueries(
+    GQL.handleQueries(
       this.prepareQuestions(this.state.questions.currentPage + 1)
     );
   }
