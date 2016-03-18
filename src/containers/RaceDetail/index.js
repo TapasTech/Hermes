@@ -27,6 +27,11 @@ export default class RaceDetail extends React.Component {
 
   renderDetail = () => {
     const {data} = this.state;
+    const competitionType = {
+      competition: '竞赛',
+      recruitment: '招募',
+      report: '报告',
+    }[data.competitionType];
     return (
       <div>
         <div className={style.tabTitle}>竞赛描述</div>
@@ -35,23 +40,58 @@ export default class RaceDetail extends React.Component {
         <center className="text-gray">
           <p><strong>开始时间：</strong>{formatter.date(data.startAt)}</p>
           <p><strong>结束时间：</strong>{formatter.date(data.expireAt)}</p>
-          <p><strong>比赛方式：</strong>{data.competitionType}</p>
+          <p><strong>比赛方式：</strong>{competitionType}</p>
         </center>
       </div>
     );
   }
 
+  formatSize(size) {
+    const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+    let index = 0, sizeNumber = size;
+    for (let length = units.length; sizeNumber >= 1024 && index < length; index ++)
+      sizeNumber /= 1024;
+    return (sizeNumber == null || isNaN(sizeNumber) ? '?' : sizeNumber.toFixed(2)) + ' ' + units[index];
+  }
+
   renderData = () => {
-    const {data} = this.state;
+    const fileUploadeds = this.state.data.fileUploadeds || [];
+    const desc = fileUploadeds.filter(item => item.description);
     return (
       <div>
         <div className={style.tabTitle}>数据文件</div>
         <div className={style.tabContent}>
-          无
+          <table>
+            <thead>
+              <tr>
+                <th>文件名</th>
+                <th>文件格式</th>
+              </tr>
+            </thead>
+            <tbody>
+              {fileUploadeds.length
+                ? fileUploadeds.map((item, index) => (
+                  <tr key={index}>
+                    <td>
+                      {item.name}
+                    </td>
+                    <td>
+                      <a href={item.url} target="_blank" title={item.description}>
+                        {`${item.format} (${this.formatSize(item.size)})`}
+                      </a>
+                    </td>
+                  </tr>
+                  ))
+                : <tr><td colSpan="2">无</td></tr>
+              }
+            </tbody>
+          </table>
         </div>
         <div className={style.tabTitle}>数据描述</div>
         <div className={style.tabContent}>
-          你先猜猜看？
+          {desc.length ? desc.map((item, index) => (
+            <p key={index}>{`${item.name} - ${item.description}`}</p>
+          )) : '无'}
         </div>
       </div>
     );
@@ -81,7 +121,6 @@ export default class RaceDetail extends React.Component {
       this.renderData,
       this.renderSolute,
     ][index];
-    console.log(data);
     const startAt = new Date(data.startAt).getTime();
     const expireAt = new Date(data.expireAt).getTime();
     const now = Date.now();
