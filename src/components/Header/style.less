@@ -11,8 +11,7 @@
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.24);
   z-index: 1000;
 
-  a,
-  .btn {
+  a {
     color: white;
     cursor: pointer;
     &:hover {
@@ -115,6 +114,17 @@
     }
     &:hover .navtop-dropdown {
       transform: scaleY(1);
+    }
+  }
+
+  &-btn.btn {
+    padding: 0 15px;
+    cursor: pointer;
+    background: darken(@navtop-background, 10%);
+    &:hover,
+    &:focus,
+    &:active {
+      background: darken(@navtop-background, 30%);
     }
   }
 

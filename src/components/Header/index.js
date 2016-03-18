@@ -111,13 +111,12 @@ export default class Header extends React.Component {
               </div>
             </div>
           }{!user.id &&
-            <div className="navtop-user pull-right">
-              <Link className="navtop-item" to="/account?sign_up=1">注册</Link>
-              |
-              <Link className="navtop-item" to="/account">登录</Link>
+            <div className="pull-right">
+              <Link className="navtop-btn btn mr" to="/account?sign_up=1">注册</Link>
+              <Link className="navtop-btn btn" to="/account">登录</Link>
             </div>
           }
-          <form className="navtop-search pull-right" onSubmit={this.handleSearch}>
+          <form className="navtop-search pull-right mr" onSubmit={this.handleSearch}>
             {searching &&
               <input
                 type="text"
@@ -127,7 +126,7 @@ export default class Header extends React.Component {
                 placeholder="搜索问题"
               />
             }
-            <Icon className="icon" glyph={IconSearch} width="24" height="24" onClick={this.toggleSearch} />
+            <Icon className="icon" glyph={IconSearch} width="18" height="18" onClick={this.toggleSearch} />
           </form>
         </div>
       </nav>

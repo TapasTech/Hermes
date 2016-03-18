@@ -11,6 +11,7 @@ import Search from './Search';
 import Settings from './Settings';
 import Race from './Race';
 import RaceDetail from './RaceDetail';
+//import RaceEdit from './RaceDetail/Edit';
 
 export default {
   Account,
@@ -24,6 +25,7 @@ export default {
   Question,
   Race,
   RaceDetail,
+  //RaceEdit,
   Search,
   Settings,
 };

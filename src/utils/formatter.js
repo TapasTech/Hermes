@@ -25,3 +25,8 @@ export const url = (string) => {
     return `http://${string}`;
   }
 }
+
+export function date(arg) {
+  const date = new Date(arg);
+  return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`;
+}
