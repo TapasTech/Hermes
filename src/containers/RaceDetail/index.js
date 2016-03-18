@@ -3,6 +3,8 @@ import {Link, browserHistory} from 'react-router';
 
 import {Loader} from '#/components';
 import {GQL, encodeField, formatter} from '#/utils';
+import Submit from './Submit';
+import {formatSize} from './utils';
 
 import style from './style.less';
 
@@ -34,7 +36,7 @@ export default class RaceDetail extends React.Component {
     }[data.competitionType];
     return (
       <div>
-        <div className={style.tabTitle}>竞赛描述</div>
+        <h2 className={style.tabTitle}>竞赛描述</h2>
         <div className={style.tabContent} dangerouslySetInnerHTML={{__html: data.description}} />
         <hr />
         <center className="text-gray">
@@ -46,20 +48,12 @@ export default class RaceDetail extends React.Component {
     );
   }
 
-  formatSize(size) {
-    const units = ['B', 'KB', 'MB', 'GB', 'TB'];
-    let index = 0, sizeNumber = size;
-    for (let length = units.length; sizeNumber >= 1024 && index < length; index ++)
-      sizeNumber /= 1024;
-    return (sizeNumber == null || isNaN(sizeNumber) ? '?' : sizeNumber.toFixed(2)) + ' ' + units[index];
-  }
-
   renderData = () => {
     const fileUploadeds = this.state.data.fileUploadeds || [];
     const desc = fileUploadeds.filter(item => item.description);
     return (
       <div>
-        <div className={style.tabTitle}>数据文件</div>
+        <h2 className={style.tabTitle}>数据文件</h2>
         <div className={style.tabContent}>
           <table>
             <thead>
@@ -77,7 +71,7 @@ export default class RaceDetail extends React.Component {
                     </td>
                     <td>
                       <a href={item.url} target="_blank" title={item.description}>
-                        {`${item.format} (${this.formatSize(item.size)})`}
+                        {`${item.format} (${formatSize(item.size)})`}
                       </a>
                     </td>
                   </tr>
@@ -87,7 +81,7 @@ export default class RaceDetail extends React.Component {
             </tbody>
           </table>
         </div>
-        <div className={style.tabTitle}>数据描述</div>
+        <h2 className={style.tabTitle}>数据描述</h2>
         <div className={style.tabContent}>
           {desc.length ? desc.map((item, index) => (
             <p key={index}>{`${item.name} - ${item.description}`}</p>
@@ -97,16 +91,9 @@ export default class RaceDetail extends React.Component {
     );
   }
 
-  renderSolute = () => {
+  renderSubmit = () => {
     const {data} = this.state;
-    return (
-      <div>
-        <div className={style.tabTitle}>提交答案</div>
-        <div className={style.tabContent}>
-          不样提交
-        </div>
-      </div>
-    );
+    return data.id ? <Submit competitionId={data.id} /> : [];
   }
 
   render() {
@@ -119,7 +106,7 @@ export default class RaceDetail extends React.Component {
     const renderTab = [
       this.renderDetail,
       this.renderData,
-      this.renderSolute,
+      this.renderSubmit,
     ][index];
     const startAt = new Date(data.startAt).getTime();
     const expireAt = new Date(data.expireAt).getTime();
@@ -131,7 +118,7 @@ export default class RaceDetail extends React.Component {
         <div className="main main-right">
           <div className="panel">
             <div className="text-feature">{`￥${data.award}元`}</div>
-            <div className={style.infoTitle}>{data.title}</div>
+            <h1 className={style.infoTitle}>{data.title}</h1>
             <div className={style.infoProgress}>
               <div style={{width: progress}}></div>
             </div>

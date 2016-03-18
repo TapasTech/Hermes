@@ -15,7 +15,7 @@ export function register(app) {
   app.use(proxypass({
     upstreams: [{
       match: {
-        path: '/graphql',
+        path: path => path === '/graphql' || path.startsWith('/put_tokens/'),
       },
       target: 'http://hermes-devel.dtcj.com',
       changeOrigin: true,

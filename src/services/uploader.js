@@ -1,23 +1,25 @@
 import fetch from 'isomorphic-fetch';
 
-const token = {};
+const tokens = {};
 
-function getToken() {
+function getToken(type) {
   return new Promise((resolve, reject) => {
-    if (token.data && token.expires < Date.now()) {
+    const token = tokens[type];
+    if (token && token.data && token.expires < Date.now()) {
       return resolve(token.data);
     }
-    fetch('/_puttoken')
+    fetch('/put_tokens/' + type)
     .then(res => res.text())
     .then(text => {
+      const token = tokens[type] = {};
       token.expires = Date.now() + 60 * 1000;
       resolve(token.data = text);
     });
   });
 }
 
-export function upload(file) {
-  return getToken().then(token => new Promise((resolve, reject) => {
+export function upload(file, type = 'image') {
+  return getToken(type).then(token => new Promise((resolve, reject) => {
     const formData = new FormData;
     formData.append('token', token);
     formData.append('file', file);
