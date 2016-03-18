@@ -14,7 +14,7 @@
     height: 45px;
     font-weight: bold;
 
-    th {
+    th:not(.race-recent) {
       width: 120px;
     }
   }
@@ -23,6 +23,10 @@
     height: 60px;
     padding: 15px 0;
     border-top: 1px solid @border-color;
+
+    &.fixed-cell {
+      width: 120px;
+    }
   }
 
   .race-type {
@@ -33,41 +37,18 @@
     &.competition {
       @color: rgb(180, 217, 255);
       background-color: @color;
-
-      .race-type-logo {
-        background-image: url('../../assets/icon/trophy.svg');
-      }
     }
 
     &.recruitment {
       @color: rgb(169, 219, 217);
       background-color: @color;
       border-top-color: @color;
-
-      .race-type-logo {
-        background-image: url('../../assets/icon/document.svg');
-      }
     }
 
     &.report {
       @color: rgb(211, 229, 187);
       background-color: @color;
       border-top-color: @color;
-
-      .race-type-logo {
-        background-image: url('../../assets/icon/chart.svg');
-      }
-    }
-
-    &-logo {
-      display: inline-block;
-      width: 30px;
-      height: 30px;
-      margin-bottom: 5px;
-      background-size: contain;
-      background-position: center;
-      background-repeat: no-repeat;
-
     }
   }
 
@@ -93,6 +74,7 @@
     text-align: left;
 
     &-name {
+      display: inline-block;
       margin-bottom: 5px;
       color: @font-color;
       font-weight: bold;

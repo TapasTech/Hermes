@@ -1,8 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import styles from './style.less';
+import { Icon } from '#/components';
 import { GQL, formatter } from '#/utils';
+import styles from './style.less';
+
+import Chart from '#/assets/icon/chart.svg';
+import Doc from '#/assets/icon/doc.svg';
+import Trophy from '#/assets/icon/trophy.svg';
 
 export default class Race extends React.Component {
   static propTypes = {
@@ -22,39 +27,46 @@ export default class Race extends React.Component {
     );
   }
 
-  renderRaceType(type, data) {
-    return (
-      <tr>
-        <td className={`race-type ${type}`} rowSpan={data.length + 1}>
-          <div className="race-type-logo"></div>
-          <div>{this.mapEn2Zh(type)}</div>
-        </td>
-      </tr>
-    );
-  }
-
-  renderRaceContent(type, item, key) {
-    const { id, title, description, award, expireAt, logoURL } = item;
-    return (
-      <tr key={key}>
-        <td className="race-logo">
-          <div className="race-logo-content" style={{backgroundImage: `url(${logoURL})`}}></div>
-        </td>
-        <td>
-          <div className="race-from">
-            <Link className="race-from-name text-big" to={`/race/${id}`}>{title}</Link>
-            <div className="text-gray">{description}</div>
-          </div>
-        </td>
-        <td>
-          { (type === 'competition')  && `￥ ${award} 元` }
-          { (type === 'recruitment')  && '工作招聘' }
-          { (type === 'report')  && '知识分享' }
-        </td>
-        {/* <td>23 参与者</td> */}
-        <td>{this.formatTime(expireAt)} 天</td>
-      </tr>
-    );
+  renderContent(obj) {
+    const type = Object.keys(obj).join('');
+    const data = obj[type];
+    if (data) {
+      return (
+        <table>
+          <tbody>
+            <tr>
+              <td className={`race-type ${type}`} rowSpan={data.length + 1}>
+                <Icon glyph={this.mapWIW(type, 'icon')} width="40" height="40" />
+                <div>{this.mapWIW(type, 'zh')}</div>
+              </td>
+            </tr>
+            {
+              data.map((item, key) => {
+                const { id, title, description, award, expireAt, logoURL } = item;
+                return (
+                  <tr key={key}>
+                    <td className="race-logo">
+                      <div className="race-logo-content" style={{backgroundImage: `url(${logoURL})`}}></div>
+                    </td>
+                    <td>
+                      <div className="race-from">
+                        <Link className="race-from-name text-big" to={`/race/${id}`}>{title}</Link>
+                        <div className="text-gray">{description}</div>
+                      </div>
+                    </td>
+                    <td className="fixed-cell">{ this.computedAward(type, award)}</td>
+                    {/* <td className="fixed-cell">23 参与者</td> */}
+                    <td className="fixed-cell">{this.formatTime(expireAt)} 天</td>
+                  </tr>
+                );
+              })
+            }
+          </tbody>
+        </table>
+      );
+    } else {
+      return null;
+    }
   }
 
   render() {
@@ -67,21 +79,16 @@ export default class Race extends React.Component {
         <table>
           <thead>
             <tr>
-              <th colSpan="3" className="race-recent">近期比赛</th>
+              <th className="race-recent">近期比赛</th>
               <th>奖励</th>
               {/* <th>参与</th> */}
               <th>剩余时间</th>
             </tr>
           </thead>
-          <tbody>
-            { this.renderRaceType('competition', competition) }
-            { competition && competition.map((item, key) => this.renderRaceContent('competition', item, key)) }
-            { this.renderRaceType('recruitment', recruitment) }
-            { recruitment && recruitment.map((item, key) => this.renderRaceContent('recruitment', item, key)) }
-            { this.renderRaceType('report', report) }
-            { report && report.map((item, key) => this.renderRaceContent('report', item, key)) }
-          </tbody>
         </table>
+        { this.renderContent({competition}) }
+        { this.renderContent({recruitment}) }
+        { this.renderContent({report}) }
       </div>
     );
   }
@@ -119,13 +126,36 @@ export default class Race extends React.Component {
     return Math.floor(timeDiff/(24*60*60*1000))
   }
 
-  mapEn2Zh(val) {
+  mapWIW(val, type) {
     const map = {
-      'competition': '竞赛',
-      'recruitment': '招聘',
-      'report': '报告'
+      'competition': {
+        zh: '竞赛',
+        icon: Trophy
+      },
+      'recruitment': {
+        zh: '招聘',
+        icon: Doc
+      },
+      'report': {
+        zh: '报告',
+        icon: Chart
+      }
     };
 
-    return map[val];
+    return map[val][type];
+  }
+
+  computedAward(type, award) {
+    switch(type) {
+      case 'competition':
+        return `￥ ${award} 元`;
+        break;
+      case 'recruitment':
+        return '工作招聘';
+        break;
+      case 'report':
+        return '知识分享';
+        break;
+    }
   }
 }
