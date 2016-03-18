@@ -16,7 +16,7 @@ export default class Answer extends React.Component {
     const imgEl = divEl.getElementsByTagName('img')[0];
     this.state = {
       full: showFull ? true : false,
-      shortAnswer: divEl.textContent.slice(0, 140),
+      pureTextAnswer: divEl.textContent,
       pic: imgEl ? imgEl.src : undefined
     };
   }
@@ -34,19 +34,21 @@ export default class Answer extends React.Component {
   }
 
   render() {
-    const { shortAnswer, pic }  = this.state;
+    const { pureTextAnswer, pic, full }  = this.state;
     return (
       <div className="answer clearfix">
         <div className="answer-content">
             {
-              this.state.full
-                ?  <div>
-                  <div className="answer-long" dangerouslySetInnerHTML={{__html: this.props.answerContent}}></div>
-                  <div className="answer-hide mr" onClick={::this.handleHideFull}>收起回答</div>
-                </div>
-                : <div className="answer-short" onClick={::this.handleShowFull}>
-                  { shortAnswer }<span className="answer-show">...显示全部</span>
-                </div>
+              (pureTextAnswer && (pureTextAnswer.length > 140))
+                ? full
+                  ?<div>
+                    <div className="answer-long" dangerouslySetInnerHTML={{__html: this.props.answerContent}}></div>
+                    <div className="answer-hide mr" onClick={::this.handleHideFull}>收起回答</div>
+                  </div>
+                  : <div className="answer-short" onClick={::this.handleShowFull}>
+                      { pureTextAnswer.slice(0, 140) }<span className="answer-show">...显示全部</span>
+                    </div>
+                : <div>{pureTextAnswer}</div>
             }
         </div>
         {
