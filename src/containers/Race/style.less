@@ -1,0 +1,83 @@
+@import '../../styles/variables.less';
+
+:local(.race) {
+  max-width: 960px;
+  margin: @gap auto;
+  background-color: #fff;
+
+  table {
+    width: 100%;
+    text-align: center;
+  }
+
+  thead tr {
+    height: 45px;
+    font-weight: bold;
+
+    th {
+      width: 120px;
+    }
+  }
+
+  td {
+    height: 60px;
+    padding: 15px 0;
+    border-top: 1px solid @border-color;
+  }
+
+  .race-type {
+    width: 60px;
+    color: #fff;
+    vertical-align: top;
+    background-color: rgb(180, 217, 255);
+
+    &-logo {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      margin-bottom: 5px;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+
+      &.competition {
+        background-image: url('../../assets/icon/trophy.svg');
+      }
+
+      &.recruitment {
+        background-image: url('../../assets/icon/document.svg');
+      }
+
+      &.report {
+        background-image: url('../../assets/icon/chart.svg');
+      }
+    }
+  }
+
+  .race-recent {
+    padding-left: 15px;
+    text-align: left;
+  }
+
+  .race-logo {
+    width: 100px;
+
+    &-content {
+      display: inline-block;
+      width: 70px;
+      height: 60px;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+  }
+
+  .race-from {
+    text-align: left;
+
+    &-name {
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+  }
+}
