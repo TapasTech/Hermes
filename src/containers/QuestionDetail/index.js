@@ -394,7 +394,7 @@ export default class QuestionDetail extends React.Component {
     const isMine = user && (user.id === this.state.user.id);
     const _questionHTML = { __html: content };
     return (
-      <div className={styles.topic}>
+      <div className={`${styles.topic} panel`}>
         <div className={styles.header}>
           <div className="title">{title}</div>
           {
@@ -442,7 +442,7 @@ export default class QuestionDetail extends React.Component {
             && list.map((item, index) => {
             const { id, content, commentsCount, user, upVotesCount, dataSets, dataReports } = item;
             return (
-              <div key={index} className={styles.answer}>
+              <div key={index} className={`${styles.answer} panel`}>
                 <div className={styles.header}>
                   <div className={styles.author}>
                     <Avatar name={user.displayName} />
@@ -487,10 +487,16 @@ export default class QuestionDetail extends React.Component {
       <div className="container">
         <div className="main main-left">
           { this.renderTopic() }
-          { (answers && answers.data.length) ? this.renderAnswers() : <div>尚未有人回答过这个问题</div> }
+          {
+            answers
+            ? answers.data.length
+              ? this.renderAnswers()
+              : <div className={styles.emptyArea}>尚未有人回答过这个问题</div>
+            : <div className={styles.emptyArea}>loading</div>
+          }
         </div>
         <div className="side-right">
-          <div className="watch">
+          <div className="watch panel">
             <div className="operate">
               <div className={`btn mr-sm ${followed ? 'btn-info' : 'btn-primary'}`} onClick={this.toggleFollowStatus}>
                 {followed ? '取消关注' : '关注问题'}
@@ -509,7 +515,7 @@ export default class QuestionDetail extends React.Component {
               }
             </div>
           </div>
-          <div className="related">
+          <div className="related panel">
             <div className="header">
               <span>相关问题</span>
               <Link className="more" to="/discovery">更多</Link>

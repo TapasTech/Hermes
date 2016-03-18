@@ -42,16 +42,16 @@ export default class Race extends React.Component {
             </tr>
             {
               data.map((item, key) => {
-                const { id, title, description, award, expireAt, logoURL } = item;
+                const { id, title, summary, award, expireAt, thumbLogoURL } = item;
                 return (
                   <tr key={key}>
                     <td className="race-logo">
-                      <div className="race-logo-content" style={{backgroundImage: `url(${logoURL})`}}></div>
+                      <div className="race-logo-content" style={{backgroundImage: `url(${thumbLogoURL})`}}></div>
                     </td>
                     <td>
                       <div className="race-from">
                         <Link className="race-from-name text-big" to={`/race/${id}`}>{title}</Link>
-                        <div className="text-gray">{description}</div>
+                        <div className="text-gray">{summary}</div>
                       </div>
                     </td>
                     <td className="fixed-cell">{ this.computedAward(type, award)}</td>
@@ -98,11 +98,11 @@ export default class Race extends React.Component {
     data: ongoingCompetitions {
       id
       title
-      description
+      summary
       competitionType
       award
       expireAt
-      logoURL
+      thumbLogoURL
     }
     `;
     const callback = res => {
