@@ -4,6 +4,14 @@ import {requireAuth} from '#/services/auth';
 
 import Pages from './containers';
 
+function requireQ(nextProps, replace) {
+  if (!nextProps.location.query.q) {
+    replace({
+      pathname: '/',
+    });
+  }
+}
+
 export default class Root extends React.Component {
 
   render() {
@@ -16,7 +24,7 @@ export default class Root extends React.Component {
             <IndexRoute />
             <Route path=":id" />
           </Route>
-          <Route path="search" component={Pages.Search} />
+          <Route path="search" component={Pages.Search} onEnter={requireQ} />
           <Route path="question">
             <Route path="_new" component={Pages.Question} onEnter={requireAuth} />
             <Route path=":id" component={Pages.QuestionDetail} />

@@ -7,15 +7,11 @@ export default class Base extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      query: '',
       messages: [],
     }
   }
 
   componentDidMount() {
-    this.setState({
-      query: this.props.location.query.q,
-    });
     Store.on('EVT_MSG', (msg) => {
       this.state.messages.push(msg);
       this.setState({});
@@ -24,14 +20,6 @@ export default class Base extends React.Component {
 
   componentDidUpdate() {
     document.body.style.overflow = 'auto';
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.location.query !== this.props.location.query) {
-      this.setState({
-        query: this.props.location.query.q,
-      });
-    }
   }
 
   destroyMessage(msg) {
@@ -59,7 +47,7 @@ export default class Base extends React.Component {
     return (
       <div className={style.base}>
         {this.renderMessages()}
-        <Header query={this.state.query} />
+        <Header query={this.props.location.query.q} />
         {this.props.children || 'Welcome to Hermes'}
       </div>
     )

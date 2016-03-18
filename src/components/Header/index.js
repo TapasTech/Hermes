@@ -17,9 +17,9 @@ export default class Header extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      query: this.props.query,
+      query: props.query,
       user: {},
-      searching: false,
+      searching: !!props.query,
     };
   }
 

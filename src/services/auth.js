@@ -103,7 +103,7 @@ export function signUp(displayName, email, password) {
   );
 };
 
-export function requireAuth(nextState, replace) {
+export function requireAuth(nextProps, replace) {
   if (!Store.user.index().data.id) {
     replace({
       pathname: '/account',

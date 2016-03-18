@@ -8,10 +8,6 @@ export default class LoadMore extends React.Component {
     onLoadMore: React.PropTypes.func.isRequired
   };
 
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <div className="loadMore">

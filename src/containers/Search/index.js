@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { GraphqlRest } from '#/utils';
 
-import { AnswerCard, NewestDataSets } from '#/components';
+import { AnswerCard, NewestDataSets, Loader, LoadMore } from '#/components';
+import { GQL, encodeField } from '#/utils';
 
 import styles from './style.less';
 
@@ -10,71 +10,70 @@ export default class Search extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      page: 1,
-      questionList: [],
-      questionMeta: {}
+      data: [],
+      meta: {},
+      loading: true,
     };
   }
 
-  handleShowMore() {
-    const { q } = this.props.location.query;
-    const { page } = this.state;
-    this.setState({
-      page: page + 1
-    }, () => {
-      if (q) {
-        this.prepareData(q, page);
-      }
-    });
-  }
-
-  prepareData(keyword, page) {
-    const query = `
-      query {
-        searchQuestions(query: "${keyword}", page: ${page}, count: 10) {
+  prepareData(q, page) {
+    const query = GQL.template`
+    searchQuestions(query: ${encodeField(q)}, page: ${encodeField(page)}, count: 10) {
+      data {
+        id
+        title
+        answers(page: 1, count: 1) {
           data {
-            id
-            title
-            answers(page: 1, count: 1) {
-              data {
-                ...fragAnswer
-              }
-            }
-          }
-          meta {
-            current_page
-            total_pages
-            total_count
+            ...fragAnswer
           }
         }
       }
-    ${AnswerCard.fragments}`;
-    GraphqlRest.post(query).then(res => {
-      const { data, meta }  = res.searchQuestions;
+      meta {
+        current_page
+        total_pages
+        total_count
+      }
+    }
+    `;
+    const callback = res => {
+      const {data, meta} = res.searchQuestions;
       this.setState({
-        questionList: data,
-        questionMeta: meta
+        data,
+        meta,
+        loading: false,
       });
+    };
+    return {
+      query,
+      callback,
+      fragments: AnswerCard.fragments,
+    };
+  }
+
+  loadData(page = 1) {
+    // Make sure `q` is truthy in router
+    const { q } = this.props.location.query;
+    this.setState({
+      loading: true,
     });
+    GQL.handleQueries(
+      this.prepareData(q, page)
+    );
+  }
+
+  onLoadMore() {
+    this.loadData(this.state.meta.current_page + 1);
   }
 
   componentDidMount() {
-    const { q } = this.props.location.query;
-    const { page } = this.state;
-    if (q) {
-      this.prepareData(q, page);
-    }
+    this.loadData();
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { q } = this.props.location.query;
-    const { page } = this.state;
-    if (q && (q !== prevProps.location.query.q)) {
-      this.prepareData(q, page);
-    }
+    if (prevProps !== this.props) this.loadData();
   }
 
-  renderAnswerCard(item, index) {
+  renderAnswerCard = (item, index) => {
     return (
       <div className={styles.topic} key={index}>
         {
@@ -88,21 +87,14 @@ export default class Search extends React.Component {
 
   renderQuestionList() {
     const { q } = this.props.location.query;
-    const { page, questionList, questionMeta } = this.state;
+    const { data, meta, loading } = this.state;
 
     return (
       <div className={styles.main}>
-        <div className={styles.title}>关于"{q}"的问题，共 {questionList.length} 条</div>
-        {
-          questionList.length
-            ? questionList.map((item, index) => this.renderAnswerCard(item, index))
-            : <div>没有匹配的结果</div>
-        }
-        {
-          (questionMeta.current_page) && (questionMeta.current_page < questionMeta.total_pages)
-          ? <div className="more" onClick={::this.handleShowMore}>点击加载更多</div>
-          : <div className="end">已到结尾</div>
-        }
+        {loading && <Loader full={true} />}
+        <div className={styles.title}>关于"{q}"的问题，共 {meta.total_count} 条</div>
+        {data.length ? data.map(this.renderAnswerCard) : <div>没有匹配的结果</div>}
+        <LoadMore condition={meta.current_page < meta.total_pages} onLoadMore={this.onLoadMore} />
       </div>
     );
   }
