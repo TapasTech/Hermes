@@ -66,7 +66,7 @@ export default class Reference extends React.Component {
             <button className="btn btn-default" onClick={this.handleCancel.bind(this, key)}>取消</button>
           </div>
         </Modal>
-        <div className="list">
+        <div className={styles.refList}>
           { this.props[key][0] && this.props[key].map(this.renderDataSet) }
         </div>
       </div>
@@ -122,7 +122,7 @@ export default class Reference extends React.Component {
 
   renderDataSet(dataset, key) {
     return (
-      <div className="item" key={key}>
+      <div className={styles.refItem} key={key}>
         <a href={dataset.url} target="_blank">{dataset.title}</a>
       </div>
     );

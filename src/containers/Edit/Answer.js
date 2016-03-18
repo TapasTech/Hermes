@@ -188,11 +188,11 @@ export default class Answer extends React.Component {
     const {user, question, content, anonymous, dataSets, dataReports, loading} = this.state;
 
     return (
-      <div className="container reply">
+      <div className="container">
         {loading && <Loader full={true} />}
         <div className="main main-left">
-          <div className={styles.edit}>
-            <div className={styles.title}>{question.title}</div>
+          <div className={`panel ${styles.panelEdit}`}>
+            <div className={styles.inputTitle}>{question.title}</div>
             <Editor content={content} onChange={this.handleContentChange} />
             <Reference
               dataSets={dataSets}
@@ -202,13 +202,13 @@ export default class Answer extends React.Component {
           </div>
         </div>
         <div className="side-right">
-          <div className={styles.submit}>
-            <div className={styles.author}>
-              <Avatar name={user.displayName} url={user.avatar} />
-              <div className={styles.subTitle}>{user.displayName}</div>
+          <div className="panel">
+            <div className={`form-group ${styles.author}`}>
+              <Avatar className="mr-sm" name={user.displayName} url={user.avatar} />
+              <div>{user.displayName}</div>
             </div>
-            <div className="submit-options">
-              <div className="btn btn-info postIt" onClick={this.handlePost}>发布</div>
+            <div>
+              <div className="btn btn-info" onClick={this.handlePost}>发布</div>
               {/*
               <label className="anonymous">
                 <input type="checkbox" value={anonymous || ''} onChange={this.handleAnonymousChange} />

@@ -220,13 +220,13 @@ export default class Question extends React.Component {
   render() {
     const { user, title, content, anonymous, topics, dataSets, dataReports, loading } = this.state;
     return (
-      <div className="container ask">
+      <div className="container">
         {loading && <Loader full={true} />}
         <div className="main main-left">
-          <div className={styles.edit}>
+          <div className={`panel ${styles.panelEdit}`}>
             <input
               type="text"
-              className={styles.title}
+              className={styles.inputTitle}
               value={title || ''}
               onChange={this.handleTitleChange}
               placeholder="请输入标题" />
@@ -236,31 +236,31 @@ export default class Question extends React.Component {
               dataReports={dataReports}
               onChange={this.handleRefChange}
             />
-            <div className={styles.submit}>
-              <div className={styles.author}>
-                <Avatar name={user.displayName} url={user.avatar} />
-                <div className={styles.subTitle}>{user.displayName}</div>
-                <div className={styles.tip}>{user.description}</div>
+            <div className={`clearfix ${styles.submitQuestion}`}>
+              <div className={`pull-left ${styles.author}`}>
+                <Avatar className="mr-sm" name={user.displayName} url={user.avatar} />
+                <span className="mr-sm">{user.displayName}</span>
+                <span className="text-gray">{user.description}</span>
               </div>
-              <div className="submit-options">
+              <div className="pull-right">
                 {/*
                 <label className="anonymous">
                   <input type="checkbox" value={anonymous || ''} onChange={this.handleAnonymousChange} />
                   <span className="tip">匿名发布</span>
                 </label>
                 */}
-                <div className="btn btn-info postIt" onClick={this.handlePost}>发布</div>
+                <div className="btn btn-info" onClick={this.handlePost}>发布</div>
               </div>
             </div>
           </div>
         </div>
         <div className="side-right">
-          <div className={styles.domain}>
+          <div className="panel">
             <div>选择问题领域</div>
-            <div className="domain-list">
+            <div className={`clearfix ${styles.topicList}`}>
               {topics.map((item, i) => (
-                <div key={i} className={`item ${item.selected ? 'selected' : ''}`} onClick={this.handleSelectTopic.bind(this, item)}>
-                  <span className="name">{item.name}</span>
+                <div key={i} className={`${item.selected ? 'selected' : ''}`} onClick={this.handleSelectTopic.bind(this, item)}>
+                  <span>{item.name}</span>
                 </div>
               ))}
             </div>
