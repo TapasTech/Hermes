@@ -54,7 +54,7 @@ export default class Reference extends React.Component {
         <div className="btn btn-default" onClick={this.handleShowModal.bind(this, key)}>
           + 数据{text}
         </div>
-        <Modal show={this.state.showModal[key]} title={`添加数据${text}标题:`}>
+        <Modal show={this.state.showModal[key]} title={`添加数据${text}标题:`} onCancel={this.handleCancel.bind(this, key)}>
           <div className="modal-form">
             <label>标题:</label>
             <input className="form-control" placeholder="请输入标题" value={title || ''} onChange={this.handleChange.bind(this, key, 'title')} />

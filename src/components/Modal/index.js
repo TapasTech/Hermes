@@ -1,11 +1,14 @@
 import React from 'react';
 
-import { Overlay } from '#/components';
+import { Overlay, Icon } from '#/components';
+
+import Remove from '#/assets/remove.svg';
 
 import './style.less';
 
 export default class Modal extends React.Component {
   static propTypes = {
+    show: React.PropTypes.bool,
     title: React.PropTypes.string,
     onCancel: React.PropTypes.func
   };
@@ -21,7 +24,9 @@ export default class Modal extends React.Component {
         <div className="modal">
           <div className="modal-head">
             {title}
-            <i className="remove" onClick={onCancel}></i>
+            <div className="remove" onClick={onCancel}>
+              <Icon glyph={Remove} width="20" height="20" />
+            </div>
           </div>
           <div className="modal-body">
             {children}
