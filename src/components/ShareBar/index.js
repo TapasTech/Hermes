@@ -1,6 +1,10 @@
 import React from 'react';
 import QRCode from 'qrcode-react';
 
+import {Icon} from '#/components';
+import IconWeibo from '#/assets/weibo.svg';
+import IconWeixin from '#/assets/weixin.svg';
+
 import styles from './style.less';
 
 export default class ShareBar extends React.Component {
@@ -22,29 +26,23 @@ export default class ShareBar extends React.Component {
 
   render() {
     const { url, title, className } = this.props;
-    let clx = 'shareBar';
-    className && (clx = `${clx} ${className}`);
 
     return (
-      <div className={clx}>
+      <div className={`sharebar ${className || ''}`}>
         <a
-          className="shareBar-item weibo"
+          className="sharebar-item"
           target="_blank"
           href={`http://v.t.sina.com.cn/share/share.php?${this.objectToParams({url: url, title: title})}`}>
-          <div className="shareBar-content">
-            <span className="icon icon-weibo"></span>
-            <span className="text-gray">分享到微博</span>
-          </div>
+          <Icon className="icon mr-sm" glyph={IconWeibo} width="24" height="24" style={{fill: 'red'}} />
+          <span className="text-gray">分享到微博</span>
         </a>
-        <div className="shareBar-item">
-          <div className="shareBar-content">
-            <span className="icon icon-weixin"></span>
-            <span className="text-gray">微信扫一扫</span>
-          </div>
-          <div className="shareBar-qrcode">
+        <a className="sharebar-item">
+          <Icon className="icon mr-sm" glyph={IconWeixin} width="24" height="24" style={{fill: 'green'}} />
+          <span className="text-gray">微信扫一扫</span>
+          <div className="sharebar-qrcode">
             <QRCode value={url} size={100} />
           </div>
-        </div>
+        </a>
       </div>
     );
   }
