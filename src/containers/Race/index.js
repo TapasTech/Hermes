@@ -24,8 +24,8 @@ export default class Race extends React.Component {
   renderRaceType(type, data) {
     return (
       <tr>
-        <td className="race-type" rowSpan={data.length + 1}>
-          <div className={`race-type-logo ${type}`}></div>
+        <td className={`race-type ${type}`} rowSpan={data.length + 1}>
+          <div className="race-type-logo"></div>
           <div>{this.mapEn2Zh(type)}</div>
         </td>
       </tr>
