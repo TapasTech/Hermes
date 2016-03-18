@@ -87,6 +87,7 @@
     "react-dom": "^15.0.0-rc.1",
     "react-router": "^2.0.0",
     "style-loader": "^0.13.0",
+    "svg-sprite-loader": "0.0.18",
     "tapas-editor": "^1.0.3",
     "url-loader": "^0.5.7",
     "validate-commit-msg": "^2.1.0",

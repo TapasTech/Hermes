@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import { AnswerCard, HotTopics, NewestDataSets, Loader, LoadMore } from '#/components';
+import { AnswerCard, HotTopics, NewestDataSets, Loader, LoadMore, Icon } from '#/components';
 import { GQL } from '#/utils';
 
-import trophy from '#/assets/fonts/trophy-o.svg';
+import trophy from '#/assets/trophy-o.svg';
 import './style.less';
 
 export default class AnswerList extends React.Component {
@@ -95,7 +95,7 @@ export default class AnswerList extends React.Component {
           <div className="qlist-analysts-bottom">排行榜</div>
         </div>
         <div className="pull-right">
-          <img src={trophy} />
+          <Icon glyph={trophy} width="80" height="80" />
         </div>
       </Link>
     );

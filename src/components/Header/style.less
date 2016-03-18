@@ -14,6 +14,7 @@
   a,
   .btn {
     color: white;
+    cursor: pointer;
     &:hover {
       color: @brand-feature;
     }
@@ -26,6 +27,52 @@
     > * {
       height: 100%;
       line-height: @navtop-height;
+    }
+  }
+
+  &-menu {
+    a {
+      display: block;
+      text-align: center;
+    }
+    > li {
+      float: left;
+      position: relative;
+      > a {
+        width: 80px;
+      }
+      > ul {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        width: 100px;
+        margin-left: -50px;
+        padding: 10px 15px;
+        background: white;
+        box-shadow: 0 1px 5px rgba(0,0,0,.1);
+        &::before {
+          content: '';
+          display: block;
+          position: absolute;
+          top: -8px;
+          left: 50%;
+          margin-left: -8px;
+          border: 8px solid transparent;
+          border-top: 0;
+          border-bottom-color: white;
+        }
+        a {
+          line-height: 2;
+          color: @font-color;
+          white-space: nowrap;
+        }
+      }
+      &:hover {
+        > ul {
+          display: block;
+        }
+      }
     }
   }
 
@@ -48,8 +95,14 @@
   &-search {
     .form-control {
       display: inline-block;
-      width: 400px;
+      width: 200px;
       color: @font-color;
+    }
+    .icon {
+      cursor: pointer;
+      &:hover {
+        color: @brand-feature;
+      }
     }
   }
 
@@ -60,16 +113,16 @@
     height: 100%;
     line-height: @navtop-height;
     text-align: center;
-    .navtop-menu {
+    .navtop-dropdown {
       transform: scaleY(0);
       transform-origin: 50% 0;
     }
-    &:hover .navtop-menu {
+    &:hover .navtop-dropdown {
       transform: scaleY(1);
     }
   }
 
-  &-menu {
+  &-dropdown {
     position: absolute;
     top: 100%;
     right: 0;

@@ -1,12 +1,14 @@
 import React from 'react';
 import { Link, browserHistory } from 'react-router';
 
+import {Icon} from '#/components';
 import Store from '#/store';
 import AppDispatcher from '#/dispatcher';
 import {GraphqlRest} from '#/utils';
 import {getUserInfo} from '#/services/auth';
 import styles from './style.less';
 import Logo from '#/assets/logo.png';
+import IconSearch from '#/assets/search.svg';
 
 export default class Header extends React.Component {
   static PropTypes = {
@@ -17,7 +19,8 @@ export default class Header extends React.Component {
     super(props);
     this.state = {
       query: this.props.query,
-      user: {}
+      user: {},
+      searching: false,
     };
   }
 
@@ -55,6 +58,12 @@ export default class Header extends React.Component {
     }
   }
 
+  toggleSearch = () => {
+    this.setState({
+      searching: !this.state.searching,
+    });
+  }
+
   _onChange = () => {
     this.setState({
       user: Store.user.index().data
@@ -70,20 +79,36 @@ export default class Header extends React.Component {
   }
 
   render() {
-    const { query, user } = this.state;
+    const { query, user, searching } = this.state;
     return (
       <nav className="navtop">
         <div className="navtop-wrap">
           <div className="navtop-logo">
             <Link to="/"></Link>
           </div>
+          <ul className="navtop-menu pull-left">
+            <li>
+              <Link to="/race">竞赛</Link>
+            </li>
+            <li>
+              <a>问答</a>
+              <ul>
+                <li>
+                  <Link to="/">精彩问答</Link>
+                </li>
+                <li>
+                  <Link to="/discovery">话题广场</Link>
+                </li>
+              </ul>
+            </li>
+          </ul>
           {user.id &&
             <div className="navtop-user pull-right">
               <Link className="navtop-item" to={`/user/${user.id}`}>{user.displayName}</Link>
-              <div className="navtop-menu">
-                <Link className="navtop-menu-item" to="/settings">设置</Link>
-                <Link className="navtop-menu-item" to={`/user/${user.id}`}>个人主页</Link>
-                <a className="navtop-menu-item" onClick={this.handleLogout}>退出登录</a>
+              <div className="navtop-dropdown">
+                <Link className="navtop-dropdown-item" to="/settings">设置</Link>
+                <Link className="navtop-dropdown-item" to={`/user/${user.id}`}>个人主页</Link>
+                <a className="navtop-dropdown-item" onClick={this.handleLogout}>退出登录</a>
               </div>
             </div>
           }{!user.id &&
@@ -93,22 +118,18 @@ export default class Header extends React.Component {
               <Link className="navtop-item" to="/account">登录</Link>
             </div>
           }
-          <form className="navtop-search pull-left" onSubmit={this.handleSearch}>
-            <input
-              type="text"
-              className="form-control mr"
-              value={query || ''}
-              onChange={this.handleSearchInput}
-              placeholder="搜索问题"
-            />
-            <button type="submit" className="btn btn-reverse">搜索</button>
+          <form className="navtop-search pull-right" onSubmit={this.handleSearch}>
+            {searching &&
+              <input
+                type="text"
+                className="form-control mr"
+                value={query || ''}
+                onChange={this.handleSearchInput}
+                placeholder="搜索问题"
+              />
+            }
+            <Icon className="icon" glyph={IconSearch} width="24" height="24" onClick={this.toggleSearch} />
           </form>
-          <div className="pull-right">
-            <Link className="navtop-item" to="/">首页</Link>
-            <Link className="navtop-item" to="/discovery">发现</Link>
-            <span className="divider"></span>
-            <Link className="navtop-item" to="/question/_new">提问</Link>
-          </div>
         </div>
       </nav>
     );

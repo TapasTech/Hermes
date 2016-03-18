@@ -110,10 +110,10 @@ export default class Search extends React.Component {
   render() {
     return (
       <div className="container">
-        <div className="main">
+        <div className="main main-left">
           { this.renderQuestionList() }
         </div>
-        <div className="sidebar">
+        <div className="side-right">
           <NewestDataSets />
         </div>
       </div>
