@@ -8,7 +8,7 @@
     "tapas-build": "tapas-build",
     "build": "babel-node tools/build",
     "predeploy": "npm run build --production",
-    "deploy": "node tools/upload.js"
+    "deploy": "sh tools/deploy.sh"
   },
   "repository": {
     "type": "git",
