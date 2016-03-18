@@ -62,9 +62,6 @@ function prepareUserInfo() {
         type: 'USER_INFO',
         data: data.me,
       });
-    } else {
-      // Token is invalid
-      clearUserInfo();
     }
   };
   return {
@@ -85,7 +82,8 @@ export function getUserInfo() {
     GQL.handleQueries(
       prepareUserInfo()
     ).catch(err => {
-      clearUserInfo();
+      console.error(err);
+      //clearUserInfo();
     });
   } else {
     clearUserInfo();
