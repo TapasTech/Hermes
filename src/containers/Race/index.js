@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 import styles from './style.less';
 import { GQL, formatter } from '#/utils';
@@ -41,7 +42,7 @@ export default class Race extends React.Component {
         </td>
         <td>
           <div className="race-from">
-            <div className="race-from-name text-big">{title}</div>
+            <Link className="race-from-name text-big" to={`/race/${id}`}>{title}</Link>
             <div className="text-gray">{description}</div>
           </div>
         </td>
