@@ -1,7 +1,7 @@
 import React from 'react';
 
 import styles from './style.less';
-import icbc from '#/assets/icbc.svg';
+import { GQL, formatter } from '#/utils';
 
 export default class Race extends React.Component {
   static propTypes = {
@@ -10,30 +10,57 @@ export default class Race extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      data: []
+    }
   }
 
-  renderItem(item, key) {
+  componentDidMount() {
+    GQL.handleQueries(
+      this.prepareData()
+    );
+  }
+
+  renderRaceType(type, data) {
     return (
-      <div className="race-col clearfix" key={key}>
-        <div className="race-intro pull-left">
-          <div className="wrapper">
-            <div className="race-logo pull-left" style={{backgroundImage: `url(${icbc})`}}></div>
-            <div className="pull-left">
-              <div className="race-name">中国工商银行满意度调查</div>
-              <div className="text-gray">分析什么样的客户是满意度最高的客户</div>
-            </div>
+      <tr>
+        <td className="race-type" rowSpan={data.length + 1}>
+          <div className={`race-type-logo ${type}`}></div>
+          <div>{this.mapEn2Zh(type)}</div>
+        </td>
+      </tr>
+    );
+  }
+
+  renderRaceContent(type, item, key) {
+    const { id, title, description, award, expireAt, logoURL } = item;
+    return (
+      <tr key={key}>
+        <td className="race-logo">
+          <div className="race-logo-content" style={{backgroundImage: `url(${logoURL})`}}></div>
+        </td>
+        <td>
+          <div className="race-from">
+            <div className="race-from-name text-big">{title}</div>
+            <div className="text-gray">{description}</div>
           </div>
-        </div>
-        <div className="race-row pull-left">
-          <div className="race-row-item pull-left">￥70000 元</div>
-          <div className="race-row-item pull-left">23 参与者</div>
-          <div className="race-row-item pull-left">20 天</div>
-        </div>
-      </div>
+        </td>
+        <td>
+          { (type === 'competition')  && `￥ ${award} 元` }
+          { (type === 'recruitment')  && '工作招聘' }
+          { (type === 'report')  && '知识分享' }
+        </td>
+        {/* <td>23 参与者</td> */}
+        <td>{this.formatTime(expireAt)} 天</td>
+      </tr>
     );
   }
 
   render() {
+    const { data } = this.state;
+    const competition = data.filter(item => item.competitionType === 'competition');
+    const recruitment = data.filter(item => item.competitionType === 'recruitment');
+    const report = data.filter(item => item.competitionType === 'report');
     return (
       <div className={styles.race}>
         <table>
@@ -41,40 +68,63 @@ export default class Race extends React.Component {
             <tr>
               <th colSpan="3" className="race-recent">近期比赛</th>
               <th>奖励</th>
-              <th>参与</th>
+              {/* <th>参与</th> */}
               <th>剩余时间</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td className="race-type" rowSpan={[1,2,3,4,5].length + 1}>
-                <div className="race-type-logo"></div>
-                <div>竞赛</div>
-              </td>
-            </tr>
-            {
-              [1,2,3,4,5].map((item, key) => {
-                return (
-                  <tr key={key}>
-                    <td className="race-logo">
-                      <div className="race-logo-content" style={{backgroundImage: `url(${icbc})`}}></div>
-                    </td>
-                    <td>
-                      <div className="race-from">
-                        <div className="race-from-name text-big">中国工商银行满意度调查</div>
-                        <div className="text-gray">分析什么样的客户是满意度最高的客户</div>
-                      </div>
-                    </td>
-                    <td>￥70000 元</td>
-                    <td>23 参与者</td>
-                    <td>20 天</td>
-                  </tr>
-                );
-              })
-            }
+            { this.renderRaceType('competition', competition) }
+            { competition && competition.map((item, key) => this.renderRaceContent('competition', item, key)) }
+            { this.renderRaceType('recruitment', recruitment) }
+            { recruitment && recruitment.map((item, key) => this.renderRaceContent('recruitment', item, key)) }
+            { this.renderRaceType('report', report) }
+            { report && report.map((item, key) => this.renderRaceContent('report', item, key)) }
           </tbody>
         </table>
       </div>
     );
+  }
+
+  prepareData() {
+    const query = GQL.template`
+    data: ongoingCompetitions {
+      id
+      title
+      description
+      competitionType
+      award
+      expireAt
+      logoURL
+    }
+    `;
+    const callback = res => {
+      const { data } = res;
+      this.setState({
+        data: [
+          ... this.state.data,
+          ... data,
+        ],
+      });
+    };
+    return {
+      query,
+      callback,
+    };
+  }
+
+  formatTime(val) {
+    const date = new Date(val).getTime();
+    const timeDiff = date - Date.now();
+    return Math.floor(timeDiff/(24*60*60*1000))
+  }
+
+  mapEn2Zh(val) {
+    const map = {
+      'competition': '竞赛',
+      'recruitment': '招聘',
+      'report': '报告'
+    };
+
+    return map[val];
   }
 }
