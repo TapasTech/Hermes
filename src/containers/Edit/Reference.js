@@ -1,10 +1,7 @@
 import React from 'react';
 
-import { formatter } from '#/utils';
-
 import { Modal } from '#/components';
-
-import {GQL, encodeField, valueLink} from '#/utils';
+import {GQL, encodeField, valueLink, formatter} from '#/utils';
 
 import styles from './style.less';
 
@@ -94,14 +91,14 @@ export default class Reference extends React.Component {
 
   handleConfirm(key) {
     const { title, url } = this.state.formData[key];
-    const send = key === 'dataSets' ? this.createDataSet : this.createDataReport;
-    send(title, url).then(item => {
-      let data = {};
-      data[key] = [
-        ...this.props[key],
-        item,
-      ];
-      this.fireChange(data);
+    const prepare = key === 'dataSets' ? this.dataSetMutation : this.dataReportMutation;
+    GQL.handleMutations(prepare(title, url)).then(res => {
+      this.fireChange({
+        [key]: [
+          ... this.props[key],
+          res[0],
+        ],
+      })
     }).then(() => {
       this.closeModal(key);
     });
@@ -141,29 +138,33 @@ export default class Reference extends React.Component {
     return
   }
 
-  createDataSet(title, url) {
-    const data = GQL.template`
-    mutation createDataSet {
-      dataset: createDataSet(title: ${encodeField(title)}, url: ${encodeField(formatter.url(url))}) {
-        id
-        title
-        url
-      }
+  dataSetMutation(title, url) {
+    const query = GQL.template`
+    dataset: createDataSet(title: ${encodeField(title)}, url: ${encodeField(formatter.url(url))}) {
+      id
+      title
+      url
     }
     `;
-    return GQL.post(data).then(data => data.dataset);
+    const callback = data => data.dataset;
+    return {
+      query,
+      callback,
+    };
   }
 
-  createDataReport(title, url) {
+  dataReportMutation(title, url) {
     const data = GQL.template`
-    mutation createDataReport {
-      dataset: createDataReport(title: ${encodeField(title)}, url: ${encodeField(formatter.url(url))}) {
-        id
-        title
-        url
-      }
+    dataset: createDataReport(title: ${encodeField(title)}, url: ${encodeField(formatter.url(url))}) {
+      id
+      title
+      url
     }
     `;
-    return GQL.post(data).then(data => data.dataset);
+    const callback = data => data.dataset;
+    return {
+      query,
+      callback,
+    };
   }
 }

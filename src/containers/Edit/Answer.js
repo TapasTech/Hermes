@@ -162,21 +162,25 @@ export default class Answer extends React.Component {
     ];
     ansId && mutations.push(GQL.template`update(content: ${encodeField(content)}) {id}`);
     const mutation = mutations.length ? GQL.template`mutation { ${mutations.join(' ')} }` : 'id';
-    const query = ansId ? GQL.template`query updateAnswer {
-      answer(id: ${encodeField(ansId)}) {
-        ${mutation}
-      }
-    }` : GQL.template`query createAnswer {
-      question(id: ${encodeField(qid)}) {
-        mutation {
-          createAnswer(content: ${encodeField(content)}) {
-            ${mutation}
-          }
+    const query = ansId ? GQL.template`
+    answer(id: ${encodeField(ansId)}) {
+      ${mutation}
+    }
+    ` : GQL.template`
+    question(id: ${encodeField(qid)}) {
+      mutation {
+        createAnswer(content: ${encodeField(content)}) {
+          ${mutation}
         }
       }
-    }`;
-    GQL.post(query).then(data => {
+    }
+    `;
+    const callback = data => {
       browserHistory.push(`/question/${qid}`);
+    };
+    GQL.handleQueries({
+      query,
+      callback,
     });
   }
 

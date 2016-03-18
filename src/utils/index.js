@@ -1,4 +1,3 @@
-export * as GraphqlRest from './graphql';
 export * as GQL from './graphql';
 export * as formatter from './formatter';
 
