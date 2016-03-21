@@ -24,7 +24,7 @@ export default class AnalystRank extends React.Component {
 
   prepareAnalysts(page = 1) {
     const query = GQL.template`
-      bestAnalysts(page: ${page}) {
+      bestAnalysts(page: ${encodeField(page)}) {
         data {
           id
           displayName

@@ -1,0 +1,113 @@
+@import '../../styles/variables.less';
+
+:local(.sidebar) {
+  float: left;
+}
+
+:local(.raceList) {
+  max-width: 960px;
+  background-color: #fff;
+  border-radius: @border-radius;
+
+  table {
+    margin-bottom: 0;
+    text-align: center;
+
+    tr:hover {
+
+      .race-desc {
+        background-color: #fafeff;
+      }
+
+      .race-from-name {
+        color: @brand-primary;
+      }
+    }
+
+    td {
+      height: 100px;
+      padding: 15px 0;
+
+      &.race-detail {
+        width: 120px;
+        background-color: #f8f8f8;
+      }
+
+      &.race-logo {
+        border-right: 1px solid @table-border-color;
+      }
+    }
+
+    + .table {
+      border-top-width: 0;
+    }
+  }
+
+  .race-type {
+    width: 60px;
+    color: #fff;
+
+    &.competition {
+      @color: rgb(180, 217, 255);
+      background-color: @color;
+    }
+
+    &.recruitment {
+      @color: rgb(169, 219, 217);
+      background-color: @color;
+      border-top-color: @color;
+    }
+
+    &.report {
+      @color: rgb(211, 229, 187);
+      background-color: @color;
+      border-top-color: @color;
+    }
+  }
+
+  .race-recent {
+    height: 45px;
+    line-height: 45px;
+    padding-left: 15px;
+    text-align: left;
+    color: @brand-primary;
+    font-size: 1.8rem;
+    font-weight: bold;
+    border-bottom: 1px solid @table-border-color;
+  }
+
+  .race-logo {
+    width: 100px;
+
+    &-content {
+      display: inline-block;
+      width: 70px;
+      height: 70px;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+  }
+
+  .race-desc,
+  .race-logo,
+  .race-detail {
+    vertical-align: middle;
+  }
+
+  .race-desc {
+    cursor: pointer;
+  }
+
+  .race-from {
+    padding-left: 20px;
+    text-align: left;
+
+    &-name {
+      display: inline-block;
+      margin-bottom: 5px;
+      color: @font-color;
+      font-weight: bold;
+    }
+  }
+}

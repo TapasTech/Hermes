@@ -1,23 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import { Icon } from '#/components';
-import { GQL, formatter } from '#/utils';
+import { GQL, formatter, encodeField } from '#/utils';
+import { RaceList, Loader, LoadMore } from '#/components';
 import styles from './style.less';
 
-import Chart from '#/assets/icon/chart.svg';
-import Doc from '#/assets/icon/doc.svg';
-import Trophy from '#/assets/icon/trophy.svg';
-
 export default class Race extends React.Component {
-  static propTypes = {
-    name: React.PropTypes.string,
-  };
-
   constructor(props) {
     super(props);
     this.state = {
-      data: []
+      data: [],
+      currentPage: 1,
+      loading: true
     }
   }
 
@@ -80,27 +74,28 @@ export default class Race extends React.Component {
     );
   }
 
-  renderContent(obj) {
-    const type = Object.keys(obj).join('');
-    const data = obj[type];
-    if (data) {
-      return (
-        <table className="table">
-          <tbody>
+  renderAll() {
+    const { data, currentPage, totalPages, totalCount } = this.state;
+    return (
+      <div className={styles.raceAll}>
+        <table className="table table-bordered table-hover">
+          <thead>
             <tr>
-              <td className={`race-type ${type}`} rowSpan={data.length + 1}>
-                <Icon glyph={this.mapWIW(type, 'icon')} width="40" height="40" />
-                <div>{this.mapWIW(type, 'zh')}</div>
-              </td>
+              <th className="race-recent" colSpan={2}>比赛名称</th>
+              <th>奖励</th>
+              <th>参与</th>
+              <th>剩余时间</th>
             </tr>
+          </thead>
+          <tbody>
             {
               data.map((item, key) => {
-                const { id, title, summary, award, expireAt, thumbLogoURL } = item;
+                const { id, title, summary, award, expireAt, thumbLogoURL, competitionType } = item;
                 const detail = {
                   'competition': `￥${award}`,
                   'recruitment': '工作招聘',
                   'report': '知识分享'
-                }[type];
+                }[competitionType];
                 return (
                   <tr key={key}>
                     <td className="race-logo">
@@ -112,63 +107,94 @@ export default class Race extends React.Component {
                         <div className="text-gray">{summary}</div>
                       </div>
                     </td>
-                    <td className="gray-cell">
-                      <div className="text-gray">
-                        <div>{this.formatTime(expireAt)} 天</div>
-                        <div>参与者</div>
-                        <div>已经提交</div>
-                        <div>{detail}</div>
-                      </div>
-                    </td>
+                    <td className="fixed-cell">{detail}</td>
+                    <td className="fixed-cell">23 参与者</td>
+                    <td className="fixed-cell">{this.formatTime(expireAt)} 天</td>
                   </tr>
                 );
               })
             }
           </tbody>
         </table>
-      );
-    } else {
-      return null;
-    }
+        <ul className="pagination">
+          <li><a href="#" aria-label="Previous">&laquo;</a></li>
+          <li><a href="#">1</a></li>
+          <li><a href="#">2</a></li>
+          <li><a href="#">3</a></li>
+          <li><a href="#">4</a></li>
+          <li><a href="#">5</a></li>
+          <li><a href="#" aria-label="Next">&raquo;</a></li>
+        </ul>
+      </div>
+    );
   }
 
   render() {
-    const { data } = this.state;
-    const competition = data.filter(item => item.competitionType === 'competition');
-    const recruitment = data.filter(item => item.competitionType === 'recruitment');
-    const report = data.filter(item => item.competitionType === 'report');
+    const tab = this.props.route.name === 'all' ? 'all' : '';
+    const index = ['', 'all'].indexOf(tab || '');
+    if (index < 0) {
+      browserHistory.push(`/race`);
+    }
     return (
       <div>
         { this.renderGuide() }
-        <div className={styles.race}>
-          <div className="race-recent">近期比赛</div>
-          { this.renderContent({competition}) }
-          { this.renderContent({recruitment}) }
-          { this.renderContent({report}) }
+        <div className="hermes-container">
+          { this.state.loading && <Loader full={true} />}
+          <div className="main main-right">
+            { (index === 0) ? <RaceList /> : this.renderAll() }
+          </div>
+          <div className="side-left">
+            <nav className="panel">
+              <div className={styles.navTitle}>导航</div>
+              <ul className={styles.navMenu}>
+                <li className={index === 0 ? 'active' : ''}>
+                  <Link to={`/race`}>竞赛详情</Link>
+                </li>
+                <li className={index === 1 ? 'active' : ''}>
+                  <Link to={`/race/all`}>相关数据</Link>
+                </li>
+              </ul>
+            </nav>
+          </div>
         </div>
       </div>
     );
   }
 
-  prepareData() {
+  handleMoreRaces(page) {
+    GQL.handleQueries(
+      this.prepareData(page)
+    );
+  }
+
+  prepareData(page = 1) {
     const query = GQL.template`
-    data: ongoingCompetitions {
-      id
-      title
-      summary
-      competitionType
-      award
-      expireAt
-      thumbLogoURL
+    competitions(page: ${encodeField(page)}) {
+      data {
+        id
+        title
+        summary
+        competitionType
+        award
+        expireAt
+        thumbLogoURL
+      }
+      meta {
+        current_page total_count total_pages
+      }
     }
     `;
     const callback = res => {
-      const { data } = res;
+      const { data, meta } = res.competitions;
       this.setState({
         data: [
           ... this.state.data,
           ... data,
         ],
+        currentPage: meta.current_page,
+        totalPages: meta.total_pages,
+        totalCount: meta.total_count,
+        loading: false
       });
     };
     return {

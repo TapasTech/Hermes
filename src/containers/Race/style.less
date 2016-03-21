@@ -1,5 +1,7 @@
 @import '../../styles/variables.less';
 
+@race-color: rgb(135,180,71);
+
 :local(.guide) {
   background-color: @brand-primary;
   color: #fff;
@@ -30,6 +32,73 @@
   }
 }
 
+:local(.navMenu) {
+  margin: 0 -15px -15px;
+  border-top: 1px solid @border-color;
+  > li {
+    list-style-type: none;
+    padding: 0 15px;
+    a {
+      display: block;
+      height: 100%;
+      padding: 10px 15px;
+    }
+    &.active {
+      a {
+        color: white;
+      }
+      background: @race-color;
+    }
+    &:hover {
+      &:not(.active) {
+        a {
+          color: @race-color;
+        }
+        background: lighten(@race-color, 35%);
+      }
+    }
+  }
+}
+
+:local(.navTitle) {
+  margin-bottom: 15px;
+}
+
+:local(.race) {
+  max-width: 960px;
+  margin: @gap auto;
+  background-color: #fff;
+
+  .nav {
+    width: 120px;
+    float: left;
+    margin-left: -100%;
+
+    a {
+      display: block;
+      height: 45px;
+      line-height: 45px;
+      padding: 0 15px;
+    }
+
+    .active {
+      a {
+        color: white;
+      }
+      background: @race-color;
+    }
+  }
+
+  .main {
+    float: left;
+    width: 100%;
+
+    > div {
+      margin-left: 120px;
+    }
+  }
+}
+
 :local(.link) {
   padding-bottom: 3px;
   color: #fff;
@@ -40,46 +109,49 @@
   }
 }
 
-:local(.race) {
-  max-width: 960px;
-  margin: @gap auto;
+:local(.raceAll) {
   background-color: #fff;
-  border: 1px solid @table-border-color;
-  border-radius: @border-radius;
 
   table {
+    width: 100%;
     margin-bottom: 0;
     text-align: center;
+    border-radius: @border-radius;
+  }
 
-    tr:hover {
+  thead tr {
+    height: 45px;
+    font-weight: bold;
 
-      .race-desc {
-        background-color: #fafeff;
-      }
-
-      .race-from-name {
-        color: @brand-primary;
-      }
-    }
-
-    td {
-      height: 100px;
-      padding: 15px 0;
+    th {
+      text-align: center;
       vertical-align: middle !important;
 
-      &.gray-cell {
+      &:not(.race-recent) {
         width: 120px;
-        background-color: #f8f8f8;
-      }
-
-      &.race-logo {
-        border-right: 1px solid @table-border-color;
       }
     }
+  }
 
-    + .table {
-      border-top-width: 0;
+  tbody tr:hover {
+    .race-from-name {
+      color: @brand-primary;
     }
+  }
+
+  td {
+    height: 60px;
+    padding: 15px 0;
+    border-top: 1px solid @border-color;
+    vertical-align: middle !important;
+
+    &.fixed-cell {
+      width: 120px;
+    }
+  }
+
+  .race-desc {
+    cursor: pointer;
   }
 
   .race-type {
@@ -106,8 +178,6 @@
   }
 
   .race-recent {
-    height: 45px;
-    line-height: 45px;
     padding-left: 15px;
     text-align: left;
     color: @brand-primary;
@@ -121,19 +191,14 @@
     &-content {
       display: inline-block;
       width: 70px;
-      height: 70px;
+      height: 60px;
       background-size: contain;
       background-position: center;
       background-repeat: no-repeat;
     }
   }
 
-  .race-desc {
-    cursor: pointer;
-  }
-
   .race-from {
-    padding-left: 20px;
     text-align: left;
 
     &-name {

@@ -43,14 +43,13 @@ export default class Root extends React.Component {
           </Route>
           <Route path="race">
             <IndexRoute component={Pages.Race} />
+            <Route name="all" path="all" component={Pages.Race} />
+            <Route path=":id" component={Pages.RaceDetail} />
+            <Route path=":id/:tab" component={Pages.RaceDetail} />
             {/*
             <Route path="_new" component={Pages.RaceEdit} />
             <Route path=":id/edit" component={Pages.RaceEdit} />
             */}
-            <Route path=":id" component={Pages.RaceDetail}>
-              <IndexRoute />
-              <Route path=":tab" />
-            </Route>
           </Route>
         </Route>
       </Router>

@@ -113,7 +113,7 @@ export default class RaceDetail extends React.Component {
     const now = Date.now();
     const progress = now >= expireAt ? '100%' : (now - startAt) / (expireAt - startAt) * 100 + '%';
     return (
-      <div className={`container ${style.raceDetail}`}>
+      <div className={`hermes-container ${style.raceDetail}`}>
         {loading && <Loader full={true} />}
         <div className="main main-right">
           <div className="panel">
