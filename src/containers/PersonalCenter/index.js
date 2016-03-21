@@ -423,7 +423,7 @@ export default class PersonalCenter extends React.Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="hermes-container">
         {this.state.loading && <Loader full={true} />}
         <div className="main main-right">
           { this.renderStream() }

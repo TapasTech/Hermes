@@ -135,7 +135,7 @@ export default class Discovery extends React.Component {
   render() {
     const { topics, questions, loading } = this.state;
     return (
-      <div className="container">
+      <div className="hermes-container">
         {loading && <Loader full={true} />}
         <div className="main main-left">
           <div className={styles.listArea}>

@@ -1,31 +1,84 @@
 @import '../../styles/variables.less';
 
+:local(.guide) {
+  background-color: @brand-primary;
+  color: #fff;
+
+  .container {
+    padding: 40px 0;
+  }
+
+  .title {
+    font-size: 1.8rem;
+  }
+
+  .guide-tip {
+    margin-top: 20px;
+  }
+
+  .icon-set {
+    font-size: 1.8rem;
+
+    i + i {
+      margin-left: 10px;
+    }
+  }
+
+  .header {
+    font-size: 2.4rem;
+    margin: 15px 0;
+  }
+}
+
+:local(.link) {
+  padding-bottom: 3px;
+  color: #fff;
+  border-bottom: 1px solid #fff;
+
+  &:hover {
+    border-color: currentColor;
+  }
+}
+
 :local(.race) {
   max-width: 960px;
   margin: @gap auto;
   background-color: #fff;
+  border: 1px solid @table-border-color;
+  border-radius: @border-radius;
 
   table {
-    width: 100%;
+    margin-bottom: 0;
     text-align: center;
-  }
 
-  thead tr {
-    height: 45px;
-    font-weight: bold;
+    tr:hover {
 
-    th:not(.race-recent) {
-      width: 120px;
+      .race-desc {
+        background-color: #fafeff;
+      }
+
+      .race-from-name {
+        color: @brand-primary;
+      }
     }
-  }
 
-  td {
-    height: 60px;
-    padding: 15px 0;
-    border-top: 1px solid @border-color;
+    td {
+      height: 100px;
+      padding: 15px 0;
+      vertical-align: middle !important;
 
-    &.fixed-cell {
-      width: 120px;
+      &.gray-cell {
+        width: 120px;
+        background-color: #f8f8f8;
+      }
+
+      &.race-logo {
+        border-right: 1px solid @table-border-color;
+      }
+    }
+
+    + .table {
+      border-top-width: 0;
     }
   }
 
@@ -53,8 +106,13 @@
   }
 
   .race-recent {
+    height: 45px;
+    line-height: 45px;
     padding-left: 15px;
     text-align: left;
+    color: @brand-primary;
+    font-size: 1.8rem;
+    font-weight: bold;
   }
 
   .race-logo {
@@ -63,14 +121,19 @@
     &-content {
       display: inline-block;
       width: 70px;
-      height: 60px;
+      height: 70px;
       background-size: contain;
       background-position: center;
       background-repeat: no-repeat;
     }
   }
 
+  .race-desc {
+    cursor: pointer;
+  }
+
   .race-from {
+    padding-left: 20px;
     text-align: left;
 
     &-name {

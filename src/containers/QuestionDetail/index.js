@@ -484,7 +484,7 @@ export default class QuestionDetail extends React.Component {
   render() {
     const { id, followed, topics, answers, followersCount, followers } = this.state.question;
     return (
-      <div className="container">
+      <div className="hermes-container">
         <div className="main main-left">
           { this.renderTopic() }
           {

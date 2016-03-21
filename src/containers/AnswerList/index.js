@@ -28,7 +28,7 @@ export default class AnswerList extends React.Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="hermes-container">
         {this.state.loading && <Loader full={true} />}
         <div className="main main-left">
           { this.state.data ? this.renderQuestionList() : <div>loading...</div> }

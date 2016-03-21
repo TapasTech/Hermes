@@ -188,7 +188,7 @@ export default class Answer extends React.Component {
     const {user, question, content, anonymous, dataSets, dataReports, loading} = this.state;
 
     return (
-      <div className="container">
+      <div className="hermes-container">
         {loading && <Loader full={true} />}
         <div className="main main-left">
           <div className={`panel ${styles.panelEdit}`}>

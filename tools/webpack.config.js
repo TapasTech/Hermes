@@ -48,7 +48,8 @@ export default {
       { test: /\.css$/, loader: cssLoader('css?importLoaders=1!postcss?pack=default'), include: path.resolve('src') },
       { test: /\.css$/, loader: cssLoader('css!postcss?pack=default'), include: path.resolve('node_modules') },
       { test: /\.less$/, loader: cssLoader('css?importLoaders=1!less') },
-      { test: /\.svg$/, loader: 'svg-sprite' },
+      { test: /\.svg$/, loader: 'svg-sprite', include: path.resolve('src') },
+      { test: /\.svg$/, loader: 'url', include: path.resolve('node_modules') },
       { test: /\.(png|jpg|gif)$/, loader: 'url', query: { limit: 10000, name: imageName } },
       { test: /\.(woff|woff2|ttf|eot)$/, loader: 'url', query: { limit: 10000, name: fontName} }
     ]

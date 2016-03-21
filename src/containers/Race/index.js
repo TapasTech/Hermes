@@ -27,12 +27,65 @@ export default class Race extends React.Component {
     );
   }
 
+  renderGuide() {
+    return (
+      <div className={styles.guide}>
+        <div className="container">
+          <div className="row">
+            <div className="col-md-4">
+              <div className="title">欢迎来到sayInData竞赛</div>
+              <div className="guide-tip">
+                <div>New?</div>
+                <Link className={styles.link} to="/me">引导项目 »</Link>
+              </div>
+              <div className="guide-tip">
+                <div>Learn?</div>
+                <Link className={styles.link} to="/me">问答排行 »</Link>
+              </div>
+            </div>
+            <div className="col-md-8">
+              <div className="row">
+                <div className="col-md-4">
+                  <div className="icon-set">
+                    <i className="glyphicon glyphicon-search"></i>
+                    <i className="glyphicon glyphicon-book"></i>
+                    <i className="glyphicon glyphicon-save"></i>
+                  </div>
+                  <div className="header">下载</div>
+                  <p>Choose a competition & download the training data.</p>
+                </div>
+                <div className="col-md-4">
+                  <div className="icon-set">
+                    <i className="glyphicon glyphicon-fire"></i>
+                    <i className="glyphicon glyphicon-cog"></i>
+                    <i className="glyphicon glyphicon-stats"></i>
+                  </div>
+                  <div className="header">构建</div>
+                  <p>Build a model using whatever methods and tools you prefer.</p>
+                </div>
+                <div className="col-md-4">
+                  <div className="icon-set">
+                    <i className="glyphicon glyphicon-open"></i>
+                    <i className="glyphicon glyphicon-asterisk"></i>
+                    <i className="glyphicon glyphicon-star"></i>
+                  </div>
+                  <div className="header">提交</div>
+                  <p>Upload your predictions. Kaggle scores your solution and shows your score on the leaderboard.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   renderContent(obj) {
     const type = Object.keys(obj).join('');
     const data = obj[type];
     if (data) {
       return (
-        <table>
+        <table className="table">
           <tbody>
             <tr>
               <td className={`race-type ${type}`} rowSpan={data.length + 1}>
@@ -43,20 +96,30 @@ export default class Race extends React.Component {
             {
               data.map((item, key) => {
                 const { id, title, summary, award, expireAt, thumbLogoURL } = item;
+                const detail = {
+                  'competition': `￥${award}`,
+                  'recruitment': '工作招聘',
+                  'report': '知识分享'
+                }[type];
                 return (
                   <tr key={key}>
                     <td className="race-logo">
                       <div className="race-logo-content" style={{backgroundImage: `url(${thumbLogoURL})`}}></div>
                     </td>
-                    <td>
+                    <td className="race-desc">
                       <div className="race-from">
                         <Link className="race-from-name text-big" to={`/race/${id}`}>{title}</Link>
                         <div className="text-gray">{summary}</div>
                       </div>
                     </td>
-                    <td className="fixed-cell">{ this.computedAward(type, award)}</td>
-                    {/* <td className="fixed-cell">23 参与者</td> */}
-                    <td className="fixed-cell">{this.formatTime(expireAt)} 天</td>
+                    <td className="gray-cell">
+                      <div className="text-gray">
+                        <div>{this.formatTime(expireAt)} 天</div>
+                        <div>参与者</div>
+                        <div>已经提交</div>
+                        <div>{detail}</div>
+                      </div>
+                    </td>
                   </tr>
                 );
               })
@@ -75,20 +138,14 @@ export default class Race extends React.Component {
     const recruitment = data.filter(item => item.competitionType === 'recruitment');
     const report = data.filter(item => item.competitionType === 'report');
     return (
-      <div className={styles.race}>
-        <table>
-          <thead>
-            <tr>
-              <th className="race-recent">近期比赛</th>
-              <th>奖励</th>
-              {/* <th>参与</th> */}
-              <th>剩余时间</th>
-            </tr>
-          </thead>
-        </table>
-        { this.renderContent({competition}) }
-        { this.renderContent({recruitment}) }
-        { this.renderContent({report}) }
+      <div>
+        { this.renderGuide() }
+        <div className={styles.race}>
+          <div className="race-recent">近期比赛</div>
+          { this.renderContent({competition}) }
+          { this.renderContent({recruitment}) }
+          { this.renderContent({report}) }
+        </div>
       </div>
     );
   }
@@ -143,19 +200,5 @@ export default class Race extends React.Component {
     };
 
     return map[val][type];
-  }
-
-  computedAward(type, award) {
-    switch(type) {
-      case 'competition':
-        return `￥ ${award} 元`;
-        break;
-      case 'recruitment':
-        return '工作招聘';
-        break;
-      case 'report':
-        return '知识分享';
-        break;
-    }
   }
 }

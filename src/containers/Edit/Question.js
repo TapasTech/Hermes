@@ -220,7 +220,7 @@ export default class Question extends React.Component {
   render() {
     const { user, title, content, anonymous, topics, dataSets, dataReports, loading } = this.state;
     return (
-      <div className="container">
+      <div className="hermes-container">
         {loading && <Loader full={true} />}
         <div className="main main-left">
           <div className={`panel ${styles.panelEdit}`}>

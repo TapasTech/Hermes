@@ -5,7 +5,6 @@ import Root from './router';
 
 import './config';
 
-import 'normalize.css';
 import './styles';
 
 ReactDOM.render(
